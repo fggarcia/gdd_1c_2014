@@ -15,7 +15,21 @@ namespace FrbaCommerce
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-        }
+            
+            FrbaCommerce.Login.FormLogin formLogin = new FrbaCommerce.Login.FormLogin();
+            formLogin.ShowDialog();
+            /*if (formLogin.DialogResult == DialogResult.OK)
+            {
+                FrbaCommerce.ABM_Rol.FormABMRol frmRol = new FrbaCommerce.ABM_Rol.FormABMRol();
+                frmRol.ShowDialog();
+                
+                
+                if (frmRol.DialogResult == DialogResult.OK)
+                {
+                    Application.Run(new FormMenu());
+        }*/
     }
 }
+    }
+
+    

@@ -1,0 +1,15 @@
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\bin\Debug\FrbaCommerce.exe
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\bin\Debug\FrbaCommerce.pdb
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.ABM_Rol.FormABMRol.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.ABM_Rol.FormABMRolAlta.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.ABM_Rol.FormABMRolBajaInhabilitar.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Properties.Resources.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.csproj.GenerateResource.Cache
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.exe
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.pdb
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Login.FormLogin.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.ABM_Rol.FormABMRolModificar.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Login.FormSeleccionRol.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Registro_de_Usuario.FormRegistro.resources
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\bin\Debug\FrbaCommerce.exe.config
