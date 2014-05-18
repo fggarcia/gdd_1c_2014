@@ -15,7 +15,7 @@ namespace FrbaCommerce
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             FrbaCommerce.Login.FormLogin formLogin = new FrbaCommerce.Login.FormLogin();
             formLogin.ShowDialog();
             /*if (formLogin.DialogResult == DialogResult.OK)

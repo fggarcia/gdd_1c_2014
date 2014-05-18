@@ -28,27 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxRol = new System.Windows.Forms.ComboBox();
             this.labelRol = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.labelCamposObligatorios = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelAst = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textContrasenia = new System.Windows.Forms.TextBox();
+            this.textNombreUsuario = new System.Windows.Forms.TextBox();
             this.labelContrasenia = new System.Windows.Forms.Label();
             this.labelNombreUsuario = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxRol
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(164, 147);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(235, 21);
-            this.comboBox1.TabIndex = 0;
+            this.comboBoxRol.FormattingEnabled = true;
+            this.comboBoxRol.Location = new System.Drawing.Point(164, 147);
+            this.comboBoxRol.Name = "comboBoxRol";
+            this.comboBoxRol.Size = new System.Drawing.Size(235, 21);
+            this.comboBoxRol.TabIndex = 0;
             // 
             // labelRol
             // 
@@ -68,6 +68,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Continuar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // labelCamposObligatorios
             // 
@@ -99,19 +100,19 @@
             this.labelAst.TabIndex = 11;
             this.labelAst.Text = "*";
             // 
-            // textBox2
+            // textContrasenia
             // 
-            this.textBox2.Location = new System.Drawing.Point(164, 92);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(235, 20);
-            this.textBox2.TabIndex = 10;
+            this.textContrasenia.Location = new System.Drawing.Point(164, 92);
+            this.textContrasenia.Name = "textContrasenia";
+            this.textContrasenia.Size = new System.Drawing.Size(235, 20);
+            this.textContrasenia.TabIndex = 10;
             // 
-            // textBox1
+            // textNombreUsuario
             // 
-            this.textBox1.Location = new System.Drawing.Point(164, 36);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(235, 20);
-            this.textBox1.TabIndex = 9;
+            this.textNombreUsuario.Location = new System.Drawing.Point(164, 36);
+            this.textNombreUsuario.Name = "textNombreUsuario";
+            this.textNombreUsuario.Size = new System.Drawing.Size(235, 20);
+            this.textNombreUsuario.TabIndex = 9;
             // 
             // labelContrasenia
             // 
@@ -166,13 +167,13 @@
             this.Controls.Add(this.labelCamposObligatorios);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.labelAst);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textContrasenia);
+            this.Controls.Add(this.textNombreUsuario);
             this.Controls.Add(this.labelContrasenia);
             this.Controls.Add(this.labelNombreUsuario);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelRol);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.comboBoxRol);
             this.Controls.Add(this.groupBox1);
             this.Name = "FormRegistro";
             this.Text = "Registro de Usuario";
@@ -183,14 +184,14 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxRol;
         private System.Windows.Forms.Label labelRol;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label labelCamposObligatorios;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelAst;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textContrasenia;
+        private System.Windows.Forms.TextBox textNombreUsuario;
         private System.Windows.Forms.Label labelContrasenia;
         private System.Windows.Forms.Label labelNombreUsuario;
         private System.Windows.Forms.Label label1;

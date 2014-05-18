@@ -146,7 +146,7 @@
             // 
             this.labelDepto.AutoSize = true;
             this.labelDepto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelDepto.Location = new System.Drawing.Point(136, 173);
+            this.labelDepto.Location = new System.Drawing.Point(27, 172);
             this.labelDepto.Name = "labelDepto";
             this.labelDepto.Size = new System.Drawing.Size(36, 15);
             this.labelDepto.TabIndex = 9;
@@ -156,7 +156,7 @@
             // 
             this.labelPiso.AutoSize = true;
             this.labelPiso.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelPiso.Location = new System.Drawing.Point(236, 173);
+            this.labelPiso.Location = new System.Drawing.Point(127, 172);
             this.labelPiso.Name = "labelPiso";
             this.labelPiso.Size = new System.Drawing.Size(34, 15);
             this.labelPiso.TabIndex = 8;
@@ -256,14 +256,14 @@
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(187, 172);
+            this.textBox9.Location = new System.Drawing.Point(78, 171);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(36, 20);
             this.textBox9.TabIndex = 25;
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(281, 172);
+            this.textBox10.Location = new System.Drawing.Point(172, 171);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(36, 20);
             this.textBox10.TabIndex = 26;

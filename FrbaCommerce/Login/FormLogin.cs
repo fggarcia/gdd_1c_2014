@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FrbaCommerce.Registro_de_Usuario;
 using System.Security.Cryptography; //Para usa SHA256
 
 namespace FrbaCommerce.Login
@@ -40,6 +41,19 @@ namespace FrbaCommerce.Login
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonSalir_Click(object sender, EventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
+
+        private void buttonRegistrarse_Click(object sender, EventArgs e)
+        {
+            FormRegistro formRegistro = new FormRegistro();
+            this.Hide();
+            formRegistro.ShowDialog();
+            this.Close();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace FrbaCommerce.Abm_Cliente
+﻿namespace FrbaCommerce.Abm_Empresa
 {
     partial class FormABMEmpresa
     {
@@ -38,44 +38,44 @@
             // buttonEliminar
             // 
             this.buttonEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEliminar.Location = new System.Drawing.Point(33, 137);
+            this.buttonEliminar.Location = new System.Drawing.Point(33, 136);
             this.buttonEliminar.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonEliminar.Name = "buttonEliminar";
             this.buttonEliminar.Size = new System.Drawing.Size(101, 36);
-            this.buttonEliminar.TabIndex = 11;
+            this.buttonEliminar.TabIndex = 16;
             this.buttonEliminar.Text = "Eliminar";
             this.buttonEliminar.UseVisualStyleBackColor = true;
             // 
             // buttonVolver
             // 
             this.buttonVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonVolver.Location = new System.Drawing.Point(33, 222);
+            this.buttonVolver.Location = new System.Drawing.Point(33, 221);
             this.buttonVolver.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonVolver.Name = "buttonVolver";
             this.buttonVolver.Size = new System.Drawing.Size(77, 31);
-            this.buttonVolver.TabIndex = 10;
+            this.buttonVolver.TabIndex = 15;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
             // 
             // buttonModificar
             // 
             this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonModificar.Location = new System.Drawing.Point(162, 64);
+            this.buttonModificar.Location = new System.Drawing.Point(162, 63);
             this.buttonModificar.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonModificar.Name = "buttonModificar";
             this.buttonModificar.Size = new System.Drawing.Size(101, 36);
-            this.buttonModificar.TabIndex = 9;
+            this.buttonModificar.TabIndex = 14;
             this.buttonModificar.Text = "Modificar";
             this.buttonModificar.UseVisualStyleBackColor = true;
             // 
             // buttonAlta
             // 
             this.buttonAlta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAlta.Location = new System.Drawing.Point(33, 64);
+            this.buttonAlta.Location = new System.Drawing.Point(33, 63);
             this.buttonAlta.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonAlta.Name = "buttonAlta";
             this.buttonAlta.Size = new System.Drawing.Size(101, 36);
-            this.buttonAlta.TabIndex = 8;
+            this.buttonAlta.TabIndex = 13;
             this.buttonAlta.Text = "Dar da Alta";
             this.buttonAlta.UseVisualStyleBackColor = true;
             // 
@@ -83,11 +83,11 @@
             // 
             this.TextOpcion.AutoSize = true;
             this.TextOpcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextOpcion.Location = new System.Drawing.Point(30, 21);
+            this.TextOpcion.Location = new System.Drawing.Point(30, 20);
             this.TextOpcion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TextOpcion.Name = "TextOpcion";
             this.TextOpcion.Size = new System.Drawing.Size(119, 13);
-            this.TextOpcion.TabIndex = 7;
+            this.TextOpcion.TabIndex = 12;
             this.TextOpcion.Text = "Seleccione una opcion:";
             // 
             // FormABMEmpresa
@@ -114,5 +114,6 @@
         private System.Windows.Forms.Button buttonModificar;
         private System.Windows.Forms.Button buttonAlta;
         private System.Windows.Forms.Label TextOpcion;
+
     }
 }

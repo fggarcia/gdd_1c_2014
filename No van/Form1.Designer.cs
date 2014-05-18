@@ -1,4 +1,4 @@
-﻿namespace FrbaCommerce.Login
+﻿namespace No_van
 {
     partial class Form1
     {
@@ -36,3 +36,4 @@
         #endregion
     }
 }
+

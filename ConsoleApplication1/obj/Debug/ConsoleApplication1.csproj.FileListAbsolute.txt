@@ -1,0 +1,5 @@
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\ConsoleApplication1\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

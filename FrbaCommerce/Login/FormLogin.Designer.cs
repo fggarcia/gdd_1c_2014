@@ -150,6 +150,7 @@
             this.buttonSalir.TabIndex = 2;
             this.buttonSalir.Text = "Salir";
             this.buttonSalir.UseVisualStyleBackColor = true;
+            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
             // 
             // buttonRegistrarse
             // 
@@ -160,6 +161,7 @@
             this.buttonRegistrarse.TabIndex = 3;
             this.buttonRegistrarse.Text = "Registrarse";
             this.buttonRegistrarse.UseVisualStyleBackColor = true;
+            this.buttonRegistrarse.Click += new System.EventHandler(this.buttonRegistrarse_Click);
             // 
             // FormLogin
             // 
