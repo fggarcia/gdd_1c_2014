@@ -140,6 +140,7 @@
             this.buttonIngresar.TabIndex = 1;
             this.buttonIngresar.Text = "Ingresar";
             this.buttonIngresar.UseVisualStyleBackColor = true;
+            this.buttonIngresar.Click += new System.EventHandler(this.buttonIngresar_Click);
             // 
             // buttonSalir
             // 

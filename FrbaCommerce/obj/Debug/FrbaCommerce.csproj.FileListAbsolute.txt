@@ -17,3 +17,6 @@ C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014
 C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.ABM_Rol.FormABMRolInhabilitar.resources
 C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Abm_Cliente.FormABMCliente.resources
 C:\Documents and Settings\UsuarioAdmin\Escritorio\TP Frba Commerce 1.1 - 1C 2014\Aplicacion Desktop\FrbaCommerce\gdd_1c_2014\FrbaCommerce\obj\Debug\FrbaCommerce.Abm_Empresa.FormABMEmpresa.resources
+C:\Documents and Settings\repoGDD\FrbaCommerce\bin\Debug\FrbaCommerce.exe.config
+C:\Documents and Settings\repoGDD\FrbaCommerce\obj\Debug\FrbaCommerce.exe
+C:\Documents and Settings\repoGDD\FrbaCommerce\obj\Debug\FrbaCommerce.pdb
