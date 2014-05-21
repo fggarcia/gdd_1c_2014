@@ -103,24 +103,27 @@ namespace FrbaCommerce.Login
                         //Se accede a la seleccion del rol.
 
                     }
+                else
+                {
+                    usuario.cantidadFallasEnPass++;
+                    if (usuario.cantidadFallasEnPass < 3)
+                    {
+                        MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     else
                     {
-                        usuario.cantidadFallasEnPass++;
-                            if (usuario.cantidadFallasEnPass < 3)
-                            {
-                                MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            else
-                            {
-                                administracion.deshabilitarUsuario(textBox1.Text);
-                                MessageBox.Show("Tu login esta deshabilitado. Por favor contactarse con el administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
+                        administracion.deshabilitarUsuario(textBox1.Text);
+                        MessageBox.Show("Tu login esta deshabilitado. Por favor contactarse con el administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
 
              }
 
             }
         }
+        
+        
+        
         //Ver si estas clases puede ser definidas en otro lado. Como por ejemplo un package.
         public class Usuarios
         {
