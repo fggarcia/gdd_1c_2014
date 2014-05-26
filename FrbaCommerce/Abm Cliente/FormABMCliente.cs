@@ -15,5 +15,18 @@ namespace FrbaCommerce.Abm_Cliente
         {
             InitializeComponent();
         }
+
+        private void buttonModificar_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void buttonAlta_Click(object sender, EventArgs e)
+        {
+            FormABMClienteAlta formAltaCliente = new FormABMClienteAlta();
+            this.Hide();
+            formAltaCliente.ShowDialog();
+            this.Close();
+        }
     }
 }

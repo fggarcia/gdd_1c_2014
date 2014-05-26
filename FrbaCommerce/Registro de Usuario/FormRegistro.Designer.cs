@@ -113,6 +113,7 @@
             this.textNombreUsuario.Name = "textNombreUsuario";
             this.textNombreUsuario.Size = new System.Drawing.Size(235, 20);
             this.textNombreUsuario.TabIndex = 9;
+            this.textNombreUsuario.TextChanged += new System.EventHandler(this.textNombreUsuario_TextChanged);
             // 
             // labelContrasenia
             // 

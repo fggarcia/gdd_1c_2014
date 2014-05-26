@@ -15,10 +15,11 @@ namespace FrbaCommerce
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            FrbaCommerce.Login.FormLogin formLogin = new FrbaCommerce.Login.FormLogin();
+            FrbaCommerce.Abm_Cliente.FormABMCliente formalta = new FrbaCommerce.Abm_Cliente.FormABMCliente();
+            formalta.ShowDialog();
+            /*FrbaCommerce.Login.FormLogin formLogin = new FrbaCommerce.Login.FormLogin();
             formLogin.ShowDialog();
-            /*if (formLogin.DialogResult == DialogResult.OK)
+            if (formLogin.DialogResult == DialogResult.OK)
             {
                 FrbaCommerce.ABM_Rol.FormABMRol frmRol = new FrbaCommerce.ABM_Rol.FormABMRol();
                 frmRol.ShowDialog();
@@ -28,8 +29,6 @@ namespace FrbaCommerce
                 {
                     Application.Run(new FormMenu());
         }*/
+        }
     }
 }
-    }
-
-    

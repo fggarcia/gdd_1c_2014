@@ -34,5 +34,10 @@ namespace FrbaCommerce.Registro_de_Usuario
             }
 
         }
+
+        private void textNombreUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
