@@ -29,9 +29,9 @@ END
 GO
 
 CREATE FUNCTION LOS_OPTIMISTAS.obtenerCodigoArticulo(@descripcion varchar(255))
-returns Int
+returns NUMERIC(18,0)
 BEGIN
-	RETURN CONVERT(INT,RTRIM(SubString(@descripcion,24,20)))
+	RETURN CONVERT(NUMERIC(18,0),RTRIM(SubString(@descripcion,24,20)))
 END
 GO
 
@@ -39,7 +39,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Usuario](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Password][varchar](64) NOT NULL,
 	[Cantidad_Login][Int] NOT NULL,
-	[Ultima_Fecha][datetime] NULL
+	[Ultima_Fecha][smalldatetime] NULL
 
 	CONSTRAINT UQ_Usuarios_Id_Usuario UNIQUE(Id_Usuario)
 )
@@ -83,7 +83,7 @@ INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(3,'empresa'
 CREATE TABLE [LOS_OPTIMISTAS].[Usuario_Rol](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Id_Rol][Int] NOT NULL,
-	[Fecha_Baja][datetime] NULL
+	[Fecha_Baja][smalldatetime] NULL
 
 	CONSTRAINT UQ_Usuario_Rol_Id_Usuario UNIQUE(Id_Usuario),
 	CONSTRAINT [FK_Usuario_Rol_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -171,11 +171,11 @@ select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Razo
 CREATE TABLE [LOS_OPTIMISTAS].[Dom_Mail](
 
 [Id_Usuario][varchar](20) NOT NULL ,
-[Domicilio][varchar](100)  NULL,
+[Domicilio][varchar](255)  NULL,
 [Telefono][varchar](255)  NULL,
-[Cp] [varchar](10)  NULL,
+[Cp] [varchar](50)  NULL,
 [Mail] [varchar](255) NULL, 
-[Localidad] [varchar](40) NULL
+[Localidad] [varchar](255) NULL
 
 CONSTRAINT [FK_Dom_Mail_Empresa_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
@@ -190,3 +190,57 @@ select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),Cli_Dom_Calle,null,Cli_
 
 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
 select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
+
+
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
+
+[Id_Publicacion][numeric] (18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Id_Tipo_Publicacion][varchar](255) NOT NULL,
+[Id_Articulo][numeric](18,0) NOT NULL,             
+[Id_Visibilidad][numeric](18,0)NOT NULL,
+[Id_Estado][varchar](255)NOT NULL,
+[Precio][numeric](18) NULL,
+[Fecha_Inicio][smalldatetime] NULL,
+[Fecha_Vencimiento][smalldatetime] NULL,
+[Pemite_Preguntas][Bit] NULL,
+[Cant_por_Venta][numeric] (18) NULL,
+[Descripcion][varchar](255) NULL
+
+
+CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
+		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
+		CONSTRAINT UQ_Publicacion_Id_Publicacion UNIQUE(Id_Publicacion),
+		
+
+)
+--INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
+INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
+select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),Publicacion_Tipo,LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,0,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL)
+
+--INSERTO EN PUBLICACION LOS CASOS EN QUE LA EMPRESA ES LA QUE PUBLICA
+INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
+select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),Publicacion_Tipo,LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,0,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
+
+
+
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
+[Id_Publicacion][numeric] (18,0) NOT NULL,
+[Id_Calificacion][numeric](18,0)NOT NULL,
+[Id_Usuario_Calificador][varchar](20) NOT NULL,
+[Fecha_Calificacion][smalldatetime] NULL,
+[Detalle][varchar] (255) NULL,
+[Calificacion][Numeric](18,0)  NULL
+
+CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+		
+CONSTRAINT [FK_Publicacion_Calificaciones_Id_Usuario_Calificador] FOREIGN KEY(Id_Usuario_Calificador)
+		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
+		
+	
+)
+
+--Inserto en publicacion_Calificaciones COnsideramos poner la fecha de compra como la de calificacion en todos los casos de migracion
+INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones(Id_Calificacion,Id_Publicacion,Id_Usuario_Calificador,Fecha_Calificacion,Detalle,Calificacion)
+select Distinct (CONVERT(numeric(18,0),Calificacion_Codigo)),Publicacion_Cod,Cli_Dni,Compra_Fecha,Calificacion_Descripcion,Calificacion_Cant_Estrellas from gd_esquema.Maestra WHERE (Calificacion_codigo IS NOT NULL )
