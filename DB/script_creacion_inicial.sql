@@ -94,6 +94,10 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rol_Funcionalidad](
 	[Id_Rol][Int] NOT NULL,
 	[Id_Funcionalidad][Int] NOT NULL
 
+	CONSTRAINT [PK_Rol_Funcionalidad] PRIMARY KEY (
+		[Id_Rol] ASC,
+		[Id_Funcionalidad] ASC
+	)
 	CONSTRAINT [FK_Rol_Funcionalidad_Funcionalidad_Id_Funcionalidad] FOREIGN KEY(Id_Funcionalidad)
 		REFERENCES [LOS_OPTIMISTAS].[Funcionalidad] (Id_Funcionalidad),
 	CONSTRAINT [FK_Rol_Funcionalidad_Rol_Id_Rol] FOREIGN KEY(Id_Rol)
@@ -127,15 +131,15 @@ CREATE TABLE [LOS_OPTIMISTAS].[Empresa](
 [Razon_social] [varchar](20) NOT NULL ,
 [Cuit] [varchar](20) NOT NULL,
 [Id_Usuario] [varchar](20) NOT NULL,
-[Ciudad][varchar](20),
-[Nombre_Contacto][varchar](20), 
+[Ciudad][varchar](20) NULL,
+[Nombre_Contacto][varchar](20) NULL, 
 [Fecha_Creacion][datetime]
 
 CONSTRAINT [FK_Empresa_Cliente_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
-		CONSTRAINT UQ_Cliente_Id_Usuario UNIQUE(Id_Usuario),
-		CONSTRAINT UQ_Cliente_Razon_social UNIQUE(Razon_social),
-		CONSTRAINT UQ_Cliente_Cuit UNIQUE(Cuit)
+		CONSTRAINT UQ_Empresa_Id_Usuario UNIQUE(Id_Usuario),
+		CONSTRAINT UQ_Empresa_Razon_social UNIQUE(Razon_social),
+		CONSTRAINT UQ_Empresa_Cuit UNIQUE(Cuit)
 		
 )
 --CARGO LAS EMPRESAS
@@ -147,25 +151,22 @@ select Distinct(LTRIM(STR(CONVERT(INT,SubString(Publ_Empresa_Cuit,4,8))))), Publ
 CREATE TABLE [LOS_OPTIMISTAS].[Dom_Mail](
 
 [Id_Usuario][varchar](20) NOT NULL ,
-[Domicilio][varchar](20)  ,
-[Telefono][varchar](20)  ,
-[Cp] [varchar](6)  ,
-[Mail] [varchar](20)  , 
-[Localidad] [varchar](20) 
+[Domicilio][varchar](40)  NULL,
+[Telefono][varchar](20)  NULL,
+[Cp] [varchar](10)  NULL,
+[Mail] [varchar](40) NULL, 
+[Localidad] [varchar](40) NULL
 
 CONSTRAINT [FK_Dom_Mail_Empresa_Id_Usuario] FOREIGN KEY(Id_Usuario)
-		REFERENCES [LOS_OPTIMISTAS].[Empresa] (Id_Usuario),
-		
-CONSTRAINT [FK_Dom_Mail_Cliente_Id_Usuario] FOREIGN KEY(Id_Usuario)
-		REFERENCES [LOS_OPTIMISTAS].[Cliente](Id_Usuario)
-
+		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
 )
+
 --CARGO TABLA Dom_Mail con los datos de Clientes
 
-INSERT INTO Los_Optimistas.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
-select Distinct(LTRIM(STR(CONVERT(INT,STR(Publ_Cli_Dni,20))))),Cli_Dom_Calle,null,Cli_Cod_Postal,Cli_Mail,null from gd_esquema.Maestra 
+INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
+select Distinct(LTRIM(STR(CONVERT(INT,STR(Publ_Cli_Dni,20))))),Cli_Dom_Calle,null,Cli_Cod_Postal,Cli_Mail,null from gd_esquema.Maestra WHERE Publ_Cli_Dni IS NOT NULL
 
 --CARGO TABLA Dom_Mail con los datos de las Empresas
 
-INSERT INTO Los_Optimistas.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
-select Distinct (LTRIM(STR(CONVERT(INT,SubString(Publ_Empresa_Cuit,4,8))))),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null from gd_esquema.Maestra 
+INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
+select Distinct(LTRIM(STR(CONVERT(INT,SubString(Publ_Empresa_Cuit,4,8))))),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
