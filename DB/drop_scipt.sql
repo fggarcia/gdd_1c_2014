@@ -1,9 +1,15 @@
 DROP TABLE LOS_OPTIMISTAS.Usuario_Rol
 
+DROP TABLE LOS_OPTIMISTAS.Funcionalidad
+
+DROP TABLE LOS_OPTIMISTAS.Rol_Funcionalidad
+
 DROP TABLE LOS_OPTIMISTAS.Rol
 
 DROP TABLE LOS_OPTIMISTAS.Usuario
 
-DROP TABLE LOS_OPTIMISTAS.Rol_Funcionalidad
+DROP TABLE Los_Optimistas.Cliente
 
-DROP TABLE LOS_OPTIMISTAS.Funcionalidad
+DROP TABLE Los_Optimistas.Empresa
+
+DROP TABLE Los_Optimistas.Dom_Mail
