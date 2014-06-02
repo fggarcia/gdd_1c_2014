@@ -23,7 +23,7 @@ namespace FrbaCommerce.Registro_de_Usuario
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {/*
             if (Registro.crearCliente(textNombreUsuario.Text, textContrasenia.Text, 0) > 0)
             {
                 MessageBox.Show("Cuenta creada con éxito");
@@ -32,7 +32,7 @@ namespace FrbaCommerce.Registro_de_Usuario
             {
                 MessageBox.Show("No se ha creado la cuenta");
             }
-
+            */
         }
 
         private void textNombreUsuario_TextChanged(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace FrbaCommerce
 {
@@ -14,6 +15,13 @@ namespace FrbaCommerce
         public Form1()
         {
             InitializeComponent();
+        }
+
+        int a = 2;
+        
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

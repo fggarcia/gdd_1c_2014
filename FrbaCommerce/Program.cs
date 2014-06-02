@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using FrbaCommerce.Abm_Cliente;
+using System.Data.SqlClient;
 
 namespace FrbaCommerce
 {
@@ -13,22 +15,8 @@ namespace FrbaCommerce
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            FrbaCommerce.Abm_Cliente.FormABMCliente formalta = new FrbaCommerce.Abm_Cliente.FormABMCliente();
-            formalta.ShowDialog();
-            /*FrbaCommerce.Login.FormLogin formLogin = new FrbaCommerce.Login.FormLogin();
-            formLogin.ShowDialog();
-            if (formLogin.DialogResult == DialogResult.OK)
-            {
-                FrbaCommerce.ABM_Rol.FormABMRol frmRol = new FrbaCommerce.ABM_Rol.FormABMRol();
-                frmRol.ShowDialog();
-                
-                
-                if (frmRol.DialogResult == DialogResult.OK)
-                {
-                    Application.Run(new FormMenu());
-        }*/
+            FormABMClienteModElim formCabm = new FormABMClienteModElim();
+            formCabm.ShowDialog();
         }
     }
 }

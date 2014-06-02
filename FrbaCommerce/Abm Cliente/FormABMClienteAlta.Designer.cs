@@ -32,33 +32,31 @@
             this.labelApellido = new System.Windows.Forms.Label();
             this.labelTipoDocumento = new System.Windows.Forms.Label();
             this.labelNumDocumento = new System.Windows.Forms.Label();
-            this.labelMail = new System.Windows.Forms.Label();
-            this.labelTelefono = new System.Windows.Forms.Label();
             this.labelCodPostal = new System.Windows.Forms.Label();
-            this.labelLocalidad = new System.Windows.Forms.Label();
-            this.labelDepto = new System.Windows.Forms.Label();
-            this.labelPiso = new System.Windows.Forms.Label();
-            this.labelCalle = new System.Windows.Forms.Label();
+            this.labelDireccion = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelFechaNac = new System.Windows.Forms.Label();
             this.textNombre = new System.Windows.Forms.TextBox();
             this.textApellido = new System.Windows.Forms.TextBox();
-            this.textCalle = new System.Windows.Forms.TextBox();
+            this.textDomicilio = new System.Windows.Forms.TextBox();
             this.textCodP = new System.Windows.Forms.TextBox();
             this.textDia = new System.Windows.Forms.TextBox();
             this.textAnio = new System.Windows.Forms.TextBox();
             this.labelBarra = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textDpto = new System.Windows.Forms.TextBox();
-            this.textPiso = new System.Windows.Forms.TextBox();
-            this.textLocalidad = new System.Windows.Forms.TextBox();
-            this.textTelefono = new System.Windows.Forms.TextBox();
-            this.textMail = new System.Windows.Forms.TextBox();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.comboBoxTdoc = new System.Windows.Forms.ComboBox();
             this.textMes = new System.Windows.Forms.TextBox();
             this.textNumeroDoc = new System.Windows.Forms.TextBox();
             this.buttonCancelar = new System.Windows.Forms.Button();
+            this.labelLocalidad = new System.Windows.Forms.Label();
+            this.textLocalidad = new System.Windows.Forms.TextBox();
+            this.labelMail = new System.Windows.Forms.Label();
+            this.textMail = new System.Windows.Forms.TextBox();
+            this.groupBoxDatos = new System.Windows.Forms.GroupBox();
+            this.labelTelefono = new System.Windows.Forms.Label();
+            this.textTelefono = new System.Windows.Forms.TextBox();
+            this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelNombre
@@ -102,26 +100,6 @@
             this.labelNumDocumento.TabIndex = 3;
             this.labelNumDocumento.Text = "Número de Documento:";
             // 
-            // labelMail
-            // 
-            this.labelMail.AutoSize = true;
-            this.labelMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelMail.Location = new System.Drawing.Point(357, 271);
-            this.labelMail.Name = "labelMail";
-            this.labelMail.Size = new System.Drawing.Size(34, 15);
-            this.labelMail.TabIndex = 4;
-            this.labelMail.Text = "Mail:";
-            // 
-            // labelTelefono
-            // 
-            this.labelTelefono.AutoSize = true;
-            this.labelTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelTelefono.Location = new System.Drawing.Point(25, 271);
-            this.labelTelefono.Name = "labelTelefono";
-            this.labelTelefono.Size = new System.Drawing.Size(58, 15);
-            this.labelTelefono.TabIndex = 5;
-            this.labelTelefono.Text = "Teléfono:";
-            // 
             // labelCodPostal
             // 
             this.labelCodPostal.AutoSize = true;
@@ -132,45 +110,15 @@
             this.labelCodPostal.TabIndex = 11;
             this.labelCodPostal.Text = "Código Postal:";
             // 
-            // labelLocalidad
+            // labelDireccion
             // 
-            this.labelLocalidad.AutoSize = true;
-            this.labelLocalidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelLocalidad.Location = new System.Drawing.Point(357, 173);
-            this.labelLocalidad.Name = "labelLocalidad";
-            this.labelLocalidad.Size = new System.Drawing.Size(64, 15);
-            this.labelLocalidad.TabIndex = 10;
-            this.labelLocalidad.Text = "Localidad:";
-            // 
-            // labelDepto
-            // 
-            this.labelDepto.AutoSize = true;
-            this.labelDepto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelDepto.Location = new System.Drawing.Point(27, 172);
-            this.labelDepto.Name = "labelDepto";
-            this.labelDepto.Size = new System.Drawing.Size(36, 15);
-            this.labelDepto.TabIndex = 9;
-            this.labelDepto.Text = "Dpto:";
-            // 
-            // labelPiso
-            // 
-            this.labelPiso.AutoSize = true;
-            this.labelPiso.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelPiso.Location = new System.Drawing.Point(127, 172);
-            this.labelPiso.Name = "labelPiso";
-            this.labelPiso.Size = new System.Drawing.Size(34, 15);
-            this.labelPiso.TabIndex = 8;
-            this.labelPiso.Text = "Piso:";
-            // 
-            // labelCalle
-            // 
-            this.labelCalle.AutoSize = true;
-            this.labelCalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelCalle.Location = new System.Drawing.Point(25, 125);
-            this.labelCalle.Name = "labelCalle";
-            this.labelCalle.Size = new System.Drawing.Size(38, 15);
-            this.labelCalle.TabIndex = 7;
-            this.labelCalle.Text = "Calle:";
+            this.labelDireccion.AutoSize = true;
+            this.labelDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelDireccion.Location = new System.Drawing.Point(25, 125);
+            this.labelDireccion.Name = "labelDireccion";
+            this.labelDireccion.Size = new System.Drawing.Size(62, 15);
+            this.labelDireccion.TabIndex = 7;
+            this.labelDireccion.Text = "Dirección:";
             // 
             // label1
             // 
@@ -207,12 +155,12 @@
             this.textApellido.Size = new System.Drawing.Size(148, 20);
             this.textApellido.TabIndex = 15;
             // 
-            // textCalle
+            // textDomicilio
             // 
-            this.textCalle.Location = new System.Drawing.Point(169, 120);
-            this.textCalle.Name = "textCalle";
-            this.textCalle.Size = new System.Drawing.Size(148, 20);
-            this.textCalle.TabIndex = 16;
+            this.textDomicilio.Location = new System.Drawing.Point(169, 120);
+            this.textDomicilio.Name = "textDomicilio";
+            this.textDomicilio.Size = new System.Drawing.Size(148, 20);
+            this.textDomicilio.TabIndex = 16;
             // 
             // textCodP
             // 
@@ -255,45 +203,9 @@
             this.label2.TabIndex = 24;
             this.label2.Text = "/";
             // 
-            // textDpto
-            // 
-            this.textDpto.Location = new System.Drawing.Point(78, 171);
-            this.textDpto.Name = "textDpto";
-            this.textDpto.Size = new System.Drawing.Size(36, 20);
-            this.textDpto.TabIndex = 25;
-            // 
-            // textPiso
-            // 
-            this.textPiso.Location = new System.Drawing.Point(172, 171);
-            this.textPiso.Name = "textPiso";
-            this.textPiso.Size = new System.Drawing.Size(36, 20);
-            this.textPiso.TabIndex = 26;
-            // 
-            // textLocalidad
-            // 
-            this.textLocalidad.Location = new System.Drawing.Point(518, 172);
-            this.textLocalidad.Name = "textLocalidad";
-            this.textLocalidad.Size = new System.Drawing.Size(148, 20);
-            this.textLocalidad.TabIndex = 27;
-            // 
-            // textTelefono
-            // 
-            this.textTelefono.Location = new System.Drawing.Point(169, 270);
-            this.textTelefono.Name = "textTelefono";
-            this.textTelefono.Size = new System.Drawing.Size(148, 20);
-            this.textTelefono.TabIndex = 28;
-            this.textTelefono.TextChanged += new System.EventHandler(this.textBox12_TextChanged);
-            // 
-            // textMail
-            // 
-            this.textMail.Location = new System.Drawing.Point(518, 270);
-            this.textMail.Name = "textMail";
-            this.textMail.Size = new System.Drawing.Size(148, 20);
-            this.textMail.TabIndex = 29;
-            // 
             // buttonGuardar
             // 
-            this.buttonGuardar.Location = new System.Drawing.Point(573, 331);
+            this.buttonGuardar.Location = new System.Drawing.Point(597, 307);
             this.buttonGuardar.Name = "buttonGuardar";
             this.buttonGuardar.Size = new System.Drawing.Size(93, 37);
             this.buttonGuardar.TabIndex = 30;
@@ -326,7 +238,7 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(28, 331);
+            this.buttonCancelar.Location = new System.Drawing.Point(12, 307);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(93, 37);
             this.buttonCancelar.TabIndex = 34;
@@ -334,44 +246,104 @@
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
+            // labelLocalidad
+            // 
+            this.labelLocalidad.AutoSize = true;
+            this.labelLocalidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelLocalidad.Location = new System.Drawing.Point(25, 169);
+            this.labelLocalidad.Name = "labelLocalidad";
+            this.labelLocalidad.Size = new System.Drawing.Size(64, 15);
+            this.labelLocalidad.TabIndex = 56;
+            this.labelLocalidad.Text = "Localidad:";
+            // 
+            // textLocalidad
+            // 
+            this.textLocalidad.Location = new System.Drawing.Point(169, 168);
+            this.textLocalidad.Name = "textLocalidad";
+            this.textLocalidad.Size = new System.Drawing.Size(148, 20);
+            this.textLocalidad.TabIndex = 57;
+            // 
+            // labelMail
+            // 
+            this.labelMail.AutoSize = true;
+            this.labelMail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelMail.Location = new System.Drawing.Point(357, 169);
+            this.labelMail.Name = "labelMail";
+            this.labelMail.Size = new System.Drawing.Size(34, 15);
+            this.labelMail.TabIndex = 55;
+            this.labelMail.Text = "Mail:";
+            // 
+            // textMail
+            // 
+            this.textMail.Location = new System.Drawing.Point(518, 168);
+            this.textMail.Name = "textMail";
+            this.textMail.Size = new System.Drawing.Size(148, 20);
+            this.textMail.TabIndex = 58;
+            // 
+            // groupBoxDatos
+            // 
+            this.groupBoxDatos.Controls.Add(this.textTelefono);
+            this.groupBoxDatos.Controls.Add(this.labelTelefono);
+            this.groupBoxDatos.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxDatos.Name = "groupBoxDatos";
+            this.groupBoxDatos.Size = new System.Drawing.Size(678, 277);
+            this.groupBoxDatos.TabIndex = 59;
+            this.groupBoxDatos.TabStop = false;
+            this.groupBoxDatos.Enter += new System.EventHandler(this.groupBoxAltaCliente_Enter);
+            // 
+            // labelTelefono
+            // 
+            this.labelTelefono.AutoSize = true;
+            this.labelTelefono.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelTelefono.Location = new System.Drawing.Point(345, 197);
+            this.labelTelefono.Name = "labelTelefono";
+            this.labelTelefono.Size = new System.Drawing.Size(58, 15);
+            this.labelTelefono.TabIndex = 60;
+            this.labelTelefono.Text = "Teléfono:";
+            // 
+            // textTelefono
+            // 
+            this.textTelefono.Location = new System.Drawing.Point(506, 196);
+            this.textTelefono.Name = "textTelefono";
+            this.textTelefono.Size = new System.Drawing.Size(148, 20);
+            this.textTelefono.TabIndex = 60;
+            // 
             // FormABMClienteAlta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 392);
+            this.ClientSize = new System.Drawing.Size(702, 356);
+            this.Controls.Add(this.labelLocalidad);
+            this.Controls.Add(this.textLocalidad);
+            this.Controls.Add(this.labelMail);
+            this.Controls.Add(this.textMail);
+            this.Controls.Add(this.labelFechaNac);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.textNumeroDoc);
             this.Controls.Add(this.textMes);
             this.Controls.Add(this.comboBoxTdoc);
             this.Controls.Add(this.buttonGuardar);
-            this.Controls.Add(this.textMail);
-            this.Controls.Add(this.textTelefono);
-            this.Controls.Add(this.textLocalidad);
-            this.Controls.Add(this.textPiso);
-            this.Controls.Add(this.textDpto);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.labelBarra);
             this.Controls.Add(this.textAnio);
             this.Controls.Add(this.textDia);
             this.Controls.Add(this.textCodP);
-            this.Controls.Add(this.textCalle);
+            this.Controls.Add(this.textDomicilio);
             this.Controls.Add(this.textApellido);
             this.Controls.Add(this.textNombre);
-            this.Controls.Add(this.labelFechaNac);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelCodPostal);
-            this.Controls.Add(this.labelLocalidad);
-            this.Controls.Add(this.labelDepto);
-            this.Controls.Add(this.labelPiso);
-            this.Controls.Add(this.labelCalle);
-            this.Controls.Add(this.labelTelefono);
-            this.Controls.Add(this.labelMail);
+            this.Controls.Add(this.labelDireccion);
             this.Controls.Add(this.labelNumDocumento);
             this.Controls.Add(this.labelTipoDocumento);
             this.Controls.Add(this.labelApellido);
             this.Controls.Add(this.labelNombre);
+            this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormABMClienteAlta";
             this.Text = "Alta de Cliente";
+            this.Load += new System.EventHandler(this.FormABMClienteAlta_Load);
+            this.groupBoxDatos.ResumeLayout(false);
+            this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -383,32 +355,29 @@
         private System.Windows.Forms.Label labelApellido;
         private System.Windows.Forms.Label labelTipoDocumento;
         private System.Windows.Forms.Label labelNumDocumento;
-        private System.Windows.Forms.Label labelMail;
-        private System.Windows.Forms.Label labelTelefono;
         private System.Windows.Forms.Label labelCodPostal;
-        private System.Windows.Forms.Label labelLocalidad;
-        private System.Windows.Forms.Label labelDepto;
-        private System.Windows.Forms.Label labelPiso;
-        private System.Windows.Forms.Label labelCalle;
+        private System.Windows.Forms.Label labelDireccion;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelFechaNac;
         private System.Windows.Forms.TextBox textNombre;
         private System.Windows.Forms.TextBox textApellido;
-        private System.Windows.Forms.TextBox textCalle;
+        private System.Windows.Forms.TextBox textDomicilio;
         private System.Windows.Forms.TextBox textCodP;
         private System.Windows.Forms.TextBox textDia;
         private System.Windows.Forms.TextBox textAnio;
         private System.Windows.Forms.Label labelBarra;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textDpto;
-        private System.Windows.Forms.TextBox textPiso;
-        private System.Windows.Forms.TextBox textLocalidad;
-        private System.Windows.Forms.TextBox textTelefono;
-        private System.Windows.Forms.TextBox textMail;
         private System.Windows.Forms.Button buttonGuardar;
         private System.Windows.Forms.ComboBox comboBoxTdoc;
         private System.Windows.Forms.TextBox textMes;
         private System.Windows.Forms.TextBox textNumeroDoc;
         private System.Windows.Forms.Button buttonCancelar;
+        private System.Windows.Forms.Label labelLocalidad;
+        private System.Windows.Forms.TextBox textLocalidad;
+        private System.Windows.Forms.Label labelMail;
+        private System.Windows.Forms.TextBox textMail;
+        private System.Windows.Forms.TextBox textTelefono;
+        private System.Windows.Forms.Label labelTelefono;
+        private System.Windows.Forms.GroupBox groupBoxDatos;
     }
 }

@@ -15,7 +15,7 @@ namespace FrbaCommerce.Abm_Cliente
         {
             InitializeComponent();
         }
-
+        
         private void buttonModificar_Click(object sender, EventArgs e)
         {
             
@@ -24,6 +24,8 @@ namespace FrbaCommerce.Abm_Cliente
         private void buttonAlta_Click(object sender, EventArgs e)
         {
             FormABMClienteAlta formAltaCliente = new FormABMClienteAlta();
+            formAltaCliente.username = Cliente.generarUsername();
+            formAltaCliente.password = Cliente.generarPassword();
             this.Hide();
             formAltaCliente.ShowDialog();
             this.Close();
