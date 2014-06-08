@@ -138,9 +138,23 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rol_Funcionalidad](
 	CONSTRAINT UQ_Rol_Funcionalidad_Id_Rol_Id_Funcionalidad UNIQUE(Id_Rol,Id_Funcionalidad)
 )
 
+--CREO TABLA Tipo_Documento
+
+CREATE TABLE  [LOS_OPTIMISTAS].[Tipo_Documento](
+[Id_Tipo_Documento][varchar](6) NOT NULL,
+[Descripcion][varchar](255) 
+
+	CONSTRAINT UQ_Tipo_Documento_Id_Tipo_Documento UNIQUE(Id_Tipo_Documento)
+)
+
+--Inserto un valor en la tabla Tipo_Documento que es "DNI"
+INSERT INTO LOS_OPTIMISTAS.Tipo_Documento(Id_Tipo_Documento,Descripcion)
+VALUES ('DNI','Documento Nacional de Identidad')
+
 --TABLA CLIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Cliente](
 	[Id_Usuario][varchar](20) NOT NULL,
+	[Id_Tipo_Documento][varchar](6) NOT NULL,
 	[Dni][varchar](20) NOT NULL,---El DNI y el Id_Usuario es lo mismo, los cargo igual, VER!!!! si hay que cambiar a numeric
 	[Nombre][varchar](255),
 	[Apellido][varchar](255),
@@ -149,13 +163,20 @@ CREATE TABLE [LOS_OPTIMISTAS].[Cliente](
 		CONSTRAINT [FK_Cliente_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
 		
+		CONSTRAINT [FK_Cliente_Id_Tipo_Documento] FOREIGN KEY(Id_Tipo_Documento)
+		REFERENCES [LOS_OPTIMISTAS].[Tipo_Documento](Id_Tipo_Documento),
+		
 		CONSTRAINT UQ_Cliente_Dni UNIQUE(Dni),
 		CONSTRAINT UQ_Cliente_Id_Usuario UNIQUE(Id_Usuario)
 )
 
 --CARGO LOS CLIENTES
-INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Dni,Nombre,Apellido,Fecha_Nacimiento)
-select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),Publ_Cli_Nombre,Publ_Cli_Apeliido,Publ_Cli_Fecha_Nac from gd_esquema.Maestra WHERE Publ_Cli_Dni IS NOT NULL
+INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
+select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),'DNI',LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),Publ_Cli_Nombre,Publ_Cli_Apeliido,Publ_Cli_Fecha_Nac from gd_esquema.Maestra WHERE Publ_Cli_Dni IS NOT NULL
+
+
+
+
 
 --TABLA EMPRESA
 CREATE TABLE [LOS_OPTIMISTAS].[Empresa](
@@ -300,4 +321,28 @@ CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
 
 )
 
+
+
+
+--CREO TABLA Historial_Subasta
+CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
+
+[Id_Publicacion][numeric] (18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
+[Fecha_Oferta][smalldatetime],
+
+
+CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+
+CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
+		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
+
+)
+
+--Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
+
+INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
+select Publicacion_Cod, Cli_Dni,Oferta_Monto,Oferta_Fecha from gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL )
 
