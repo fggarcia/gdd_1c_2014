@@ -236,7 +236,18 @@ CONSTRAINT [UQ_Visibilidad_Id_Visibilidad] UNIQUE (Id_Visibilidad),
 INSERT INTO LOS_OPTIMISTAS.Visibilidad(Id_Visibilidad,Descripcion,Precio,Porcentaje)
 select Distinct (Publicacion_Visibilidad_Cod),Publicacion_Visibilidad_Desc,Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje from gd_esquema.Maestra WHERE (Publicacion_Visibilidad_Cod IS NOT NULL )
 
+--CREO TABLA Tipo_Publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Tipo_Publicacion](
 
+[Id_Tipo_Publicacion][Int]IDENTITY(1,1) NOT NULL,
+[Descripcion][varchar](255) NOT NULL,
+
+CONSTRAINT [UQ_Tipo_Publicacion_Descripcion] UNIQUE(Descripcion),
+CONSTRAINT [PK_Tipo_Publicacion_Id_Tipo_Publicacion] PRIMARY KEY (Id_Tipo_Publicacion)
+)
+
+INSERT INTO LOS_OPTIMISTAS.Tipo_Publicacion(Descripcion)
+SELECT DISTINCT(UPPER(Publicacion_Tipo)) FROM gd_esquema.maestra
 
 --CREO TABLA PUBLICACION
 
@@ -346,3 +357,86 @@ CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
 INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
 select Publicacion_Cod, Cli_Dni,Oferta_Monto,Oferta_Fecha from gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL )
 
+--CREO TABLA Rubro
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
+
+[Id_Rubro][Int] NOT NULL,
+[Descripcion][varchar](60) NOT NULL,
+[Fecha_Baja][smalldatetime] NULL,
+
+CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
+)
+
+--CREO TABLA Rubro_Publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
+
+[Id_Publicacion][numeric](18,0) NOT NULL,
+[Id_Rubro][Int] NOT NULL,
+
+CONSTRAINT [FK_Rubro_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+	REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+
+CONSTRAINT [FK_Rubro_Publicacion_Id_Rubro] FOREIGN KEY(Id_Rubro)
+	REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
+)
+
+--CREO TABLA estado
+CREATE TABLE [LOS_OPTIMISTAS].[Estado](
+[Id_Estado][INT] IDENTITY(1,1) NOT NULL,
+[Descripcion][varchar](30) NOT NULL,
+
+CONSTRAINT [UQ_Estado_descripcion] UNIQUE (Descripcion),
+CONSTRAINT [PK_Estado_Id_Estado] PRIMARY KEY(Id_Estado)
+)
+
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion)
+SELECT DISTINCT UPPER(Publicacion_Estado) FROM gd_esquema.Maestra WHERE Publicacion_Estado IS NOT NULL
+
+--CREO TABLA estado_publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Estado_Publicacion](
+
+[Id_Publicacion][numeric](18,0) NOT NULL,
+[Id_Estado][Int] NOT NULL,
+
+CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+	REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+CONSTRAINT [FK_Estado_Publicacion_Id_Estado] FOREIGN KEY(Id_Estado)
+	REFERENCES [LOS_OPTIMISTAS].[Estado](Id_Estado),
+CONSTRAINT [UQ_Estado_Publicacion_Id_Publicacion] UNIQUE (Id_Publicacion)	
+)
+
+--verifique en la tabla y no habia iguales
+INSERT INTO LOS_OPTIMISTAS.Estado_Publicacion(Id_Publicacion, Id_Estado)
+SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra INNER JOIN LOS_OPTIMISTAS.Estado Estado ON (UPPER(maestra.Publicacion_Estado) = UPPER(Estado.Descripcion))
+
+
+
+--CREO TABLA stock
+CREATE TABLE [LOS_OPTIMISTAS].[Stock](
+
+[Id_Articulo][numeric](18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Cantidad][numeric](18,0) NOT NULL,
+
+CONSTRAINT [FK_Stock_Id_Usuario] FOREIGN KEY(Id_Usuario)
+	REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [PK_Stock_Id_Articulo] PRIMARY KEY(Id_Articulo)
+)
+
+CREATE TABLE [LOS_OPTIMISTAS].[Stock_Temp](
+
+[Id_Articulo][numeric](18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL
+)
+
+--por default el stock de cada articulo es 100
+INSERT INTO LOS_OPTIMISTAS.Stock_Temp(Id_Articulo, Id_Usuario)
+select LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni) FROM gd_esquema.Maestra WHERE (Publicacion_Descripcion IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
+
+INSERT INTO LOS_OPTIMISTAS.Stock_Temp(Id_Articulo, Id_Usuario)
+select LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit) from gd_esquema.Maestra WHERE (Publicacion_Descripcion IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
+
+INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
+SELECT DISTINCT(Id_Articulo),Id_Usuario, 100 FROM LOS_OPTIMISTAS.Stock_Temp
+
+DROP TABLE LOS_OPTIMISTAS.Stock_Temp 
