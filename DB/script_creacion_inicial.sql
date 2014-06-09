@@ -48,6 +48,15 @@ BEGIN
 END
 GO
 
+CREATE FUNCTION LOS_OPTIMISTAS.obtenerIdTipoPublicacion(@tipo_publicacion varchar(255))
+RETURNS INT
+BEGIN
+	DECLARE @Id_Tipo_Publicacion INT
+	SELECT @Id_Tipo_Publicacion = Id_Tipo_Publicacion FROM LOS_OPTIMISTAS.Tipo_Publicacion WHERE UPPER(Descripcion) = UPPER(@tipo_publicacion)
+	RETURN @Id_Tipo_Publicacion
+END
+GO
+
 CREATE TABLE [LOS_OPTIMISTAS].[Usuario](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Password][varchar](64) NOT NULL,
@@ -255,7 +264,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Usuario][varchar](20) NOT NULL,
-[Id_Tipo_Publicacion][varchar](255) NOT NULL,
+[Id_Tipo_Publicacion][int] NOT NULL,
 [Id_Articulo][numeric](18,0) NOT NULL,             
 [Id_Visibilidad][numeric](18,0)NOT NULL,
 [Id_Estado][varchar](255)NOT NULL,
@@ -269,21 +278,25 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 
 
 CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
-		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
-		CONSTRAINT PK_Publicacion_Id_Publicacion UNIQUE(Id_Publicacion),
+		REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+
+CONSTRAINT [PK_Publicacion_Id_Publicacion] UNIQUE(Id_Publicacion),
 		
 CONSTRAINT [FK_Publicacion_Id_Visibilidad] FOREIGN KEY(Id_Visibilidad)
-		REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad),
+		REFERENCES [LOS_OPTIMISTAS].[Visibilidad](Id_Visibilidad),
+
+CONSTRAINT [FK_Publicacion_Id_Tipo_Publicacion] FOREIGN KEY(Id_Tipo_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)
 		
 )
 --INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,stock,Descripcion)
-select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),Publicacion_Tipo,LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
+select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
 --SE PONE EL VALOR 1 COMO CANTIDAD DE VENTA POR PUBLICACION DEFAULT
 
 --INSERTO EN PUBLICACION LOS CASOS EN QUE LA EMPRESA ES LA QUE PUBLICA
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,stock,Descripcion)
-select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),Publicacion_Tipo,LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
+select Distinct (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion from gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
 
 
 
