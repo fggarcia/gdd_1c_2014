@@ -229,21 +229,30 @@ select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),Cli_Dom_Calle,null,Cli_
 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
 
 
---CREO TABLA Visibilidad 
-
+--CREO TABLA Visibilidad
 CREATE TABLE [LOS_OPTIMISTAS].[Visibilidad](
-
 [Id_Visibilidad][numeric](18,0) NOT NULL,
-[Descripcion][varchar](255) NULL,
-[Precio] [numeric](18,2),
-[Porcentaje][numeric](18,2)
+[Descripcion][varchar](255) NOT NULL,
+[Precio][numeric](18,2) NOT NULL,
+[Porcentaje][numeric](18,2) NOT NULL,
+[Peso][Int] NOT NULL,
 
-CONSTRAINT [UQ_Visibilidad_Id_Visibilidad] UNIQUE (Id_Visibilidad),
-
+CONSTRAINT [PK_Visibilidad_Id_Visibilidad] PRIMARY KEY(Id_Visibilidad),
+CONSTRAINT [UQ_Visibilidad_Id_Visibilidad] UNIQUE (Id_Visibilidad)
 )
 
-INSERT INTO LOS_OPTIMISTAS.Visibilidad(Id_Visibilidad,Descripcion,Precio,Porcentaje)
-select Distinct (Publicacion_Visibilidad_Cod),Publicacion_Visibilidad_Desc,Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje from gd_esquema.Maestra WHERE (Publicacion_Visibilidad_Cod IS NOT NULL )
+--INSERTO 0 EN EL PESO PARA ACONTINUACION MODIFICARLO
+INSERT INTO LOS_OPTIMISTAS.Visibilidad(Id_Visibilidad, Descripcion, Precio, Porcentaje, Peso)
+SELECT DISTINCT(Publicacion_Visibilidad_Cod), Publicacion_Visibilidad_Desc,
+	Publicacion_Visibilidad_Porcentaje, Publicacion_Visibilidad_Precio,0
+FROM gd_esquema.Maestra WHERE Publicacion_Visibilidad_Cod IS NOT NULL
+ORDER BY Publicacion_Visibilidad_Cod ASC
+
+UPDATE LOS_OPTIMISTAS.Visibilidad SET Peso = 1 WHERE UPPER(Descripcion) = UPPER('Platino')
+UPDATE LOS_OPTIMISTAS.Visibilidad SET Peso = 2 WHERE UPPER(Descripcion) = UPPER('Oro')
+UPDATE LOS_OPTIMISTAS.Visibilidad SET Peso = 3 WHERE UPPER(Descripcion) = UPPER('Plata')
+UPDATE LOS_OPTIMISTAS.Visibilidad SET Peso = 4 WHERE UPPER(Descripcion) = UPPER('Bronce')
+UPDATE LOS_OPTIMISTAS.Visibilidad SET Peso = 5 WHERE UPPER(Descripcion) = UPPER('Gratis')
 
 --CREO TABLA Tipo_Publicacion
 CREATE TABLE [LOS_OPTIMISTAS].[Tipo_Publicacion](
@@ -453,3 +462,71 @@ INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
 SELECT DISTINCT(Id_Articulo),Id_Usuario, 100 FROM LOS_OPTIMISTAS.Stock_Temp
 
 DROP TABLE LOS_OPTIMISTAS.Stock_Temp 
+
+--CREO TABLA FACTURACION
+CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
+[Id_Factura][numeric](18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Total_Factura][numeric](18,2) NOT NULL,
+[Total_Comisiones][numeric](18,2) NULL,
+[Total_Visibilidad][numeric](18,2) NULL,
+[Fecha][smalldatetime] NOT NULL,
+
+CONSTRAINT [PK_Facturacion_Id_Factura] PRIMARY KEY(Id_Factura),
+CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
+)
+
+--CREO TABLA FACTURACION PENDIENTE
+CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
+[Id_Usuario][varchar](20) NOT NULL,
+[Id_Usuario_Comprador][varchar](20) NOT NULL,
+[Id_Publicacion][numeric](18,0) NULL,
+[Comision][numeric](18,2) NOT NULL,
+[Visibilidad][varchar](255) NOT NULL,
+[Cantidad][int] NULL,
+[Precio_Publicacion][numeric](18,2) NULL,
+[Precio_Visibilidad][numeric](18,2) NULL,
+
+CONSTRAINT [FK_Facturacion_Pendiente_Id_Usuario] FOREIGN KEY(Id_Usuario)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [FK_Facturacion_Pendiente_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
+)
+
+--CREO TABLA TIPO DE PAGO
+CREATE TABLE [LOS_OPTIMISTAS].[Tipo_Pago](
+[Id_Tipo_Pago][int]IDENTITY(1,1),
+[Descripcion][varchar](255),
+
+CONSTRAINT [PK_Tipo_Pago_Id_Tipo_Pago] PRIMARY KEY(Id_Tipo_Pago),
+CONSTRAINT [UQ_Tipo_Pago_Descripcion] UNIQUE(Descripcion)
+)
+INSERT INTO LOS_OPTIMISTAS.Tipo_Pago(Descripcion)
+SELECT DISTINCT(Forma_Pago_Desc) FROM gd_esquema.Maestra WHERE Forma_Pago_Desc IS NOT NULL
+
+INSERT INTO LOS_OPTIMISTAS.Tipo_Pago(Descripcion) VALUES('Tarjeta Credito')
+
+--CREO TABLA DETALLE TARJETA
+CREATE TABLE [LOS_OPTIMISTAS].[Detalle_Tarjeta](
+[Id_Detalle_Tarjeta][Int]IDENTITY(1,1) NOT NULL,
+[Nro_Tarjeta][numeric](16,0) NOT NULL,
+[Cant_Cuota][Int] NOT NULL,
+
+CONSTRAINT [PK_Detalle_Tarjeta_Id_Detalle_Tarjeta] PRIMARY KEY(Id_Detalle_Tarjeta)
+)
+
+--CREO TABLA FORMA PAGO
+CREATE TABLE [LOS_OPTIMISTAS].[Forma_Pago](
+[Id_Factura][numeric](18,0) NOT NULL,
+[Id_Detalle_Tarjeta][Int] NULL,
+[Id_Tipo_Pago][Int] NOT NULL,
+
+CONSTRAINT [FK_Forma_Pago_Id_Factura] FOREIGN KEY(Id_Factura)
+REFERENCES [LOS_OPTIMISTAS].[Facturacion](Id_Factura),
+CONSTRAINT [FK_Forma_Pago_Id_Detalle_Tarjeta] FOREIGN KEY(Id_Detalle_Tarjeta)
+REFERENCES [LOS_OPTIMISTAS].[Detalle_Tarjeta](Id_Detalle_Tarjeta),
+CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
+REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
+)
+
