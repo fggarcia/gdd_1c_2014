@@ -205,7 +205,6 @@ INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
 select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Razon_Social,Publ_Empresa_Cuit,Publ_Empresa_Fecha_Creacion from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
 
 --CREO TABLA DOM_MAIL
-
 CREATE TABLE [LOS_OPTIMISTAS].[Dom_Mail](
 
 [Id_Usuario][varchar](20) NOT NULL ,
@@ -213,7 +212,10 @@ CREATE TABLE [LOS_OPTIMISTAS].[Dom_Mail](
 [Telefono][varchar](40)  NULL,
 [Cp] [varchar](50)  NULL,
 [Mail] [varchar](255) NULL, 
-[Localidad] [varchar](255) NULL
+[Localidad] [varchar](255) NULL,
+[Calle][varchar](255) NULL,
+[Piso][numeric](18,0) NULL,
+[Depto][varchar](50) NULL
 
 CONSTRAINT [FK_Dom_Mail_Empresa_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
@@ -221,12 +223,13 @@ CONSTRAINT [FK_Dom_Mail_Empresa_Id_Usuario] FOREIGN KEY(Id_Usuario)
 
 --CARGO TABLA Dom_Mail con los datos de Clientes
 
-INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)
-select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),Cli_Dom_Calle,null,Cli_Cod_Postal,Cli_Mail,null from gd_esquema.Maestra WHERE Publ_Cli_Dni IS NOT NULL
+INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad,Calle,Piso,Depto)
+select Distinct(LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni)),Publ_Cli_Dom_Calle,null,Publ_Cli_Cod_Postal,Publ_Cli_Mail,null,Publ_Cli_Nro_Calle,Publ_Cli_Piso,Publ_Cli_Depto from gd_esquema.Maestra WHERE Publ_Cli_Dni IS NOT NULL
 
 --CARGO TABLA Dom_Mail con los datos de las Empresas
 
-INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad)select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
+INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Telefono,Cp,Mail,Localidad,Calle,Piso,Depto)
+select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),Publ_Empresa_Dom_Calle,null,Publ_Empresa_Cod_Postal,Publ_Empresa_Mail,null,Publ_Empresa_Dom_Calle,Publ_Empresa_Piso,Publ_Empresa_Depto from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
 
 
 --CREO TABLA Visibilidad
@@ -530,3 +533,90 @@ CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
 
+
+
+/*Store Procedure para ABM Clientes*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarClientes]
+
+(
+@p_Nombre varchar(255) = null,
+@p_Apellido varchar(255)= null,
+@p_Tipo_Documento varchar(6)=null,
+@p_Numero_Documento varchar (20) = null,
+@p_Mail varchar(255) = null
+)
+
+AS
+BEGIN
+
+			SELECT DISTINCT
+			Clie.Id_Usuario 'Id Usuario',
+			Clie.Id_Tipo_Documento 'Tipo Documento',
+			Clie.Dni 'Numero Documento',
+			Clie.Fecha_Nacimiento 'Fecha Nac',
+			Dom_Mail.Mail 'Email',
+			Clie.Nombre 'Nombre',
+			Clie.Apellido 'Apellido',
+			Dom_Mail.Telefono 'Telefono',
+			Dom_Mail.Calle'Calle',
+			Dom_Mail.Piso 'Piso',
+			Dom_Mail.Depto 'Depto',
+			Dom_Mail.Localidad 'Localidad',
+			Dom_Mail.CP 'Codigo Postal'
+ 
+			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail
+			
+			WHERE
+			((@p_Nombre IS NULL) OR ( clie.Nombre=@p_Nombre ))
+			AND  ((@p_Apellido IS NULL) OR (clie.Apellido= @p_Apellido ))
+			AND  ((@p_Tipo_Documento IS NULL) OR ( clie.Id_Tipo_Documento =@p_Tipo_Documento))
+			AND  ((@p_Numero_Documento IS NULL) OR (clie.Dni=@p_Numero_Documento))
+			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail=@p_Mail ))
+			AND (clie.Id_Usuario = Dom_Mail.Id_Usuario)
+ END
+ GO
+ 
+ 
+ 
+ /* Store Procedure para ABM Empresa*/ 
+ 
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarEmpresas]
+
+(
+@p_Razon_Social varchar(255) = null,
+@p_Cuit varchar(50)= null,
+@p_Email varchar(255)=null
+)
+
+AS
+BEGIN
+
+			SELECT DISTINCT
+			
+			Empr.Id_Usuario 'Id Usuario',
+			Empr.Razon_social 'Razon Social',
+			Empr.Cuit 'CUIT',
+			Empr.Fecha_Creacion'Fecha Creacion',
+			Dom_Mail.Mail 'Mail',
+			Dom_Mail.Cp 'Codigo Postal',
+			Dom_Mail.Domicilio 'Domicilio',
+			Dom_Mail.Localidad 'Localidad',
+			Dom_Mail.Telefono 'Telefono'
+			
+			
+			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail
+			
+			WHERE
+			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social=@p_Razon_Social ))
+			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit= @p_Cuit ))
+			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail =@p_Email))
+			AND  (Empr.ID_Usuario= Dom_Mail.Id_Usuario)
+			
+ END
+ GO
+
+ 
+ 
+ 
