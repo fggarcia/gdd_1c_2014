@@ -61,7 +61,9 @@ CREATE TABLE [LOS_OPTIMISTAS].[Usuario](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Password][varchar](64) NOT NULL,
 	[Cantidad_Login][Int] NOT NULL,
-	[Ultima_Fecha][smalldatetime] NULL
+	[Ultima_Fecha][smalldatetime] NULL,
+	[Habilitado][bit] NULL
+	
 	CONSTRAINT UQ_Usuarios_Id_Usuario UNIQUE(Id_Usuario)
 )
 
@@ -79,12 +81,12 @@ INSERT INTO LOS_OPTIMISTAS.Usuario_temp(Id_Usuario,Rol)
 select Distinct(LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit)),3 from gd_esquema.Maestra WHERE Publ_Empresa_Cuit IS NOT NULL
 
 --Meto toda la lista de la temporal en Usuario
-INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha)
-select Usuario_temp.Id_Usuario,'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01',0,NULL from LOS_OPTIMISTAS.Usuario_temp
+INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
+select Usuario_temp.Id_Usuario,'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01',0,NULL,1 from LOS_OPTIMISTAS.Usuario_temp
 
 --Contraseña del usuario admin igual a la del resto
-INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario, Password, Cantidad_Login, Ultima_Fecha)
-VALUES ('admin','5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01',0,getDate())
+INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario, Password, Cantidad_Login, Ultima_Fecha,Habilitado)
+VALUES ('admin','5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01',0,getDate(),1)
 
 --TABLA ROL
 CREATE TABLE [LOS_OPTIMISTAS].[Rol](
@@ -578,10 +580,111 @@ BEGIN
  GO
  
  
- 
- /* Store Procedure para ABM Empresa*/ 
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaCliente]
+ (
+@p_Nombre varchar(255) = null,
+@p_Apellido varchar(255)= null,
+@p_Tipo_Documento varchar(6)= null,
+@p_Numero_Documento varchar (20) = null,
+@p_Mail varchar(255) = null,
+@p_Telefono varchar(40)= null,
+@p_Domicilio_Calle varchar(255)= null,
+@p_Nro_Calle varchar (100) = null,
+@p_Piso numeric(18,0) = 0 ,
+@p_Depto varchar(50) = null,
+@p_Localidad varchar(255) = null,
+@p_CP varchar(50) = null,
+@p_Fecha_Nacimiento smalldatetime
+
+ )
+AS
+BEGIN
+	IF EXISTS( select * from LOS_OPTIMISTAS.Cliente Where (Id_Tipo_Documento = @p_Tipo_Documento)AND(Dni = @p_Numero_Documento)) 
+	PRINT 'Ya existe un cliente con ese Documento y Tipo'
+		ELSE
+		BEGIN
+						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
+						PRINT 'Ya existe otro Usuario con ese Numero de Telefono'
+						Else
+						BEGIN
+							INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
+							values(@p_Numero_Documento,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido,@p_Fecha_Nacimiento)
+							
+							 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
+							 Values(@p_Numero_Documento,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
+							
+							INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
+							values(@p_Numero_Documento,'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01','0',null,1)
+						END
+					
+		END
+	
+END
  
 GO
+
+
+
+GO
+/*Sirve tanto para CLIENTES como para EMPRESAS*/
+CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaUsuario]
+(
+@p_Id_Usuario varchar (20)= null
+)
+AS
+BEGIN
+		IF EXISTS( select * from LOS_OPTIMISTAS.Usuario Where( Id_Usuario = @p_Id_Usuario)) 
+		UPDATE LOS_OPTIMISTAS.Usuario set Habilitado = 0 Where ( Id_Usuario = @p_Id_Usuario)
+		ELSE
+		PRINT ' No se encontro el Usuario'
+END
+GO
+
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
+(
+@p_Nombre varchar(255) = null,
+@p_Apellido varchar(255)= null,
+@p_Tipo_Documento varchar(6)= null,
+@p_Numero_Documento varchar (20) = null,
+@p_Mail varchar(255) = null,
+@p_Telefono varchar(40)= null,
+@p_Domicilio_Calle varchar(255)= null,
+@p_Nro_Calle varchar (100) = null,
+@p_Piso numeric(18,0) = 0 ,
+@p_Depto varchar(50) = null,
+@p_Localidad varchar(255) = null,
+@p_CP varchar(50) = null,
+@p_Fecha_Nacimiento smalldatetime
+)
+AS
+BEGIN
+IF EXISTS( select * from LOS_OPTIMISTAS.Cliente Where (Id_Tipo_Documento = @p_Tipo_Documento)AND(Dni = @p_Numero_Documento)) 
+	PRINT 'Ya existe un cliente con ese Documento y Tipo'
+		ELSE
+		BEGIN
+						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
+						PRINT 'Ya existe otro Usuario con ese Numero de Telefono'
+						Else
+						BEGIN
+							
+							INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
+							Values(@p_Numero_Documento,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido ,@p_Fecha_Nacimiento)
+							INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
+							 Values(@p_Numero_Documento,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
+						END
+					
+		END
+END
+GO
+
+
+
+
+
+/* Store Procedure para ABM Empresa*/ 
+GO 
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarEmpresas]
 
 (
@@ -616,6 +719,76 @@ BEGIN
 			
  END
  GO
+
+ 
+ 
+ 
+ --En AltaEmpresa no se agrega un ROL a ese usuario, ya que no es un requerimiento, Si en ALTA USUARIO se debe agregar un ROL
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaEmpresa]
+ (
+
+@p_Razon_Social varchar(255) = null ,
+@p_Cuit varchar(50) = null,
+@p_Fecha_Creacion smalldatetime = null,
+@p_Domicilio varchar(100) = null,
+@p_Telefono varchar(40) = null,
+@p_CP varchar(50) = null,
+@p_Mail varchar(255) = null, 
+@p_Localidad varchar (255) = null,
+@p_Calle varchar(255) = null,
+@p_Piso numeric (18,0) = null,
+@p_Depto varchar(50) = null
+
+ )
+AS
+BEGIN
+	IF EXISTS( select * from LOS_OPTIMISTAS.Empresa Where (Razon_social= @p_Razon_Social)AND(Cuit = @p_Cuit)) 
+	PRINT 'Ya existe una empresa con ese CUIT y Razon Social'
+		ELSE
+		BEGIN
+						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
+						PRINT 'Ya existe otra Empresa con ese Numero de Telefono'
+						Else
+						BEGIN
+							INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
+							values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion)
+							
+							 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
+							 Values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
+							
+							INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
+							values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01','0',null,1)
+						
+							
+						END
+					
+		END
+	
+END
+ 
+GO
+ 
+ 
+ 
+ 
+ 
+ 
+ /* Store Procedure para ABM Rol*/ 
+ /*VERIFICAR SI ANDA BIEN Cargando datos en las tablas*/
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRoles]
+ 
+ AS
+ BEGIN
+		Select  Rol.Id_Rol,Rol.Descripcion,Rol.Fecha_Baja,Rol_Func.Id_Funcionalidad,Func.Descripcion
+		from LOS_OPTIMISTAS.Rol Rol, LOS_OPTIMISTAS.Rol_Funcionalidad Rol_Func,LOS_OPTIMISTAS.Funcionalidad Func
+		Where
+		(Rol.Id_Rol = Rol.Id_Rol)
+		And (Rol_Func.Id_Funcionalidad = Func.Descripcion)
+ END
+ GO
+ 
 
  
  
