@@ -31,7 +31,6 @@ namespace FrbaCommerce.Abm_Cliente
         //*  GUARDAR DATOS DE CLIENTE EN BASE DE DATOS
         //**********************************************************
 
-        //TODO ver como se van a llamar los datos en el SP
         public static void crearCliente(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
             string diaYhora = Variables.FechaHoraSistema.ToString("yyyy-MM-dd HH:mm:ss");
@@ -50,9 +49,9 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Localidad", localidad);
             command.Parameters.AddWithValue("@p_CP", codP);
             command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
-            
-            command.Parameters.AddWithValue("@p_Id_Usuario", username);
-            command.Parameters.AddWithValue("@p_Password", password);
+            //command.Parameters.AddWithValue("@p_Id_Usuario", username);
+
+            //command.Parameters.AddWithValue("@p_Password", password);
             //command.Parameters.AddWithValue("@p_Ultima_Fecha", diaYhora);
             Procedimientos.ejecutarStoredProcedure(command, "Creación de cliente", true);
         }
@@ -65,7 +64,7 @@ namespace FrbaCommerce.Abm_Cliente
         public static void modificarCliente(string nombre, string apellido, string domicilio, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
             SqlCommand command = new SqlCommand();
-            command.CommandText = Constantes.procedimientoCrearCliente;
+            command.CommandText = Constantes.procedimientoModificarCliente;
             command.Parameters.AddWithValue("@p_Nombre", nombre);
             command.Parameters.AddWithValue("@p_Apellido", apellido);
             command.Parameters.AddWithValue("@p_Tipo_Documento", tipoDoc);
@@ -73,15 +72,9 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Mail", mail);
             command.Parameters.AddWithValue("@p_Telefono", telefono);
             command.Parameters.AddWithValue("@p_Domicilio_Calle", domicilio);
-
-            
             command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
-            
-            
-            
             command.Parameters.AddWithValue("@p_Cp", codP);
             command.Parameters.AddWithValue("@p_Localidad", localidad);
-            
             command.Parameters.AddWithValue("@p_Id_Usuario", username);
             command.Parameters.AddWithValue("@p_Password", password);
             Procedimientos.ejecutarStoredProcedure(command, "Modificación de cliente", true);

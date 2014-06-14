@@ -576,7 +576,7 @@ BEGIN
  
  GO
  CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaCliente]
- (
+(
 @p_Nombre varchar(255) = null,
 @p_Apellido varchar(255)= null,
 @p_Tipo_Documento varchar(6)= null,
@@ -589,34 +589,24 @@ BEGIN
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
-@p_Fecha_Nacimiento datetime
+@p_Fecha_Nacimiento datetime,
+@p_Id_Usuario varchar(20),
+@p_Password varchar(64)
 
  )
 AS
 BEGIN
-	IF EXISTS( select * from LOS_OPTIMISTAS.Cliente Where (Id_Tipo_Documento = @p_Tipo_Documento)AND(Dni = @p_Numero_Documento)) 
-	PRINT 'Ya existe un cliente con ese Documento y Tipo'
-		ELSE
-		BEGIN
-						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
-						PRINT 'Ya existe otro Usuario con ese Numero de Telefono'
-						Else
-						BEGIN
-							INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
-							values(@p_Numero_Documento,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido,@p_Fecha_Nacimiento)
+	
+	INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
+	Values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
 							
-							 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
-							 Values(@p_Numero_Documento,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
-							
-							INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
-							values(@p_Numero_Documento,'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01','0',null,1)
-						END
-					
-		END
+	INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
+	Values(@p_Id_Usuario,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido,@p_Fecha_Nacimiento)
+	
+	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
+	Values(@p_Id_Usuario,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
 	
 END
- 
-GO
 
 
 
@@ -732,40 +722,25 @@ BEGIN
 @p_Localidad varchar (255) = null,
 @p_Calle varchar(255) = null,
 @p_Piso numeric (18,0) = null,
-@p_Depto varchar(50) = null
-
+@p_Depto varchar(50) = null,
+@p_Id_Usuario varchar (20),
+@p_Password varchar (64)
  )
 AS
 BEGIN
-	IF EXISTS( select * from LOS_OPTIMISTAS.Empresa Where (Razon_social= @p_Razon_Social)AND(Cuit = @p_Cuit)) 
-	PRINT 'Ya existe una empresa con ese CUIT y Razon Social'
-		ELSE
-		BEGIN
-						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
-						PRINT 'Ya existe otra Empresa con ese Numero de Telefono'
-						Else
-						BEGIN
-							INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
-							values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion)
+
+	INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
+	values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
+		
+	INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
+	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion)
+		
+	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
+	Values(@p_Id_Usuario,@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
 							
-							 INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
-							 Values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
-							
-							INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
-							values(LOS_OPTIMISTAS.obtenerCuit(@p_Cuit),'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01','0',null,1)
-						
-							
-						END
-					
-		END
-	
 END
  
 GO
- 
- 
- 
- 
  
  
  /* Store Procedure para ABM Rol*/ 

@@ -35,5 +35,10 @@ namespace FrbaCommerce.Abm_Cliente
         {
 
         }
+
+        private void buttonGuardar_Click(object sender, EventArgs e)
+        {
+            //Cliente.modificarCliente();
+        }
     }
 }

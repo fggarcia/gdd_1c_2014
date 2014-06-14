@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelNombre = new System.Windows.Forms.Label();
             this.labelApellido = new System.Windows.Forms.Label();
             this.labelTipoDocumento = new System.Windows.Forms.Label();
             this.labelNumDocumento = new System.Windows.Forms.Label();
             this.labelCodPostal = new System.Windows.Forms.Label();
-            this.labelCalle = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelFechaNac = new System.Windows.Forms.Label();
             this.labelBarra = new System.Windows.Forms.Label();
@@ -62,18 +60,10 @@
             this.textApellido = new System.Windows.Forms.TextBox();
             this.textNombre = new System.Windows.Forms.TextBox();
             this.labelTelefono = new System.Windows.Forms.Label();
+            this.labelNombre = new System.Windows.Forms.Label();
+            this.labelCalle = new System.Windows.Forms.Label();
             this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // labelNombre
-            // 
-            this.labelNombre.AutoSize = true;
-            this.labelNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelNombre.Location = new System.Drawing.Point(25, 38);
-            this.labelNombre.Name = "labelNombre";
-            this.labelNombre.Size = new System.Drawing.Size(55, 15);
-            this.labelNombre.TabIndex = 0;
-            this.labelNombre.Text = "Nombre:";
             // 
             // labelApellido
             // 
@@ -115,16 +105,6 @@
             this.labelCodPostal.Size = new System.Drawing.Size(86, 15);
             this.labelCodPostal.TabIndex = 11;
             this.labelCodPostal.Text = "Código Postal:";
-            // 
-            // labelCalle
-            // 
-            this.labelCalle.AutoSize = true;
-            this.labelCalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelCalle.Location = new System.Drawing.Point(25, 125);
-            this.labelCalle.Name = "labelCalle";
-            this.labelCalle.Size = new System.Drawing.Size(38, 15);
-            this.labelCalle.TabIndex = 7;
-            this.labelCalle.Text = "Calle:";
             // 
             // label1
             // 
@@ -208,6 +188,8 @@
             // 
             // groupBoxDatos
             // 
+            this.groupBoxDatos.Controls.Add(this.labelCalle);
+            this.groupBoxDatos.Controls.Add(this.labelNombre);
             this.groupBoxDatos.Controls.Add(this.textAnio);
             this.groupBoxDatos.Controls.Add(this.textMes);
             this.groupBoxDatos.Controls.Add(this.textDia);
@@ -390,6 +372,26 @@
             this.labelTelefono.TabIndex = 60;
             this.labelTelefono.Text = "Teléfono:";
             // 
+            // labelNombre
+            // 
+            this.labelNombre.AutoSize = true;
+            this.labelNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelNombre.Location = new System.Drawing.Point(13, 26);
+            this.labelNombre.Name = "labelNombre";
+            this.labelNombre.Size = new System.Drawing.Size(55, 15);
+            this.labelNombre.TabIndex = 78;
+            this.labelNombre.Text = "Nombre:";
+            // 
+            // labelCalle
+            // 
+            this.labelCalle.AutoSize = true;
+            this.labelCalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelCalle.Location = new System.Drawing.Point(13, 113);
+            this.labelCalle.Name = "labelCalle";
+            this.labelCalle.Size = new System.Drawing.Size(38, 15);
+            this.labelCalle.TabIndex = 79;
+            this.labelCalle.Text = "Calle:";
+            // 
             // FormClienteAlta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -397,8 +399,6 @@
             this.ClientSize = new System.Drawing.Size(702, 391);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonGuardar);
-            this.Controls.Add(this.labelCalle);
-            this.Controls.Add(this.labelNombre);
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormClienteAlta";
             this.Text = "Alta de Cliente";
@@ -406,18 +406,15 @@
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label labelNombre;
         private System.Windows.Forms.Label labelApellido;
         private System.Windows.Forms.Label labelTipoDocumento;
         private System.Windows.Forms.Label labelNumDocumento;
         private System.Windows.Forms.Label labelCodPostal;
-        private System.Windows.Forms.Label labelCalle;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelFechaNac;
         private System.Windows.Forms.Label labelBarra;
@@ -446,5 +443,7 @@
         private System.Windows.Forms.TextBox textDia;
         private System.Windows.Forms.TextBox textTelefono;
         private System.Windows.Forms.TextBox textMail;
+        private System.Windows.Forms.Label labelCalle;
+        private System.Windows.Forms.Label labelNombre;
     }
 }

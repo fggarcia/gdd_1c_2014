@@ -72,11 +72,14 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            FormClienteModificacion form = new FormClienteModificacion();
+            form.ShowDialog();
+            
             SqlConnection conn = Procedimientos.abrirConexion();
             string tipoDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[2].Value);
             string nroDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[3].Value);
             SqlCommand command = new SqlCommand(string.Format("SELECT Id_Usuario FROM LOS_OPTIMISTAS.Cliente WHERE Dni = '{0}' AND Tipo_Documento = '{1}'", nroDocumento, tipoDocumento), conn);
-            FormClienteModificacion form = new FormClienteModificacion();
             form.groupBoxDatos.Text = command.CommandText;
             Procedimientos.cerrarConexion(conn);
         }
