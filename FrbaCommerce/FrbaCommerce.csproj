@@ -71,29 +71,41 @@
     <Compile Include="Abm Cliente\FormABMCliente.Designer.cs">
       <DependentUpon>FormABMCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteAlta.cs">
+    <Compile Include="Abm Cliente\FormClienteAlta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteAlta.Designer.cs">
-      <DependentUpon>FormABMClienteAlta.cs</DependentUpon>
+    <Compile Include="Abm Cliente\FormClienteAlta.Designer.cs">
+      <DependentUpon>FormClienteAlta.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteModificacion.cs">
+    <Compile Include="Abm Cliente\FormClienteModificacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteModificacion.Designer.cs">
-      <DependentUpon>FormABMClienteModificacion.cs</DependentUpon>
+    <Compile Include="Abm Cliente\FormClienteModificacion.Designer.cs">
+      <DependentUpon>FormClienteModificacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteModElim.cs">
+    <Compile Include="Abm Cliente\FormClienteModElim.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Cliente\FormABMClienteModElim.Designer.cs">
-      <DependentUpon>FormABMClienteModElim.cs</DependentUpon>
+    <Compile Include="Abm Cliente\FormClienteModElim.Designer.cs">
+      <DependentUpon>FormClienteModElim.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Empresa\FormABMEmpresa.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Empresa\FormABMEmpresa.Designer.cs">
       <DependentUpon>FormABMEmpresa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Empresa\FormEmpresaAlta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Empresa\FormEmpresaAlta.Designer.cs">
+      <DependentUpon>FormEmpresaAlta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Empresa\FormEmpresaModElim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Empresa\FormEmpresaModElim.Designer.cs">
+      <DependentUpon>FormEmpresaModElim.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Rol\FormABMRol.cs">
       <SubType>Form</SubType>
@@ -210,17 +222,23 @@
     <EmbeddedResource Include="Abm Cliente\FormABMCliente.resx">
       <DependentUpon>FormABMCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\FormABMClienteAlta.resx">
-      <DependentUpon>FormABMClienteAlta.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Cliente\FormClienteAlta.resx">
+      <DependentUpon>FormClienteAlta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\FormABMClienteModElim.resx">
-      <DependentUpon>FormABMClienteModElim.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Cliente\FormClienteModElim.resx">
+      <DependentUpon>FormClienteModElim.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\FormABMClienteModificacion.resx">
-      <DependentUpon>FormABMClienteModificacion.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Cliente\FormClienteModificacion.resx">
+      <DependentUpon>FormClienteModificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Empresa\FormABMEmpresa.resx">
       <DependentUpon>FormABMEmpresa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Empresa\FormEmpresaAlta.resx">
+      <DependentUpon>FormEmpresaAlta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Empresa\FormEmpresaModElim.resx">
+      <DependentUpon>FormEmpresaModElim.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\FormABMRol.resx">
       <DependentUpon>FormABMRol.cs</DependentUpon>

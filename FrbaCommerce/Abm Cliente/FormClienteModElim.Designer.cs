@@ -1,6 +1,6 @@
 ﻿namespace FrbaCommerce.Abm_Cliente
 {
-    partial class FormABMClienteModElim
+    partial class FormClienteModElim
     {
         /// <summary>
         /// Required designer variable.
@@ -159,7 +159,7 @@
             this.groupBoxTituloBusqueda.Size = new System.Drawing.Size(818, 179);
             this.groupBoxTituloBusqueda.TabIndex = 10;
             this.groupBoxTituloBusqueda.TabStop = false;
-            this.groupBoxTituloBusqueda.Text = "Búsqueda de Cliente";
+            this.groupBoxTituloBusqueda.Text = "Filtrar búsqueda";
             // 
             // dgvCliente
             // 
@@ -235,6 +235,7 @@
             this.buttonVolver.TabIndex = 14;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // buttonLimpiar
             // 
@@ -268,7 +269,7 @@
             this.Controls.Add(this.dgvCliente);
             this.Controls.Add(this.groupBoxTituloBusqueda);
             this.Name = "FormABMClienteModElim";
-            this.Text = "Modificación - Eliminación de Cliente";
+            this.Text = "Selección de Cliente";
             this.Load += new System.EventHandler(this.FormABMClienteModElim_Load_1);
             this.groupBoxTituloBusqueda.ResumeLayout(false);
             this.groupBoxTituloBusqueda.PerformLayout();

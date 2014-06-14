@@ -18,12 +18,15 @@ namespace FrbaCommerce.Abm_Cliente
         
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            
+            FormClienteModElim formModElim = new FormClienteModElim();
+            this.Hide();
+            formModElim.ShowDialog();
+            this.Close();
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            FormABMClienteAlta formAltaCliente = new FormABMClienteAlta();
+            FormClienteAlta formAltaCliente = new FormClienteAlta();
             formAltaCliente.username = Cliente.generarUsername();
             formAltaCliente.password = Cliente.generarPassword();
             this.Hide();

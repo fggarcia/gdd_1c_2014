@@ -1,6 +1,6 @@
 ﻿namespace FrbaCommerce.Abm_Cliente
 {
-    partial class FormABMClienteModificacion
+    partial class FormClienteModificacion
     {
         /// <summary>
         /// Required designer variable.
@@ -335,6 +335,7 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormABMClienteModificacion";
             this.Text = "Modificación de Datos";
+            this.Load += new System.EventHandler(this.FormABMClienteModificacion_Load_1);
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);

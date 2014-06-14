@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace FrbaCommerce.Abm_Cliente
 {
-    public partial class FormABMClienteModElim : Form
+    public partial class FormClienteModElim : Form
     {
-        public FormABMClienteModElim()
+        public FormClienteModElim()
         {
             InitializeComponent();
             buttonModificar.Enabled = false;
@@ -75,9 +75,16 @@ namespace FrbaCommerce.Abm_Cliente
             string tipoDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[2].Value);
             string nroDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[3].Value);
             SqlCommand command = new SqlCommand(string.Format("SELECT Id_Usuario FROM LOS_OPTIMISTAS.Cliente WHERE Dni = '{0}' AND Tipo_Documento = '{1}'", nroDocumento, tipoDocumento), conn);
-            FormABMClienteModificacion form = new FormABMClienteModificacion();
+            FormClienteModificacion form = new FormClienteModificacion();
             form.groupBoxDatos.Text = command.CommandText;
             Procedimientos.cerrarConexion(conn);
+        }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            FormABMCliente formCliente = new FormABMCliente();
+            this.Hide();
+            formCliente.ShowDialog();
         }
 
     }

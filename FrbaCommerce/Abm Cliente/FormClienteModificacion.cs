@@ -10,9 +10,9 @@ using System.Data.SqlClient;
 
 namespace FrbaCommerce.Abm_Cliente
 {
-    public partial class FormABMClienteModificacion : Form
+    public partial class FormClienteModificacion : Form
     {
-        public FormABMClienteModificacion()
+        public FormClienteModificacion()
         {
             InitializeComponent();
         }
@@ -27,6 +27,11 @@ namespace FrbaCommerce.Abm_Cliente
         }
 
         private void textNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormABMClienteModificacion_Load_1(object sender, EventArgs e)
         {
 
         }

@@ -37,7 +37,7 @@
             // buttonVolver
             // 
             this.buttonVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonVolver.Location = new System.Drawing.Point(186, 136);
+            this.buttonVolver.Location = new System.Drawing.Point(198, 135);
             this.buttonVolver.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonVolver.Name = "buttonVolver";
             this.buttonVolver.Size = new System.Drawing.Size(77, 31);
@@ -51,7 +51,7 @@
             this.buttonModificarEliminar.Location = new System.Drawing.Point(162, 64);
             this.buttonModificarEliminar.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonModificarEliminar.Name = "buttonModificarEliminar";
-            this.buttonModificarEliminar.Size = new System.Drawing.Size(101, 36);
+            this.buttonModificarEliminar.Size = new System.Drawing.Size(113, 36);
             this.buttonModificarEliminar.TabIndex = 9;
             this.buttonModificarEliminar.Text = "Modificar/Eliminar";
             this.buttonModificarEliminar.UseVisualStyleBackColor = true;
@@ -63,7 +63,7 @@
             this.buttonAlta.Location = new System.Drawing.Point(22, 64);
             this.buttonAlta.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonAlta.Name = "buttonAlta";
-            this.buttonAlta.Size = new System.Drawing.Size(101, 36);
+            this.buttonAlta.Size = new System.Drawing.Size(113, 36);
             this.buttonAlta.TabIndex = 8;
             this.buttonAlta.Text = "Dar da Alta";
             this.buttonAlta.UseVisualStyleBackColor = true;
@@ -84,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 190);
+            this.ClientSize = new System.Drawing.Size(297, 190);
             this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.buttonModificarEliminar);
             this.Controls.Add(this.buttonAlta);

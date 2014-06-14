@@ -9,12 +9,12 @@ using System.Windows.Forms;
 
 namespace FrbaCommerce.Abm_Cliente
 {
-    public partial class FormABMClienteAlta : Form
+    public partial class FormClienteAlta : Form
     {
         public string username;
         public string password;
 
-        public FormABMClienteAlta()
+        public FormClienteAlta()
         {
             InitializeComponent();
             
@@ -46,7 +46,9 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            FormABMCliente formCliente = new FormABMCliente();
+            this.Hide();
+            formCliente.ShowDialog();
         }
 
         private void comboBoxTdoc_SelectedIndexChanged(object sender, EventArgs e)
