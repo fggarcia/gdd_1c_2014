@@ -554,27 +554,21 @@ BEGIN
 
 			SELECT DISTINCT
 			Clie.Id_Usuario 'Id Usuario',
+			Clie.Nombre 'Nombre',
+			Clie.Apellido 'Apellido',
 			Clie.Id_Tipo_Documento 'Tipo Documento',
 			Clie.Dni 'Numero Documento',
 			Clie.Fecha_Nacimiento 'Fecha Nac',
-			Dom_Mail.Mail 'Email',
-			Clie.Nombre 'Nombre',
-			Clie.Apellido 'Apellido',
-			Dom_Mail.Telefono 'Telefono',
-			Dom_Mail.Calle'Calle',
-			Dom_Mail.Piso 'Piso',
-			Dom_Mail.Depto 'Depto',
-			Dom_Mail.Localidad 'Localidad',
-			Dom_Mail.CP 'Codigo Postal'
+			Dom_Mail.Mail 'Email'
  
 			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail
 			
 			WHERE
-			((@p_Nombre IS NULL) OR ( clie.Nombre=@p_Nombre ))
-			AND  ((@p_Apellido IS NULL) OR (clie.Apellido= @p_Apellido ))
-			AND  ((@p_Tipo_Documento IS NULL) OR ( clie.Id_Tipo_Documento =@p_Tipo_Documento))
-			AND  ((@p_Numero_Documento IS NULL) OR (clie.Dni=@p_Numero_Documento))
-			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail=@p_Mail ))
+			((@p_Nombre IS NULL) OR ( clie.Nombre like @p_Nombre + '%'))
+			AND  ((@p_Apellido IS NULL) OR (clie.Apellido like @p_Apellido + '%'))
+			AND  ((@p_Tipo_Documento IS NULL) OR ( clie.Id_Tipo_Documento = @p_Tipo_Documento))
+			AND  ((@p_Numero_Documento IS NULL) OR (clie.Dni = @p_Numero_Documento))
+			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail = @p_Mail))
 			AND (clie.Id_Usuario = Dom_Mail.Id_Usuario)
  END
  GO
