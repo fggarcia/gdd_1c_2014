@@ -538,6 +538,7 @@ CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
 
+<<<<<<< Updated upstream
 /*Store Procedure para ABM Clientes*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarClientes]
@@ -867,6 +868,8 @@ GO
  
  --MIO
 =======
+=======
+>>>>>>> Stashed changes
 --CREO TABLA HISTORIAL DE COMPRAS
 CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
 [Id_Vendedor][varchar](20) NOT NULL,
