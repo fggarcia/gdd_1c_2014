@@ -538,7 +538,6 @@ CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
 
-<<<<<<< Updated upstream
 /*Store Procedure para ABM Clientes*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarClientes]
@@ -909,7 +908,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Maxima_Subasta_Temp](
 	[Total_Factura][numeric](18,2) NOT NULL,
 	[Total_Comisiones][numeric](18,2) NULL,
 	[Total_Visibilidad][numeric](18,2) NULL,
-	[Fecha][smalldatetime] NOT NULL
+	[Fecha][datetime] NOT NULL
 )
 --Inserto las subastas de empresas
 INSERT INTO LOS_OPTIMISTAS.Maxima_Subasta_Temp(Id_Usuario_Vendedor, Total_Factura, Total_Comisiones, Total_Visibilidad, Fecha)
