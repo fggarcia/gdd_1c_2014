@@ -194,7 +194,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Empresa](
 [ID_Usuario] [varchar](20) NOT NULL,
 [Razon_social] [varchar](255) NOT NULL ,
 [Cuit] [varchar](50) NOT NULL,
-[Fecha_Creacion][datetime]
+[Fecha_Creacion][datetime],
+[Nombre_Contacto][varchar](255) NULL, 
 
 CONSTRAINT [FK_Empresa_Cliente_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
@@ -561,7 +562,7 @@ BEGIN
 			Clie.Fecha_Nacimiento 'Fecha Nac',
 			Dom_Mail.Mail 'Email'
  
-			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail
+			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usuar
 			
 			WHERE
 			((@p_Nombre IS NULL) OR ( clie.Nombre like @p_Nombre + '%'))
@@ -570,6 +571,8 @@ BEGIN
 			AND  ((@p_Numero_Documento IS NULL) OR (clie.Dni = @p_Numero_Documento))
 			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail = @p_Mail))
 			AND (clie.Id_Usuario = Dom_Mail.Id_Usuario)
+			AND (Usuar.Id_Usuario = clie.Id_Usuario)
+			AND (Usuar.Habilitado = 1)
  END
  GO
  
@@ -610,6 +613,7 @@ END
 
 
 
+
 GO
 /*Sirve tanto para CLIENTES como para EMPRESAS*/
 CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaUsuario]
@@ -640,28 +644,61 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
-@p_Fecha_Nacimiento datetime
+@p_Fecha_Nacimiento datetime,
+@p_Id_Usuario varchar(20),
+@p_Password varchar(64)
 )
 AS
 BEGIN
-IF EXISTS( select * from LOS_OPTIMISTAS.Cliente Where (Id_Tipo_Documento = @p_Tipo_Documento)AND(Dni = @p_Numero_Documento)) 
-	PRINT 'Ya existe un cliente con ese Documento y Tipo'
-		ELSE
-		BEGIN
-						IF EXISTS( select * from LOS_OPTIMISTAS.Dom_Mail Where (Telefono = @p_Telefono)) 
-						PRINT 'Ya existe otro Usuario con ese Numero de Telefono'
-						Else
-						BEGIN
+
+		BEGIN TRANSACTION
 							
-							INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
-							Values(@p_Numero_Documento,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido ,@p_Fecha_Nacimiento)
-							INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
-							 Values(@p_Numero_Documento,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
-						END
+							
+							UPDATE LOS_OPTIMISTAS.Usuario
+							SET 
+							Password = @p_Password
+																			
+							WHERE Id_Usuario = @p_Id_Usuario
+							
+								
+							
+							UPDATE LOS_OPTIMISTAS.Cliente
+							SET 
+							[Id_Tipo_Documento] = @p_Tipo_Documento,
+							[DNI] = @p_Numero_Documento,
+							[Nombre] = @p_Nombre,
+							[Apellido] = @p_Apellido,
+							[Fecha_Nacimiento] = @p_Fecha_Nacimiento
+													
+							
+							
+							WHERE Id_Usuario = @p_Id_Usuario
+										
+										
+							UPDATE LOS_OPTIMISTAS.Dom_Mail
+							SET 
+							[Domicilio] = @p_Domicilio_Calle,
+							[Depto] = @p_Depto,
+							[Cp] = @p_CP,
+							[Calle] = @p_Nro_Calle,
+							[Localidad] = @p_Localidad,	
+							[Mail] = @p_Mail,		
+							[Piso] = @p_Piso,		
+							[Telefono] =@p_Telefono			
+							
+							WHERE Id_Usuario = @p_Id_Usuario
+										
+										
+							
 					
-		END
+		COMMIT TRANSACTION
+					
+		
 END
 GO
+
+
+
 
 
 
@@ -693,16 +730,19 @@ BEGIN
 			Dom_Mail.Telefono 'Telefono'
 			
 			
-			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail
+			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
 			
 			WHERE
 			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social=@p_Razon_Social ))
 			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit= @p_Cuit ))
 			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail =@p_Email))
 			AND  (Empr.ID_Usuario= Dom_Mail.Id_Usuario)
+			AND (Usar.Id_Usuario = Empr.ID_Usuario)
+			AND (Usar.Habilitado = 1)
 			
  END
  GO
+
 
  
  
@@ -743,6 +783,70 @@ END
 GO
  
  
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarEmpresa]
+(
+@p_Razon_Social varchar(255) = null ,
+@p_Cuit varchar(50) = null,
+@p_Fecha_Creacion datetime = null,
+@p_Nombre_Contacto varchar(255) = null,
+@p_Domicilio varchar(100) = null,
+@p_Telefono varchar(40) = null,
+@p_CP varchar(50) = null,
+@p_Mail varchar(255) = null, 
+@p_Localidad varchar (255) = null,
+@p_Calle varchar(255) = null,
+@p_Piso numeric (18,0) = null,
+@p_Depto varchar(50) = null,
+@p_Id_Usuario varchar (20),
+@p_Password varchar (64)
+)
+AS
+BEGIN
+
+		BEGIN TRANSACTION
+							
+							
+							UPDATE LOS_OPTIMISTAS.Usuario
+							SET 
+							Password = @p_Password
+																			
+							WHERE Id_Usuario = @p_Id_Usuario
+							
+								
+							
+							UPDATE LOS_OPTIMISTAS.Empresa
+							SET 
+							[Razon_social] = @p_Razon_Social ,
+							[Cuit] = @p_Cuit,
+							[Fecha_Creacion] = @p_Fecha_Creacion,
+							[Nombre_Contacto] = @p_Nombre_Contacto
+							
+							WHERE ID_Usuario =  @p_Id_Usuario
+							
+																		
+										
+							UPDATE LOS_OPTIMISTAS.Dom_Mail
+							SET 
+							[Domicilio] = @p_Domicilio,
+							[Depto] = @p_Depto,
+							[Cp] = @p_CP,
+							[Calle] = @p_Calle,
+							[Localidad] = @p_Localidad,	
+							[Mail] = @p_Mail,		
+							[Piso] = @p_Piso,		
+							[Telefono] =@p_Telefono			
+							
+							WHERE Id_Usuario = @p_Id_Usuario
+										
+										
+							
+					
+		COMMIT TRANSACTION
+					
+		
+END
+GO
  /* Store Procedure para ABM Rol*/ 
  /*VERIFICAR SI ANDA BIEN Cargando datos en las tablas*/
  GO
