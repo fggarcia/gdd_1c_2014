@@ -19,7 +19,7 @@ namespace FrbaCommerce.Abm_Cliente
             InitializeComponent();
             buttonModificar.Enabled = false;
             buttonEliminar.Enabled = false;
-            //Procedimientos.LlenarComboBox(comboBoxTipoDoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Documento", "Descripcion", null, null);
+            Procedimientos.LlenarComboBox(comboBoxTipoDoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
         }
 
         private void FormABMClienteModElim_Load_1(object sender, EventArgs e)
@@ -62,6 +62,7 @@ namespace FrbaCommerce.Abm_Cliente
         { 
             Procedimientos.limpiarTextBoxes(this);
             Procedimientos.limpiarComboBoxes(this);
+            Procedimientos.limpiarDataGridViews(dgvCliente);
         }
 
         private void dgvCliente_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -85,6 +86,11 @@ namespace FrbaCommerce.Abm_Cliente
             FormABMCliente formCliente = new FormABMCliente();
             this.Hide();
             formCliente.ShowDialog();
+        }
+
+        private void buttonBuscar_Click_1(object sender, EventArgs e)
+        {
+            Cliente.buscar(textBoxNombre.Text, textBoxApellido.Text, comboBoxTipoDoc.Text, textBoxnDoc.Text, textBoxEmail.Text, dgvCliente);
         }
 
     }

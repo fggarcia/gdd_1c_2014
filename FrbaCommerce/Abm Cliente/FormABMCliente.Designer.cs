@@ -91,6 +91,7 @@
             this.Controls.Add(this.TextOpcion);
             this.Name = "FormABMCliente";
             this.Text = "Cliente";
+            this.Load += new System.EventHandler(this.FormABMCliente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

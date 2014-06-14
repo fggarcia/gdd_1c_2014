@@ -29,9 +29,16 @@ namespace FrbaCommerce.Abm_Cliente
             FormClienteAlta formAltaCliente = new FormClienteAlta();
             formAltaCliente.username = Cliente.generarUsername();
             formAltaCliente.password = Cliente.generarPassword();
+            MessageBox.Show("El username es: " + formAltaCliente.username + "y el password: " + formAltaCliente.password);
             this.Hide();
             formAltaCliente.ShowDialog();
+            
             this.Close();
+        }
+
+        private void FormABMCliente_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

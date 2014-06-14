@@ -17,6 +17,7 @@ namespace FrbaCommerce.Abm_Cliente
         public FormClienteAlta()
         {
             InitializeComponent();
+            Procedimientos.LlenarComboBox(comboBoxTdoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
             
         }
 
@@ -33,9 +34,9 @@ namespace FrbaCommerce.Abm_Cliente
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
             
-            if (Cliente.validarCampos(textNombre.Text, textApellido.Text, textDomicilio.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password))
+            if (Cliente.validarCampos(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password))
             {
-                Cliente.crearCliente(textNombre.Text, textApellido.Text, textDomicilio.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password);
+                Cliente.crearCliente(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password);
             }
         }
 

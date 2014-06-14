@@ -61,7 +61,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Usuario](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Password][varchar](64) NOT NULL,
 	[Cantidad_Login][Int] NOT NULL,
-	[Ultima_Fecha][smalldatetime] NULL,
+	[Ultima_Fecha][datetime] NULL,
 	[Habilitado][bit] NULL
 	
 	CONSTRAINT UQ_Usuarios_Id_Usuario UNIQUE(Id_Usuario)
@@ -106,7 +106,7 @@ INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(3,'empresa'
 CREATE TABLE [LOS_OPTIMISTAS].[Usuario_Rol](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Id_Rol][Int] NOT NULL,
-	[Fecha_Baja][smalldatetime] NULL
+	[Fecha_Baja][datetime] NULL
 
 	CONSTRAINT UQ_Usuario_Rol_Id_Usuario UNIQUE(Id_Usuario),
 	CONSTRAINT [FK_Usuario_Rol_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -169,7 +169,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Cliente](
 	[Dni][varchar](20) NOT NULL,---El DNI y el Id_Usuario es lo mismo, los cargo igual, VER!!!! si hay que cambiar a numeric
 	[Nombre][varchar](255),
 	[Apellido][varchar](255),
-	[Fecha_Nacimiento][smalldatetime]
+	[Fecha_Nacimiento][datetime]
 	
 		CONSTRAINT [FK_Cliente_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
@@ -194,7 +194,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Empresa](
 [ID_Usuario] [varchar](20) NOT NULL,
 [Razon_social] [varchar](255) NOT NULL ,
 [Cuit] [varchar](50) NOT NULL,
-[Fecha_Creacion][smalldatetime]
+[Fecha_Creacion][datetime]
 
 CONSTRAINT [FK_Empresa_Cliente_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
@@ -283,8 +283,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 [Id_Visibilidad][numeric](18,0)NOT NULL,
 [Id_Estado][varchar](255)NOT NULL,
 [Precio][numeric](18,2) NULL,
-[Fecha_Inicio][smalldatetime] NULL,
-[Fecha_Vencimiento][smalldatetime] NULL,
+[Fecha_Inicio][datetime] NULL,
+[Fecha_Vencimiento][datetime] NULL,
 [Pemite_Preguntas][Bit] NULL,
 [Cant_por_Venta][numeric] (18,0) NULL,
 [stock][numeric](18,0) NOT NULL,
@@ -318,7 +318,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Calificacion][numeric](18,0)NOT NULL,
 [Id_Usuario_Calificador][varchar](20) NOT NULL,
-[Fecha_Calificacion][smalldatetime] NULL,
+[Fecha_Calificacion][datetime] NULL,
 [Detalle][varchar] (255) NULL,
 [Calificacion][Numeric](18,0)  NULL
 
@@ -344,10 +344,10 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
 [Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Usuario][varchar](20) NOT NULL,
-[Fecha_Creacion][smalldatetime],
+[Fecha_Creacion][datetime],
 [Preg_Descripcion][varchar](255) NULL,
 [Preg_Respuesta][varchar](255) NULL,
-[Fecha_Respuesta][smalldatetime]
+[Fecha_Respuesta][datetime]
 
 CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
 
@@ -368,7 +368,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Usuario][varchar](20) NOT NULL,
 [Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
-[Fecha_Oferta][smalldatetime],
+[Fecha_Oferta][datetime],
 
 
 CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
@@ -389,7 +389,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
 
 [Id_Rubro][Int] NOT NULL,
 [Descripcion][varchar](60) NOT NULL,
-[Fecha_Baja][smalldatetime] NULL,
+[Fecha_Baja][datetime] NULL,
 
 CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
 )
@@ -475,7 +475,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
 [Total_Factura][numeric](18,2) NOT NULL,
 [Total_Comisiones][numeric](18,2) NULL,
 [Total_Visibilidad][numeric](18,2) NULL,
-[Fecha][smalldatetime] NOT NULL,
+[Fecha][datetime] NOT NULL,
 
 CONSTRAINT [PK_Facturacion_Id_Factura] PRIMARY KEY(Id_Factura),
 CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -595,7 +595,7 @@ BEGIN
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
-@p_Fecha_Nacimiento smalldatetime
+@p_Fecha_Nacimiento datetime
 
  )
 AS
@@ -656,7 +656,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
-@p_Fecha_Nacimiento smalldatetime
+@p_Fecha_Nacimiento datetime
 )
 AS
 BEGIN
@@ -730,7 +730,7 @@ BEGIN
 
 @p_Razon_Social varchar(255) = null ,
 @p_Cuit varchar(50) = null,
-@p_Fecha_Creacion smalldatetime = null,
+@p_Fecha_Creacion datetime = null,
 @p_Domicilio varchar(100) = null,
 @p_Telefono varchar(40) = null,
 @p_CP varchar(50) = null,

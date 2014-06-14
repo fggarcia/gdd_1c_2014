@@ -12,8 +12,8 @@ namespace FrbaCommerce
         //************************************
 
         //TODO Ver como se van a llamar los procedimientos
-        public const String procedimientoMostrarClientes = "LOS_OPTIMISTAS.proc_Listado_Cliente";
-        public const String procedimientoCrearCliente = "LOS_OPTIMISTAS.proc_Crear_Cliente";
+        public const String procedimientoMostrarClientes = "LOS_OPTIMISTAS.proc_ListarClientes";
+        public const String procedimientoCrearCliente = "LOS_OPTIMISTAS.AltaCliente";
         public const String procedimientoEliminarCliente = "LOS_OPTIMISTAS.proc_Baja_Cliente";
     }
 }

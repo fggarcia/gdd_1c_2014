@@ -117,6 +117,7 @@ namespace FrbaCommerce
                 if (!column.Name.Equals("checkbox") && !column.Name.Equals("chk"))
                     column.ReadOnly = true;
             }
+
             cerrarConexion(conn);
           }
 
@@ -196,9 +197,15 @@ namespace FrbaCommerce
             }
         }
 
+        public static void limpiarDataGridViews(DataGridView dgv)
+        {
+            DataTable dt = (DataTable)dgv.DataSource;
+            dt.Clear();
+        }
+
         public static string convertirFecha(string dia, string mes, string anio)
         {
-            DateTime fecha = new DateTime(Convert.ToInt32(dia), Convert.ToInt32(mes), Convert.ToInt32(anio), 00, 00, 00);
+            DateTime fecha = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia), 00, 00, 00);
             return fecha.ToString("yyyy-MM-dd HH:mm:ss");
         }
 

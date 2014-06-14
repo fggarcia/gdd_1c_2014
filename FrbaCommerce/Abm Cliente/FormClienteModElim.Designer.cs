@@ -40,11 +40,6 @@
             this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.groupBoxTituloBusqueda = new System.Windows.Forms.GroupBox();
             this.dgvCliente = new System.Windows.Forms.DataGridView();
-            this.ColumnNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnApellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTipoDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnNroDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonEliminar = new System.Windows.Forms.Button();
             this.buttonModificar = new System.Windows.Forms.Button();
             this.buttonVolver = new System.Windows.Forms.Button();
@@ -163,49 +158,17 @@
             // 
             // dgvCliente
             // 
+            this.dgvCliente.AllowUserToAddRows = false;
+            this.dgvCliente.AllowUserToDeleteRows = false;
+            this.dgvCliente.AllowUserToResizeRows = false;
             this.dgvCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCliente.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnNombre,
-            this.ColumnApellido,
-            this.ColumnTipoDoc,
-            this.ColumnNroDoc,
-            this.ColumnEmail});
             this.dgvCliente.Location = new System.Drawing.Point(28, 258);
             this.dgvCliente.Name = "dgvCliente";
+            this.dgvCliente.ReadOnly = true;
             this.dgvCliente.Size = new System.Drawing.Size(818, 204);
             this.dgvCliente.TabIndex = 11;
             this.dgvCliente.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCliente_CellClick);
             this.dgvCliente.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCliente_CellContentClick);
-            // 
-            // ColumnNombre
-            // 
-            this.ColumnNombre.HeaderText = "Nombre";
-            this.ColumnNombre.Name = "ColumnNombre";
-            this.ColumnNombre.Width = 155;
-            // 
-            // ColumnApellido
-            // 
-            this.ColumnApellido.HeaderText = "Apellido";
-            this.ColumnApellido.Name = "ColumnApellido";
-            this.ColumnApellido.Width = 155;
-            // 
-            // ColumnTipoDoc
-            // 
-            this.ColumnTipoDoc.HeaderText = "Tipo de Documento";
-            this.ColumnTipoDoc.Name = "ColumnTipoDoc";
-            this.ColumnTipoDoc.Width = 155;
-            // 
-            // ColumnNroDoc
-            // 
-            this.ColumnNroDoc.HeaderText = "Numero de Documento";
-            this.ColumnNroDoc.Name = "ColumnNroDoc";
-            this.ColumnNroDoc.Width = 155;
-            // 
-            // ColumnEmail
-            // 
-            this.ColumnEmail.HeaderText = "Email";
-            this.ColumnEmail.Name = "ColumnEmail";
-            this.ColumnEmail.Width = 155;
             // 
             // buttonEliminar
             // 
@@ -255,8 +218,9 @@
             this.buttonBuscar.TabIndex = 16;
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click_1);
             // 
-            // FormABMClienteModElim
+            // FormClienteModElim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -268,7 +232,7 @@
             this.Controls.Add(this.buttonEliminar);
             this.Controls.Add(this.dgvCliente);
             this.Controls.Add(this.groupBoxTituloBusqueda);
-            this.Name = "FormABMClienteModElim";
+            this.Name = "FormClienteModElim";
             this.Text = "Selección de Cliente";
             this.Load += new System.EventHandler(this.FormABMClienteModElim_Load_1);
             this.groupBoxTituloBusqueda.ResumeLayout(false);
@@ -292,11 +256,6 @@
         private System.Windows.Forms.ComboBox comboBoxTipoDoc;
         private System.Windows.Forms.GroupBox groupBoxTituloBusqueda;
         private System.Windows.Forms.DataGridView dgvCliente;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnApellido;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTipoDoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNroDoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnEmail;
         private System.Windows.Forms.Button buttonEliminar;
         private System.Windows.Forms.Button buttonModificar;
         private System.Windows.Forms.Button buttonVolver;
