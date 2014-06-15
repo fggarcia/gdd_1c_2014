@@ -475,12 +475,12 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 [Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
 [Cantidad_Venta][Int] NOT NULL DEFAULT 1,
 [Monto_Visibilidad][numeric](18,2) NOT NULL DEFAULT 0.0,
-[Descripcion_Visibilidad][varchar](255) NOT NULL,
+[Id_Visibilidad][numeric](18,0) NOT NULL,
 )
 --Cargo factura detalle con subastas
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Descripcion_Visibilidad)
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Id_Visibilidad)
 SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Oferta_Monto),MAX(C.Publicacion_Visibilidad_Porcentaje),
-	CONVERT(numeric(18,2),MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje)),MAX(C.Publicacion_Visibilidad_Desc)
+	CONVERT(numeric(18,2),MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje)),MAX(C.Publicacion_Visibilidad_Cod)
 FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
 	CONVERT(numeric(18,2),C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje) = D.Item_Factura_Monto AND 
 	C.Publicacion_Cod = D.Publicacion_Cod,
@@ -491,17 +491,18 @@ GROUP BY C.Publicacion_Cod
 
 --Cargo factura detalle con compra inmediata
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
-	Comision,Cantidad_Venta,Descripcion_Visibilidad)
+	Comision,Cantidad_Venta,Id_Visibilidad)
 SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_Porcentaje,
-	CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje), Item_Factura_Cantidad, Publicacion_Visibilidad_Desc
+	CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje), Item_Factura_Cantidad, 
+	Publicacion_Visibilidad_Cod
 FROM gd_esquema.Maestra
 WHERE CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad) = Item_Factura_Monto
 	AND Calificacion_Codigo IS NULL AND Publicacion_Tipo = 'Compra Inmediata'
 	AND Factura_Nro IS NOT NULL
 
 --Cargo facturacion detalle cobro visibilidad
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Descripcion_Visibilidad)
-SELECT MAX(D.Factura_Nro), C.Publicacion_Cod, MAX(C.Publicacion_Visibilidad_Precio), MAX(C.Publicacion_Visibilidad_Desc) 
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Id_Visibilidad)
+SELECT MAX(D.Factura_Nro), C.Publicacion_Cod, MAX(C.Publicacion_Visibilidad_Precio), MAX(C.Publicacion_Visibilidad_Cod)
 FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
 	C.Publicacion_Visibilidad_Precio = D.Item_Factura_Monto
 WHERE C.Publicacion_Cod = D.Publicacion_Cod AND D.Factura_Nro IS NOT NULL
@@ -544,6 +545,16 @@ WHERE Publ_Empresa_Cuit IS NOT NULL AND Factura_Nro IS NOT NULL
 GROUP BY Factura_Nro, Publ_Empresa_Cuit, Factura_Fecha) E
 ON FD.Id_Factura = E.Factura_Nro
 GROUP BY FD.Id_Factura, E.Publ_Empresa_Cuit, E.Factura_Fecha
+
+--DESPUES DE MIGRAR LAS TABLAS DE FACTURACION AGREGO LAS CONSTRAINT CORRESPONDIENTES
+ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Id_Factura] FOREIGN KEY(Id_Factura)
+REFERENCES [LOS_OPTIMISTAS].[Facturacion] (Id_Factura)
+
+ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion)
+
+ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Descripcion_Visibilidad] FOREIGN KEY(Descripcion_Visibilidad)
+REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad)
 
 --CREO TABLA FACTURACION PENDIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
