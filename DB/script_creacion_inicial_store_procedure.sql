@@ -48,7 +48,7 @@ BEGIN
 @p_Telefono varchar(40)= null,
 @p_Domicilio_Calle varchar(255)= null,
 @p_Nro_Calle varchar (100) = null,
-@p_Piso numeric(18,0) = 0 ,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
@@ -142,12 +142,6 @@ END
 GO
 
 
-
-
-
-
-
-
 /* Store Procedure para ABM Empresa*/ 
 GO 
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarEmpresas]
@@ -205,7 +199,7 @@ BEGIN
 @p_Mail varchar(255) = null, 
 @p_Localidad varchar (255) = null,
 @p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
 @p_Password varchar (64)
@@ -240,7 +234,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarEmpresa]
 @p_Mail varchar(255) = null, 
 @p_Localidad varchar (255) = null,
 @p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
 @p_Password varchar (64)
