@@ -466,20 +466,6 @@ SELECT DISTINCT(Id_Articulo),Id_Usuario, 100 FROM LOS_OPTIMISTAS.Stock_Temp
 
 DROP TABLE LOS_OPTIMISTAS.Stock_Temp 
 
---CREO TABLA FACTURACION
-CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
-[Id_Factura][numeric](18,0) NOT NULL,
-[Id_Usuario][varchar](20) NOT NULL,
-[Total_Factura][numeric](18,2) NOT NULL,
-[Total_Comisiones][numeric](18,2) NULL,
-[Total_Visibilidad][numeric](18,2) NULL,
-[Fecha][datetime] NOT NULL,
-
-CONSTRAINT [PK_Facturacion_Id_Factura] PRIMARY KEY(Id_Factura),
-CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
-REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
-)
-
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 [Id_Factura][numeric](18,0) NOT NULL,
@@ -505,14 +491,13 @@ GROUP BY C.Publicacion_Cod
 --Cargo factura detalle con compra inmediata
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
 	Comision,Cantidad_Venta,Descripcion_Visibilidad)
-SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Publicacion_Precio),MAX(C.Publicacion_Visibilidad_Porcentaje),
-	MAX(C.Publicacion_Precio)*MAX(C.Publicacion_Visibilidad_Porcentaje), MAX(C.Compra_Cantidad),MAX(C.Publicacion_Visibilidad_Desc)
-FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	C.Publicacion_Precio * C.Publicacion_Visibilidad_Porcentaje = D.Item_Factura_Monto AND C.Publicacion_Cod = D.Publicacion_Cod,
-	gd_esquema.Maestra E
-WHERE C.Publicacion_Tipo = 'Compra Inmediata' AND C.Cli_Dni IS NOT NULL AND C.Publicacion_Cod = E.Publicacion_Cod
-	AND E.Factura_Nro IS NOT NULL
-GROUP BY C.Publicacion_Cod
+SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_Porcentaje,
+	Publicacion_Precio * Publicacion_Visibilidad_Porcentaje, Item_Factura_Cantidad, Publicacion_Visibilidad_Desc
+FROM gd_esquema.Maestra
+	
+WHERE Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad = Item_Factura_Monto
+	AND Calificacion_Codigo IS NULL AND Publicacion_Tipo = 'Compra Inmediata'
+	AND Factura_Nro IS NOT NULL
 
 --Cargo facturacion detalle cobro visibilidad
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Descripcion_Visibilidad)
@@ -522,7 +507,43 @@ FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON
 WHERE C.Publicacion_Cod = D.Publicacion_Cod AND D.Factura_Nro IS NOT NULL
 GROUP BY C.Publicacion_Cod
 
+--CREO TABLA FACTURACION
+CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
+[Id_Factura][numeric](18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Total_Factura][numeric](18,2) NOT NULL,
+[Total_Comisiones][numeric](18,2) NULL,
+[Total_Visibilidad][numeric](18,2) NULL,
+[Fecha][datetime] NOT NULL,
 
+CONSTRAINT [PK_Facturacion_Id_Factura] PRIMARY KEY(Id_Factura),
+CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
+)
+
+--INSERTO LAS FACTURAS DE CLIENTES
+INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Factura, Id_Usuario, Total_Comisiones, Total_Visibilidad,Total_Factura, Fecha)
+SELECT FD.Id_Factura, LOS_OPTIMISTAS.obtenerDNI(E.Publ_Cli_Dni),SUM(FD.Comision * FD.Cantidad_Venta) AS Total_Comisiones, 
+	SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Visibilidad,
+	SUM(FD.Comision * FD.Cantidad_Venta) + SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Factura,
+	E.Factura_Fecha
+FROM LOS_OPTIMISTAS.Facturacion_Detalle FD INNER JOIN (SELECT Factura_Nro, Publ_Cli_Dni, Factura_Fecha FROM gd_esquema.Maestra
+WHERE Publ_Cli_Dni IS NOT NULL AND Factura_Nro IS NOT NULL
+GROUP BY Factura_Nro, Publ_Cli_Dni, Factura_Fecha) E
+ON FD.Id_Factura = E.Factura_Nro
+GROUP BY FD.Id_Factura, E.Publ_Cli_Dni, E.Factura_Fecha
+
+--INSERTO LAS FACTURAS DE EMPRESAS
+INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Factura, Id_Usuario, Total_Comisiones, Total_Visibilidad,Total_Factura, Fecha)
+SELECT FD.Id_Factura,LOS_OPTIMISTAS.obtenerCuit(E.Publ_Empresa_Cuit), SUM(FD.Comision * FD.Cantidad_Venta) AS Total_Comisiones, 
+	SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Visibilidad,
+	SUM(FD.Comision * FD.Cantidad_Venta) + SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Factura,
+	E.Factura_Fecha
+FROM LOS_OPTIMISTAS.Facturacion_Detalle FD INNER JOIN (SELECT Factura_Nro, Publ_Empresa_Cuit, Factura_Fecha FROM gd_esquema.Maestra
+WHERE Publ_Empresa_Cuit IS NOT NULL AND Factura_Nro IS NOT NULL
+GROUP BY Factura_Nro, Publ_Empresa_Cuit, Factura_Fecha) E
+ON FD.Id_Factura = E.Factura_Nro
+GROUP BY FD.Id_Factura, E.Publ_Empresa_Cuit, E.Factura_Fecha
 
 --CREO TABLA FACTURACION PENDIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
