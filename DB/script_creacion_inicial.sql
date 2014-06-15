@@ -480,9 +480,10 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 --Cargo factura detalle con subastas
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Descripcion_Visibilidad)
 SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Oferta_Monto),MAX(C.Publicacion_Visibilidad_Porcentaje),
-	MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje),MAX(C.Publicacion_Visibilidad_Desc)
+	CONVERT(numeric(18,2),MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje)),MAX(C.Publicacion_Visibilidad_Desc)
 FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje = D.Item_Factura_Monto AND C.Publicacion_Cod = D.Publicacion_Cod,
+	CONVERT(numeric(18,2),C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje) = D.Item_Factura_Monto AND 
+	C.Publicacion_Cod = D.Publicacion_Cod,
 	gd_esquema.Maestra E
 WHERE C.Publicacion_Tipo = 'Subasta' AND C.Cli_Dni IS NOT NULL AND C.Oferta_Monto IS NOT NULL AND C.Publicacion_Cod = E.Publicacion_Cod
 	AND E.Factura_Nro IS NOT NULL
@@ -492,10 +493,9 @@ GROUP BY C.Publicacion_Cod
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
 	Comision,Cantidad_Venta,Descripcion_Visibilidad)
 SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_Porcentaje,
-	Publicacion_Precio * Publicacion_Visibilidad_Porcentaje, Item_Factura_Cantidad, Publicacion_Visibilidad_Desc
+	CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje), Item_Factura_Cantidad, Publicacion_Visibilidad_Desc
 FROM gd_esquema.Maestra
-	
-WHERE Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad = Item_Factura_Monto
+WHERE CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad) = Item_Factura_Monto
 	AND Calificacion_Codigo IS NULL AND Publicacion_Tipo = 'Compra Inmediata'
 	AND Factura_Nro IS NOT NULL
 
@@ -523,9 +523,9 @@ REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
 
 --INSERTO LAS FACTURAS DE CLIENTES
 INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Factura, Id_Usuario, Total_Comisiones, Total_Visibilidad,Total_Factura, Fecha)
-SELECT FD.Id_Factura, LOS_OPTIMISTAS.obtenerDNI(E.Publ_Cli_Dni),SUM(FD.Comision * FD.Cantidad_Venta) AS Total_Comisiones, 
-	SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Visibilidad,
-	SUM(FD.Comision * FD.Cantidad_Venta) + SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Factura,
+SELECT FD.Id_Factura, LOS_OPTIMISTAS.obtenerDNI(E.Publ_Cli_Dni),CONVERT(numeric(18,2),SUM(FD.Comision * FD.Cantidad_Venta)) AS Total_Comisiones, 
+	CONVERT(numeric(18,2),SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta)) AS Total_Visibilidad,
+	CONVERT(numeric(18,2),SUM(FD.Comision * FD.Cantidad_Venta)) + CONVERT(numeric(18,2),SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta)) AS Total_Factura,
 	E.Factura_Fecha
 FROM LOS_OPTIMISTAS.Facturacion_Detalle FD INNER JOIN (SELECT Factura_Nro, Publ_Cli_Dni, Factura_Fecha FROM gd_esquema.Maestra
 WHERE Publ_Cli_Dni IS NOT NULL AND Factura_Nro IS NOT NULL
@@ -535,9 +535,9 @@ GROUP BY FD.Id_Factura, E.Publ_Cli_Dni, E.Factura_Fecha
 
 --INSERTO LAS FACTURAS DE EMPRESAS
 INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Factura, Id_Usuario, Total_Comisiones, Total_Visibilidad,Total_Factura, Fecha)
-SELECT FD.Id_Factura,LOS_OPTIMISTAS.obtenerCuit(E.Publ_Empresa_Cuit), SUM(FD.Comision * FD.Cantidad_Venta) AS Total_Comisiones, 
-	SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Visibilidad,
-	SUM(FD.Comision * FD.Cantidad_Venta) + SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta) AS Total_Factura,
+SELECT FD.Id_Factura,LOS_OPTIMISTAS.obtenerCuit(E.Publ_Empresa_Cuit), CONVERT(numeric(18,2),SUM(FD.Comision * FD.Cantidad_Venta)) AS Total_Comisiones, 
+	CONVERT(numeric(18,2),SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta)) AS Total_Visibilidad,
+	CONVERT(numeric(18,2),SUM(FD.Comision * FD.Cantidad_Venta)) + CONVERT(numeric(18,2),SUM(FD.Monto_Visibilidad * FD.Cantidad_Venta)) AS Total_Factura,
 	E.Factura_Fecha
 FROM LOS_OPTIMISTAS.Facturacion_Detalle FD INNER JOIN (SELECT Factura_Nro, Publ_Empresa_Cuit, Factura_Fecha FROM gd_esquema.Maestra
 WHERE Publ_Empresa_Cuit IS NOT NULL AND Factura_Nro IS NOT NULL
@@ -561,6 +561,10 @@ REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
 CONSTRAINT [FK_Facturacion_Pendiente_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
 REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
 )
+-- SE VERIFICO QUE AL EJECUTAR
+--SELECT TOP 1 * FROM gd_esquema.Maestra M
+--WHERE (SELECT TOP 1 1 FROM LOS_OPTIMISTAS.Facturacion_Detalle FD WHERE FD.Id_Publicacion = M.Publicacion_Cod) != 1
+--SIGNIFICA QUE NO HAY PENDIENTE DE FACTURACION
 
 --CREO TABLA TIPO DE PAGO
 CREATE TABLE [LOS_OPTIMISTAS].[Tipo_Pago](
@@ -597,32 +601,8 @@ REFERENCES [LOS_OPTIMISTAS].[Detalle_Tarjeta](Id_Detalle_Tarjeta),
 CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
-	
---CREO TABLA HISTORIAL DE COMPRAS
-CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
-[Id_Vendedor][varchar](20) NOT NULL,
-[Id_Comprador][varchar](20) NOT NULL,
-[Id_Publicacion][numeric](18,0) NOT NULL,
-[Id_Articulo][numeric](18,0) NOT NULL,
-[Compra_Cantidad][numeric](18,0) NOT NULL,
-[Compra_Fecha][smalldatetime] NOT NULL,
-
-CONSTRAINT [FK_Historial_Compra_Id_Vendedor] FOREIGN KEY(Id_Vendedor)
-REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
-CONSTRAINT [FK_Historial_Compra_Id_Comprador] FOREIGN KEY(Id_Comprador)
-REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
-CONSTRAINT [FK_Historial_Compra_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
-CONSTRAINT [FK_Historial_Compra_Id_Articulo] FOREIGN KEY(Id_Articulo)
-REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
-)
---COMPRAS POR CLIENTES A CLIENTES
-INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo, Compra_Cantidad, Compra_Fecha)
-select LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
-FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publicacion_Tipo != 'Subasta'
-
---COMPRAS POR CLIENTES A EMPRESAS
-INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo,Compra_Cantidad, Compra_Fecha)
-select LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
-FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publicacion_Tipo != 'Subasta'
-
+INSERT INTO LOS_OPTIMISTAS.Forma_Pago(Id_Factura,Id_Tipo_Pago)
+SELECT Id_Factura, Id_Tipo_Pago FROM LOS_OPTIMISTAS.Facturacion F INNER JOIN
+	(SELECT Factura_Nro, Forma_Pago_Desc FROM gd_esquema.Maestra
+	GROUP BY Factura_Nro, Forma_Pago_Desc) M ON F.Id_Factura = M.Factura_Nro 
+	INNER JOIN LOS_OPTIMISTAS.Tipo_Pago TP ON UPPER(M.Forma_Pago_Desc) = UPPER(TP.Descripcion)
