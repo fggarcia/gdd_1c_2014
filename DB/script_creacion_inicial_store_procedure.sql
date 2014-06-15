@@ -170,10 +170,10 @@ BEGIN
 			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
 			
 			WHERE
-			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social=@p_Razon_Social ))
-			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit= @p_Cuit ))
-			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail =@p_Email))
-			AND  (Empr.ID_Usuario= Dom_Mail.Id_Usuario)
+			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social like @p_Razon_Social  + '%'))
+			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit = @p_Cuit ))
+			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail like @p_Email  + '%'))
+			AND  (Empr.ID_Usuario = Dom_Mail.Id_Usuario)
 			AND (Usar.Id_Usuario = Empr.ID_Usuario)
 			AND (Usar.Habilitado = 1)
 			
