@@ -92,7 +92,6 @@ GO
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
 (
-(
 @p_Nombre varchar(255) = null,
 @p_Apellido varchar(255)= null,
 @p_Tipo_Documento varchar(6)= null,
