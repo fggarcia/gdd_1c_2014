@@ -47,7 +47,6 @@ namespace FrbaCommerce.Abm_Cliente
         public static void modificar(string nombre, string apellido, string domicilio, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password, string usuario)
         {
             SqlCommand command = new SqlCommand();
-            
             command.CommandText = Constantes.procedimientoModificarCliente;
             command.Parameters.AddWithValue("@p_Nombre", nombre);
             command.Parameters.AddWithValue("@p_Apellido", apellido);
@@ -63,10 +62,13 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Localidad", localidad);
             command.Parameters.AddWithValue("@p_Password", password);
             command.Parameters.AddWithValue("@p_Id_Usuario", usuario);
+
             if (diaN != "" & mesN != "" & anioN != "")
             {
                 command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
             }
+            else command.Parameters.AddWithValue("@p_Fecha_Nacimiento", "");
+    
             Procedimientos.ejecutarStoredProcedure(command, "Modificación de cliente", true);
         }
 
