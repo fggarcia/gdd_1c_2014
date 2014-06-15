@@ -38,23 +38,7 @@ namespace FrbaCommerce
 
         public static bool validarFechaNacimiento(string dia, string mes, string anio)
         {
-            if (Convert.ToInt32(dia) < 1 || Convert.ToInt32(dia) > 31)
-            {
-                MessageBox.Show("Verifique el día en la fecha de Nacimiento");
-                return false;
-            }
-
-            if (Convert.ToInt32(mes) < 1 || Convert.ToInt32(mes) > 12)
-            {
-                MessageBox.Show("Verifique el mes en la fecha de Nacimiento");
-                return false;
-            }
-
-            if (Convert.ToInt32(anio) < 1900 || Convert.ToInt32(anio) > 2014)
-            {
-                MessageBox.Show("Verifique el año en la fecha de Nacimiento");
-                return false;
-            }
+            validarFecha(dia, mes, anio, "Nacimiento");
 
             DateTime fechaNac = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia));
             if (fechaNac > Variables.FechaHoraSistema)
@@ -64,6 +48,33 @@ namespace FrbaCommerce
             }
             else return true;
         }
+
+
+        //Validacion formato de fecha correcto
+
+        public static bool validarFecha(string dia, string mes, string anio, string fecha)
+        {
+            if (Convert.ToInt32(dia) < 1 || Convert.ToInt32(dia) > 31)
+            {
+                MessageBox.Show("Verifique el día en la fecha de {0}", fecha);
+                return false;
+            }
+
+            if (Convert.ToInt32(mes) < 1 || Convert.ToInt32(mes) > 12)
+            {
+                MessageBox.Show("Verifique el mes en la fecha de {0}", fecha);
+                return false;
+            }
+
+            if (Convert.ToInt32(anio) < 1900 || Convert.ToInt32(anio) > 2014)
+            {
+                MessageBox.Show("Verifique el año en la fecha de {0}", fecha);
+                return false;
+            }
+
+            else return true;
+        }
+
 
         //Validacion longitud de Username y Password
         public static bool validarUsername(string username)

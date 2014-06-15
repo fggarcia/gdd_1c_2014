@@ -32,7 +32,7 @@ namespace FrbaCommerce.Abm_Empresa
             command.Parameters.AddWithValue("@p_Piso", piso);
             command.Parameters.AddWithValue("@p_Depto", depto);
             command.Parameters.AddWithValue("@p_Id_Usuario", username);
-            command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Password", Login.FormLogin.getSha256(password));
             Procedimientos.ejecutarStoredProcedure(command, "Creación de Empresa", true);
         }
 
@@ -51,13 +51,16 @@ namespace FrbaCommerce.Abm_Empresa
             command.Parameters.AddWithValue("@p_Domicilio", calle);
             command.Parameters.AddWithValue("@p_Calle", nroCalle);
             command.Parameters.AddWithValue("@p_Piso", piso);
-            command.Parameters.AddWithValue("@p_Fecha_Creacion", Procedimientos.convertirFecha(diaN, mesN, anioN));
+            if (diaN != "" & mesN != "" & anioN != "")
+            {
+                command.Parameters.AddWithValue("@p_Fecha_Creacion", Procedimientos.convertirFecha(diaN, mesN, anioN));
+            }
             command.Parameters.AddWithValue("@p_Depto", depto);
             command.Parameters.AddWithValue("@p_CP", codP);
             command.Parameters.AddWithValue("@p_Localidad", localidad);
             command.Parameters.AddWithValue("@p_Ciudad", ciudad);
             command.Parameters.AddWithValue("@p_Mail", mail);
-            command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Password", Login.FormLogin.getSha256(password));
             Procedimientos.ejecutarStoredProcedure(command, "Modificación de empresa", true);
         }
 
@@ -76,7 +79,7 @@ namespace FrbaCommerce.Abm_Empresa
         //**********************************************************
         //*  VALIDACION DE DATOS PARA EL REGISTRO DE NUEVA EMPRESA
         //**********************************************************
-        
+
         public static bool validarCampos(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string username, string password)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
@@ -151,10 +154,9 @@ namespace FrbaCommerce.Abm_Empresa
                 return false;
             }
 
-            //Validacion formato de fecha de nacimiento correcto
-            if (Validaciones.validarFechaNacimiento(diaN, mesN, anioN) == false)
+            //Validacion formato de fecha correcto
+            if (Validaciones.validarFecha(diaN, mesN, anioN, "Creación") == false)
             {
-                MessageBox.Show("Por favor verifique la fecha de nacimiento ingresada");
                 return false;
             }
 
@@ -198,7 +200,172 @@ namespace FrbaCommerce.Abm_Empresa
             //Validacion username ya se encuentra en base de datos
             //TODO Si el username es autogenerado (lo inscribe el administrador) deberá autogenerarse nuevamente
 
-            if ( !Validaciones.validacionUsernameYaExiste(conn, username)) return false;
+            if (!Validaciones.validacionUsernameYaExiste(conn, username)) return false;
+
+            conn.Close();
+            return true;
+        }
+
+
+        //**********************************************************
+        //*  VALIDACION DE DATOS PARA LA MODIFICACION DE UNA EMPRESA
+        //**********************************************************
+        
+        public static bool validarCamposModificacion(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string username, string password)
+        {
+            SqlConnection conn = Procedimientos.abrirConexion();
+
+            //Validacion de tipos de datos numéricos correctos
+
+            if (diaN != "")
+            {
+                if (Validaciones.validarNumero(diaN) == false)
+                {
+                    MessageBox.Show("Verifique el día en la fecha de Creacion");
+                    return false;
+                }
+                if (mesN == "" || anioN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Creación");
+            }
+
+            if (mesN != "")
+            {
+                if (Validaciones.validarNumero(mesN) == false)
+                {
+                    MessageBox.Show("Verifique el día en la fecha de Creacion");
+                    return false;
+                }
+                if (diaN == "" || anioN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Creación");
+            }
+
+            if (anioN != "")
+            {
+                if (Validaciones.validarNumero(anioN) == false)
+                {
+                    MessageBox.Show("Verifique el día en la fecha de Creacion");
+                    return false;
+                }
+                if (diaN == "" || mesN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Creación");
+            }
+
+            if (piso != "")
+            {
+                if (Validaciones.validarNumero(piso) == false)
+                {
+                    MessageBox.Show("Verifique el piso del domicilio ingresado");
+                    return false;
+                }
+            }
+
+            if (cuit != "")
+            {
+                if (Validaciones.validarNumero(cuit) == false)
+                {
+                    MessageBox.Show("Verifique el CUIT ingresado");
+                    return false;
+                }
+            }
+
+            if (telefono != "")
+            {
+                if (Validaciones.validarNumero(telefono) == false)
+                {
+                    MessageBox.Show("Verifique el teléfono ingresado");
+                    return false;
+                }
+            }
+
+            //Validacion de tipos de datos cadena correctos
+            if (nombreContacto != "")
+            {
+                if (Validaciones.validarString(nombreContacto) == false)
+                {
+                    MessageBox.Show("Verifique el nombre ingresado");
+                    return false;
+                }
+            }
+
+            if (localidad != "")
+            {
+                if (Validaciones.validarString(localidad) == false)
+                {
+                    MessageBox.Show("Verifique la localidad ingresada");
+                    return false;
+                }
+            }
+
+            if (ciudad != "")
+            {
+                if (Validaciones.validarString(ciudad) == false)
+                {
+                    MessageBox.Show("Verifique la ciudad ingresada");
+                    return false;
+                }
+            }
+
+            //Validacion de formato de mail correcto
+            if (mail != "")
+            {
+                if (Validaciones.validarMail(mail) == false)
+                {
+                    MessageBox.Show("Por favor verifique el mail ingresado");
+                    return false;
+                }
+            }
+
+            //Validacion formato de fecha correcto
+            if (diaN != "" & mesN != "" & anioN != "")
+            {
+                if (Validaciones.validarFecha(diaN, mesN, anioN, "Creación") == false)
+                {
+                    return false;
+                }
+            }
+
+            //Validacion longitud de Password
+            if (password != "")
+            {
+                if (Validaciones.validarPassword(password) == false)
+                {
+                    MessageBox.Show("La contraseña debe contener al menos 6 caracteres");
+                    return false;
+                }
+            }
+
+            //Validacion telefono ya se encuentra en base de datos
+            if (telefono != "")
+            {
+                Boolean unicoTelefono = Procedimientos.esUnico("LOS_OPTIMISTAS.Dom_Mail", "Telefono", telefono);
+                if (unicoTelefono == false)
+                {
+                    MessageBox.Show("El número de teléfono ingresado ya existe en la base de datos");
+                    return false;
+                }
+            }
+
+            //Validacion cuit ya se encuentra en base de datos
+            if (cuit != "")
+            {
+                Boolean unicoCuit = Procedimientos.esUnico("LOS_OPTIMISTAS.Empresa", "Cuit", cuit);
+                if (unicoCuit == false)
+                {
+                    MessageBox.Show("El CUIT ingresado ya existe en la base de datos");
+                    return false;
+                }
+            }
+
+            //Validacion razón social ya se encuentra en base de datos
+            if (razonSocial != "")
+            {
+                Boolean unicaRazonSocial = Procedimientos.esUnico("LOS_OPTIMISTAS.Empresa", "Razon_Social", razonSocial);
+                if (unicaRazonSocial == false)
+                {
+                    MessageBox.Show("La razón social ingresada ya existe, por favor valide los datos");
+                    return false;
+                }
+            }
 
             conn.Close();
             return true;
