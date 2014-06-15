@@ -65,7 +65,7 @@ namespace FrbaCommerce.Abm_Empresa
         //*  ELIMINAR EMPRESA
         //**********************************************************
 
-        public static void eliminarEmpresa(string idUsuario)
+        public static void eliminar(string idUsuario)
         {
             SqlCommand command = new SqlCommand();
             command.CommandText = Constantes.procedimientoBajaUsuario;
@@ -222,7 +222,7 @@ namespace FrbaCommerce.Abm_Empresa
             if (cuit == string.Empty)
                 command.Parameters.AddWithValue("@p_Cuit", null);
             else
-                command.Parameters.AddWithValue("@@p_Cuit", cuit);
+                command.Parameters.AddWithValue("@p_Cuit", cuit);
 
             if (mail == string.Empty)
                 command.Parameters.AddWithValue("@p_Email", null);

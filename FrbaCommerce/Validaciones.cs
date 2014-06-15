@@ -40,19 +40,19 @@ namespace FrbaCommerce
         {
             if (Convert.ToInt32(dia) < 1 || Convert.ToInt32(dia) > 31)
             {
-                MessageBox.Show("Los siguientes campos de la Fecha de Nacimiento son erroneos: Día");
+                MessageBox.Show("Verifique el día en la fecha de Nacimiento");
                 return false;
             }
 
             if (Convert.ToInt32(mes) < 1 || Convert.ToInt32(mes) > 12)
             {
-                MessageBox.Show("Los siguientes campos de la Fecha de Nacimiento son erroneos: Mes");
+                MessageBox.Show("Verifique el mes en la fecha de Nacimiento");
                 return false;
             }
 
             if (Convert.ToInt32(anio) < 1900 || Convert.ToInt32(anio) > 2014)
             {
-                MessageBox.Show("Los siguientes campos de la Fecha de Nacimiento son erroneos: Año");
+                MessageBox.Show("Verifique el año en la fecha de Nacimiento");
                 return false;
             }
 

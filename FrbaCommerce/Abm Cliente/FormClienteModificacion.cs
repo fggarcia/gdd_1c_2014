@@ -31,12 +31,15 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void FormABMClienteModificacion_Load_1(object sender, EventArgs e)
         {
-
+            Procedimientos.LlenarComboBox(comboBoxTdoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
         }
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            Cliente.modificar(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, textPassword.Text, idUsuario);
+            if (Cliente.validarCamposModificacion(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, textPassword.Text))
+            {
+                Cliente.modificar(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, textPassword.Text, idUsuario);
+            }
         }
     }
 }

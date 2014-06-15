@@ -120,6 +120,11 @@ namespace FrbaCommerce.Login
              }
 
             }
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+
+        }
         }
         
         

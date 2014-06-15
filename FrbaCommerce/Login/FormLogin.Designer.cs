@@ -175,6 +175,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "FormLogin";
             this.Text = "FRBA-Commerce";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

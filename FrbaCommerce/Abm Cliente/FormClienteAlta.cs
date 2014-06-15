@@ -24,7 +24,7 @@ namespace FrbaCommerce.Abm_Cliente
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
             
-            if (Cliente.validarCampos(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password))
+            if (Cliente.validarCamposCreacion(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password))
             {
                 Cliente.crear(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password);
             }
@@ -35,6 +35,11 @@ namespace FrbaCommerce.Abm_Cliente
             FormABMCliente formCliente = new FormABMCliente();
             this.Hide();
             formCliente.ShowDialog();
+        }
+
+        private void groupBoxDatos_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

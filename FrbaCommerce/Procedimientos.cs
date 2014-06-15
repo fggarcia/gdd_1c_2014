@@ -199,8 +199,11 @@ namespace FrbaCommerce
 
         public static void limpiarDataGridViews(DataGridView dgv)
         {
-            DataTable dt = (DataTable)dgv.DataSource;
-            dt.Clear();
+            if (dgv.CurrentCell != null)
+            {
+                DataTable dt = (DataTable)dgv.DataSource;
+                dt.Clear();
+            }
         }
 
         public static DateTime convertirFecha(string dia, string mes, string anio)

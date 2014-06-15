@@ -223,6 +223,7 @@
             this.groupBoxDatos.Size = new System.Drawing.Size(678, 300);
             this.groupBoxDatos.TabIndex = 59;
             this.groupBoxDatos.TabStop = false;
+            this.groupBoxDatos.Enter += new System.EventHandler(this.groupBoxDatos_Enter);
             // 
             // labelCalle
             // 

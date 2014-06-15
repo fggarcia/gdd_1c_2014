@@ -31,21 +31,18 @@
             this.labelRazonSocial = new System.Windows.Forms.Label();
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.groupBoxTituloBusqueda = new System.Windows.Forms.GroupBox();
-            this.textBoxApellido = new System.Windows.Forms.TextBox();
-            this.textBoxEmail = new System.Windows.Forms.TextBox();
+            this.textCuit = new System.Windows.Forms.TextBox();
+            this.textMail = new System.Windows.Forms.TextBox();
             this.labelEmail = new System.Windows.Forms.Label();
             this.labelCuit = new System.Windows.Forms.Label();
-            this.textBoxNombre = new System.Windows.Forms.TextBox();
+            this.textRazonSocial = new System.Windows.Forms.TextBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonEliminar = new System.Windows.Forms.Button();
             this.buttonVolver = new System.Windows.Forms.Button();
             this.buttonModificar = new System.Windows.Forms.Button();
-            this.dgvCliente = new System.Windows.Forms.DataGridView();
-            this.ColumnRazonSocial = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCuit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvEmpresa = new System.Windows.Forms.DataGridView();
             this.groupBoxTituloBusqueda.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCliente)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmpresa)).BeginInit();
             this.SuspendLayout();
             // 
             // labelRazonSocial
@@ -60,42 +57,43 @@
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(506, 202);
+            this.buttonBuscar.Location = new System.Drawing.Point(706, 202);
             this.buttonBuscar.Name = "buttonBuscar";
             this.buttonBuscar.Size = new System.Drawing.Size(106, 27);
             this.buttonBuscar.TabIndex = 23;
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
             // 
             // groupBoxTituloBusqueda
             // 
             this.groupBoxTituloBusqueda.Controls.Add(this.labelRazonSocial);
-            this.groupBoxTituloBusqueda.Controls.Add(this.textBoxApellido);
-            this.groupBoxTituloBusqueda.Controls.Add(this.textBoxEmail);
+            this.groupBoxTituloBusqueda.Controls.Add(this.textCuit);
+            this.groupBoxTituloBusqueda.Controls.Add(this.textMail);
             this.groupBoxTituloBusqueda.Controls.Add(this.labelEmail);
             this.groupBoxTituloBusqueda.Controls.Add(this.labelCuit);
-            this.groupBoxTituloBusqueda.Controls.Add(this.textBoxNombre);
+            this.groupBoxTituloBusqueda.Controls.Add(this.textRazonSocial);
             this.groupBoxTituloBusqueda.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.groupBoxTituloBusqueda.Location = new System.Drawing.Point(28, 19);
             this.groupBoxTituloBusqueda.Name = "groupBoxTituloBusqueda";
-            this.groupBoxTituloBusqueda.Size = new System.Drawing.Size(584, 156);
+            this.groupBoxTituloBusqueda.Size = new System.Drawing.Size(784, 156);
             this.groupBoxTituloBusqueda.TabIndex = 17;
             this.groupBoxTituloBusqueda.TabStop = false;
             this.groupBoxTituloBusqueda.Text = "Filtrar búsqueda";
             // 
-            // textBoxApellido
+            // textCuit
             // 
-            this.textBoxApellido.Location = new System.Drawing.Point(384, 41);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(180, 20);
-            this.textBoxApellido.TabIndex = 6;
+            this.textCuit.Location = new System.Drawing.Point(578, 41);
+            this.textCuit.Name = "textCuit";
+            this.textCuit.Size = new System.Drawing.Size(180, 20);
+            this.textCuit.TabIndex = 6;
             // 
-            // textBoxEmail
+            // textMail
             // 
-            this.textBoxEmail.Location = new System.Drawing.Point(119, 94);
-            this.textBoxEmail.Name = "textBoxEmail";
-            this.textBoxEmail.Size = new System.Drawing.Size(180, 20);
-            this.textBoxEmail.TabIndex = 8;
+            this.textMail.Location = new System.Drawing.Point(119, 94);
+            this.textMail.Name = "textMail";
+            this.textMail.Size = new System.Drawing.Size(180, 20);
+            this.textMail.TabIndex = 8;
             // 
             // labelEmail
             // 
@@ -111,18 +109,18 @@
             // 
             this.labelCuit.AutoSize = true;
             this.labelCuit.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelCuit.Location = new System.Drawing.Point(325, 44);
+            this.labelCuit.Location = new System.Drawing.Point(519, 44);
             this.labelCuit.Name = "labelCuit";
             this.labelCuit.Size = new System.Drawing.Size(35, 13);
             this.labelCuit.TabIndex = 1;
             this.labelCuit.Text = "CUIT:";
             // 
-            // textBoxNombre
+            // textRazonSocial
             // 
-            this.textBoxNombre.Location = new System.Drawing.Point(119, 41);
-            this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(180, 20);
-            this.textBoxNombre.TabIndex = 5;
+            this.textRazonSocial.Location = new System.Drawing.Point(119, 41);
+            this.textRazonSocial.Name = "textRazonSocial";
+            this.textRazonSocial.Size = new System.Drawing.Size(180, 20);
+            this.textRazonSocial.TabIndex = 5;
             // 
             // buttonLimpiar
             // 
@@ -132,15 +130,17 @@
             this.buttonLimpiar.TabIndex = 22;
             this.buttonLimpiar.Text = "Limpiar";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // buttonEliminar
             // 
-            this.buttonEliminar.Location = new System.Drawing.Point(262, 482);
+            this.buttonEliminar.Location = new System.Drawing.Point(365, 482);
             this.buttonEliminar.Name = "buttonEliminar";
             this.buttonEliminar.Size = new System.Drawing.Size(106, 37);
             this.buttonEliminar.TabIndex = 19;
             this.buttonEliminar.Text = "Eliminar";
             this.buttonEliminar.UseVisualStyleBackColor = true;
+            this.buttonEliminar.Click += new System.EventHandler(this.buttonEliminar_Click);
             // 
             // buttonVolver
             // 
@@ -150,63 +150,44 @@
             this.buttonVolver.TabIndex = 21;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // buttonModificar
             // 
-            this.buttonModificar.Location = new System.Drawing.Point(507, 482);
+            this.buttonModificar.Location = new System.Drawing.Point(707, 482);
             this.buttonModificar.Name = "buttonModificar";
             this.buttonModificar.Size = new System.Drawing.Size(105, 37);
             this.buttonModificar.TabIndex = 20;
             this.buttonModificar.Text = "Modificar";
             this.buttonModificar.UseVisualStyleBackColor = true;
+            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
-            // dgvCliente
+            // dgvEmpresa
             // 
-            this.dgvCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCliente.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnRazonSocial,
-            this.ColumnCuit,
-            this.ColumnEmail});
-            this.dgvCliente.Location = new System.Drawing.Point(28, 244);
-            this.dgvCliente.Name = "dgvCliente";
-            this.dgvCliente.Size = new System.Drawing.Size(584, 204);
-            this.dgvCliente.TabIndex = 18;
-            // 
-            // ColumnRazonSocial
-            // 
-            this.ColumnRazonSocial.HeaderText = "Razón Social";
-            this.ColumnRazonSocial.Name = "ColumnRazonSocial";
-            this.ColumnRazonSocial.Width = 180;
-            // 
-            // ColumnCuit
-            // 
-            this.ColumnCuit.HeaderText = "CUIT";
-            this.ColumnCuit.Name = "ColumnCuit";
-            this.ColumnCuit.Width = 180;
-            // 
-            // ColumnEmail
-            // 
-            this.ColumnEmail.HeaderText = "Email";
-            this.ColumnEmail.Name = "ColumnEmail";
-            this.ColumnEmail.Width = 180;
+            this.dgvEmpresa.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvEmpresa.Location = new System.Drawing.Point(28, 244);
+            this.dgvEmpresa.Name = "dgvEmpresa";
+            this.dgvEmpresa.Size = new System.Drawing.Size(784, 204);
+            this.dgvEmpresa.TabIndex = 18;
+            this.dgvEmpresa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpresa_CellClick);
             // 
             // FormEmpresaModElim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 538);
+            this.ClientSize = new System.Drawing.Size(846, 538);
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.groupBoxTituloBusqueda);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonEliminar);
             this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.buttonModificar);
-            this.Controls.Add(this.dgvCliente);
+            this.Controls.Add(this.dgvEmpresa);
             this.Name = "FormEmpresaModElim";
             this.Text = "Búsqueda de Empresa";
             this.groupBoxTituloBusqueda.ResumeLayout(false);
             this.groupBoxTituloBusqueda.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCliente)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmpresa)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -216,18 +197,15 @@
         private System.Windows.Forms.Label labelRazonSocial;
         private System.Windows.Forms.Button buttonBuscar;
         private System.Windows.Forms.GroupBox groupBoxTituloBusqueda;
-        private System.Windows.Forms.TextBox textBoxApellido;
-        private System.Windows.Forms.TextBox textBoxEmail;
+        private System.Windows.Forms.TextBox textCuit;
+        private System.Windows.Forms.TextBox textMail;
         private System.Windows.Forms.Label labelEmail;
         private System.Windows.Forms.Label labelCuit;
-        private System.Windows.Forms.TextBox textBoxNombre;
+        private System.Windows.Forms.TextBox textRazonSocial;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonEliminar;
         private System.Windows.Forms.Button buttonVolver;
         private System.Windows.Forms.Button buttonModificar;
-        private System.Windows.Forms.DataGridView dgvCliente;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRazonSocial;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCuit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnEmail;
+        private System.Windows.Forms.DataGridView dgvEmpresa;
     }
 }

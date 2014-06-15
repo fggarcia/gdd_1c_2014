@@ -17,6 +17,7 @@ namespace FrbaCommerce.Abm_Cliente
         //*  GUARDAR DATOS DE CLIENTE EN BASE DE DATOS
         //**********************************************************
 
+        //TODO ver donde va a quedar el procedimiento getSha256
         public static void crear(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
             SqlCommand command = new SqlCommand();
@@ -35,7 +36,7 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_CP", codP);
             command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
             command.Parameters.AddWithValue("@p_Id_Usuario", username);
-            command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Password", Login.FormLogin.getSha256(password));
             //command.Parameters.AddWithValue("@p_Ultima_Fecha", diaYhora);
             Procedimientos.ejecutarStoredProcedure(command, "Creación de cliente", true);
         }
@@ -44,6 +45,7 @@ namespace FrbaCommerce.Abm_Cliente
         //*  MODIFICAR DATOS DE CLIENTE
         //**********************************************************
 
+        //TODO ver donde va a quedar el procedimiento getSha256
         public static void modificar(string nombre, string apellido, string domicilio, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password, string usuario)
         {
             SqlCommand command = new SqlCommand();
@@ -60,7 +62,7 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Depto", deptoCalle);
             command.Parameters.AddWithValue("@p_Cp", codP);
             command.Parameters.AddWithValue("@p_Localidad", localidad);
-            command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Password", Login.FormLogin.getSha256(password));
             command.Parameters.AddWithValue("@p_Id_Usuario", usuario);
 
             if (diaN != "" & mesN != "" & anioN != "")
@@ -85,13 +87,169 @@ namespace FrbaCommerce.Abm_Cliente
         }
 
         //**********************************************************
-        //*  VALIDACION DE DATOS PARA EL REGISTRO DE NUEVO CLIENTE
+        //*  VALIDACION DE DATOS PARA LA MODIFICACION DE UN CLIENTE
         //**********************************************************
 
-        public static bool validarCampos(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
+        public static bool validarCamposModificacion(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
             
+
+            //Validacion de tipos de datos numéricos correctos
+            if (diaN != "")
+            {
+                if (Validaciones.validarNumero(diaN) == false)
+                {
+                    MessageBox.Show("Verifique el día en la fecha de Nacimiento");
+                    return false;
+                }
+                if (mesN == "" || anioN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+            }
+
+            if (mesN != "")
+            {
+                if (Validaciones.validarNumero(mesN) == false)
+                {
+                    MessageBox.Show("Verifique el mes en la fecha de Nacimiento");
+                    return false;
+                }
+                if (diaN == "" || anioN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+            }
+
+            if (anioN != "")
+            {
+                if (Validaciones.validarNumero(anioN) == false)
+                {
+                    MessageBox.Show("Verifique el año en la fecha de Nacimiento");
+                    return false;
+                }
+                if (diaN == "" || mesN == "")
+                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+            }
+
+            if (pisoCalle != "")
+            {
+                if (Validaciones.validarNumero(pisoCalle) == false)
+                {
+                    MessageBox.Show("Verifique el piso de su domicilio ingresado");
+                    return false;
+                }
+            }
+
+            if (nDoc != "")
+            {
+                if (Validaciones.validarNumero(nDoc) == false)
+                {
+                    MessageBox.Show("Verifique el número de documento ingresado");
+                    return false;
+                }
+            }
+
+            if (telefono != "")
+            {
+                if (Validaciones.validarNumero(telefono) == false)
+                {
+                    MessageBox.Show("Verifique el teléfono ingresado");
+                    return false;
+                }
+            }
+
+
+            //Validacion de tipos de datos cadena correctos
+            if (nombre != "")
+            {
+                if (Validaciones.validarString(nombre) == false)
+                {
+                    MessageBox.Show("Verifique el nombre ingresado");
+                    return false;
+                }
+            }
+            if (apellido != "")
+            {
+                if (Validaciones.validarString(apellido) == false)
+                {
+                    MessageBox.Show("Verifique el apellido ingresado");
+                    return false;
+                }
+            }
+
+            if (localidad != "")
+            {
+                if (Validaciones.validarString(localidad) == false)
+                {
+                    MessageBox.Show("Verifique la localidad ingresada");
+                    return false;
+                }
+            }
+            //Validacion de formato de mail correcto
+
+            if (mail != "")
+                {
+                if (Validaciones.validarMail(mail) == false)
+                {
+                    MessageBox.Show("Por favor verifique el mail ingresado");
+                    return false;
+                }
+            }
+            //Validacion formato de fecha de nacimiento correcto
+
+            if (diaN != "" & mesN != "" & anioN != "")
+            {
+                if (Validaciones.validarFechaNacimiento(diaN, mesN, anioN) == false)
+                {
+                    return false;
+                }
+            }
+
+            //Validacion longitud de Password
+
+            if (password != "")
+            {
+                if (Validaciones.validarPassword(password) == false)
+                {
+                    MessageBox.Show("La contraseña debe contener al menos 6 caracteres");
+                    return false;
+                }
+            }
+
+            //Validacion telefono ya se encuentra en base de datos
+            if (telefono != "")
+            {
+                Boolean unicoTelefono = Procedimientos.esUnico("LOS_OPTIMISTAS.Dom_Mail", "Telefono", telefono);
+                if (unicoTelefono == false)
+                {
+                    MessageBox.Show("El número de teléfono ingresado ya existe en la base de datos");
+                    return false;
+                }
+            }
+
+            //Validacion numero y tipo de documento ya se encuentran en la base de datos
+            if (nDoc != "" || tipoDoc != "")
+            {
+                SqlCommand comm = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Cliente WHERE Dni = @nDoc AND Id_Tipo_Documento = @tipoDoc"), conn);
+                comm.Parameters.AddWithValue("@nDoc", nDoc);
+                comm.Parameters.AddWithValue("@tipoDoc", tipoDoc);
+                Int32 count = (Int32)comm.ExecuteScalar();
+                if (count != 0)
+                {
+                    MessageBox.Show("El documento ingresado ya existe, por favor valide los datos");
+                    return false;
+                }
+            }
+            conn.Close();
+            return true;
+        }
+
+        //**********************************************************
+        //*  VALIDACION DE DATOS PARA LA CREACION DE UN CLIENTE
+        //**********************************************************
+
+        public static bool validarCamposCreacion(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
+        {
+            SqlConnection conn = Procedimientos.abrirConexion();
+
             //Validacion de datos completados
             if (nombre == "" || apellido == "" || calle == "" || nroCalle == "" || diaN == "" || mesN == "" || anioN == "" || telefono == "" || nDoc == "" || codP == "" || localidad == "" || mail == "")
             {
@@ -209,6 +367,7 @@ namespace FrbaCommerce.Abm_Cliente
             conn.Close();
             return true;
         }
+
 
         //**********************************************************
         //*  CARGAR LA BUSQUEDA DE CLIENTE EN DATAGRIDVIEW
