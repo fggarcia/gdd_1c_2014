@@ -16,7 +16,7 @@ namespace FrbaCommerce
         [STAThread]
         static void Main()
         {
-            FormABMEmpresa formCabm = new FormABMEmpresa();
+            FormABMCliente formCabm = new FormABMCliente();
             formCabm.ShowDialog();
         }
     }

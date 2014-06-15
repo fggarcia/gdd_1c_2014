@@ -161,10 +161,8 @@ BEGIN
 			Empr.Cuit 'CUIT',
 			Empr.Fecha_Creacion'Fecha Creacion',
 			Dom_Mail.Mail 'Mail',
-			Dom_Mail.Cp 'Codigo Postal',
-			Dom_Mail.Domicilio 'Domicilio',
-			Dom_Mail.Localidad 'Localidad',
-			Dom_Mail.Telefono 'Telefono'
+			Dom_Mail.Domicilio 'Domicilio'
+			
 			
 			
 			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
@@ -175,8 +173,6 @@ BEGIN
 			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail like @p_Email  + '%'))
 			AND  (Empr.ID_Usuario = Dom_Mail.Id_Usuario)
 			AND (Usar.Id_Usuario = Empr.ID_Usuario)
-			AND (Usar.Localidad = Empr.Localidad)
-			AND (Usar.Telefono = Empr.Telefono)
 			AND (Usar.Habilitado = 1)
 			
  END
