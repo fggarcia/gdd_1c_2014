@@ -61,7 +61,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Usuario](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Password][varchar](64) NOT NULL,
 	[Cantidad_Login][Int] NOT NULL,
-	[Ultima_Fecha][smalldatetime] NULL,
+	[Ultima_Fecha][datetime] NULL,
 	[Habilitado][bit] NULL
 	
 	CONSTRAINT UQ_Usuarios_Id_Usuario UNIQUE(Id_Usuario)
@@ -92,7 +92,7 @@ VALUES ('admin','5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee0
 CREATE TABLE [LOS_OPTIMISTAS].[Rol](
 	[Id_Rol][Int] NOT NULL,
 	[Descripcion][varchar](20) NOT NULL,
-	[Fecha_Baja][smalldatetime] NULL
+	[Fecha_Baja][datetime] NULL
 
 	CONSTRAINT UQ_Rol_Id_Rol UNIQUE(Id_Rol)
 )
@@ -106,7 +106,7 @@ INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(3,'empresa'
 CREATE TABLE [LOS_OPTIMISTAS].[Usuario_Rol](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Id_Rol][Int] NOT NULL,
-	[Fecha_Baja][smalldatetime] NULL
+	[Fecha_Baja][datetime] NULL
 
 	CONSTRAINT UQ_Usuario_Rol_Id_Usuario UNIQUE(Id_Usuario),
 	CONSTRAINT [FK_Usuario_Rol_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -169,7 +169,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Cliente](
 	[Dni][varchar](20) NOT NULL,---El DNI y el Id_Usuario es lo mismo, los cargo igual, VER!!!! si hay que cambiar a numeric
 	[Nombre][varchar](255),
 	[Apellido][varchar](255),
-	[Fecha_Nacimiento][smalldatetime]
+	[Fecha_Nacimiento][datetime]
 	
 		CONSTRAINT [FK_Cliente_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
 		REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
@@ -194,7 +194,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Empresa](
 [ID_Usuario] [varchar](20) NOT NULL,
 [Razon_social] [varchar](255) NOT NULL ,
 [Cuit] [varchar](50) NOT NULL,
-[Fecha_Creacion][smalldatetime],
+[Fecha_Creacion][datetime],
 [Nombre_Contacto][varchar](255) NULL, 
 
 CONSTRAINT [FK_Empresa_Cliente_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -284,8 +284,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 [Id_Visibilidad][numeric](18,0)NOT NULL,
 [Id_Estado][varchar](255)NOT NULL,
 [Precio][numeric](18,2) NULL,
-[Fecha_Inicio][smalldatetime] NULL,
-[Fecha_Vencimiento][smalldatetime] NULL,
+[Fecha_Inicio][datetime] NULL,
+[Fecha_Vencimiento][datetime] NULL,
 [Pemite_Preguntas][Bit] NULL,
 [Cant_por_Venta][numeric] (18,0) NULL,
 [stock][numeric](18,0) NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Calificacion][numeric](18,0)NOT NULL,
 [Id_Usuario_Calificador][varchar](20) NOT NULL,
-[Fecha_Calificacion][smalldatetime] NULL,
+[Fecha_Calificacion][datetime] NULL,
 [Detalle][varchar] (255) NULL,
 [Calificacion][Numeric](18,0)  NULL
 
@@ -345,10 +345,10 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
 [Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Usuario][varchar](20) NOT NULL,
-[Fecha_Creacion][smalldatetime],
+[Fecha_Creacion][datetime],
 [Preg_Descripcion][varchar](255) NULL,
 [Preg_Respuesta][varchar](255) NULL,
-[Fecha_Respuesta][smalldatetime]
+[Fecha_Respuesta][datetime]
 
 CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
 
@@ -369,7 +369,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
 [Id_Publicacion][numeric] (18,0) NOT NULL,
 [Id_Usuario][varchar](20) NOT NULL,
 [Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
-[Fecha_Oferta][smalldatetime],
+[Fecha_Oferta][datetime],
 
 
 CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
@@ -390,7 +390,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
 
 [Id_Rubro][Int] NOT NULL,
 [Descripcion][varchar](60) NOT NULL,
-[Fecha_Baja][smalldatetime] NULL,
+[Fecha_Baja][datetime] NULL,
 
 CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
 )
@@ -476,12 +476,14 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
 [Total_Factura][numeric](18,2) NOT NULL,
 [Total_Comisiones][numeric](18,2) NULL,
 [Total_Visibilidad][numeric](18,2) NULL,
-[Fecha][smalldatetime] NOT NULL,
+[Fecha][datetime] NOT NULL,
 
 CONSTRAINT [PK_Facturacion_Id_Factura] PRIMARY KEY(Id_Factura),
 CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
 REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
 )
+
+
 
 --CREO TABLA FACTURACION PENDIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
@@ -535,318 +537,66 @@ REFERENCES [LOS_OPTIMISTAS].[Detalle_Tarjeta](Id_Detalle_Tarjeta),
 CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
+ 
+ --MIO
+--CREO TABLA HISTORIAL DE COMPRAS
+CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
+[Id_Vendedor][varchar](20) NOT NULL,
+[Id_Comprador][varchar](20) NOT NULL,
+[Id_Publicacion][numeric](18,0) NOT NULL,
+[Id_Articulo][numeric](18,0) NOT NULL,
+[Compra_Cantidad][numeric](18,0) NOT NULL,
+[Compra_Fecha][smalldatetime] NOT NULL,
 
-
-
-/*Store Procedure para ABM Clientes*/
-GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarClientes]
-
-(
-@p_Nombre varchar(255) = null,
-@p_Apellido varchar(255)= null,
-@p_Tipo_Documento varchar(6)=null,
-@p_Numero_Documento varchar (20) = null,
-@p_Mail varchar(255) = null
+CONSTRAINT [FK_Historial_Compra_Id_Vendedor] FOREIGN KEY(Id_Vendedor)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [FK_Historial_Compra_Id_Comprador] FOREIGN KEY(Id_Comprador)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [FK_Historial_Compra_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+CONSTRAINT [FK_Historial_Compra_Id_Articulo] FOREIGN KEY(Id_Articulo)
+REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
 )
+--COMPRAS POR CLIENTES A CLIENTES
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo, Compra_Cantidad, Compra_Fecha)
+select LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
+FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publicacion_Tipo != 'Subasta'
 
-AS
-BEGIN
-
-			SELECT DISTINCT
-			Clie.Id_Usuario 'Id Usuario',
-			Clie.Nombre 'Nombre',
-			Clie.Apellido 'Apellido',
-			Clie.Id_Tipo_Documento 'Tipo Documento',
-			Clie.Dni 'Numero Documento',
-			Clie.Fecha_Nacimiento 'Fecha Nac',
-			Dom_Mail.Mail 'Email'
- 
-			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usuar
-			
-			WHERE
-			((@p_Nombre IS NULL) OR ( clie.Nombre like @p_Nombre + '%'))
-			AND  ((@p_Apellido IS NULL) OR (clie.Apellido like @p_Apellido + '%'))
-			AND  ((@p_Tipo_Documento IS NULL) OR ( clie.Id_Tipo_Documento = @p_Tipo_Documento))
-			AND  ((@p_Numero_Documento IS NULL) OR (clie.Dni = @p_Numero_Documento))
-			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail = @p_Mail))
-			AND (clie.Id_Usuario = Dom_Mail.Id_Usuario)
-			AND (Usuar.Id_Usuario = clie.Id_Usuario)
-			AND (Usuar.Habilitado = 1)
- END
- GO
- 
- 
- GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaCliente]
-(
-@p_Nombre varchar(255) = null,
-@p_Apellido varchar(255)= null,
-@p_Tipo_Documento varchar(6)= null,
-@p_Numero_Documento varchar (20) = null,
-@p_Mail varchar(255) = null,
-@p_Telefono varchar(40)= null,
-@p_Domicilio_Calle varchar(255)= null,
-@p_Nro_Calle varchar (100) = null,
-@p_Piso numeric(18,0) = 0 ,
-@p_Depto varchar(50) = null,
-@p_Localidad varchar(255) = null,
-@p_CP varchar(50) = null,
-@p_Fecha_Nacimiento smalldatetime,
-@p_Id_Usuario varchar(20),
-@p_Password varchar(64)
-
- )
-AS
-BEGIN
-	
-	INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
-	Values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
-							
-	INSERT INTO LOS_OPTIMISTAS.Cliente(Id_Usuario,Id_Tipo_Documento,Dni,Nombre,Apellido,Fecha_Nacimiento)
-	Values(@p_Id_Usuario,@p_Tipo_Documento,@p_Numero_Documento,@p_Nombre,@p_Apellido,@p_Fecha_Nacimiento)
-	
-	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
-	Values(@p_Id_Usuario,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
-	
-END
+--COMPRAS POR CLIENTES A EMPRESAS
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo,Compra_Cantidad, Compra_Fecha)
+select LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
+FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publicacion_Tipo != 'Subasta'
 
 
+SELECT * FROM gd_esquema.Maestra WHERE Factura_Nro = 175921
+SELECT Factura_Nro, Publ_Cli_Dni, SUM(Item_Factura_Monto) FROM gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL AND Publ_Cli_Dni IS NOT NULL
+GROUP BY Factura_Nro, Publ_Cli_Dni
 
-
-GO
-/*Sirve tanto para CLIENTES como para EMPRESAS*/
-CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaUsuario]
-(
-@p_Id_Usuario varchar (20)= null
+--CREO TABLA TEMPORAL DE HISTORIAL DE SUBASTAS
+CREATE TABLE [LOS_OPTIMISTAS].[Maxima_Subasta_Temp](
+	[Id_Usuario_Vendedor][varchar](20) NOT NULL,
+	[Total_Factura][numeric](18,2) NOT NULL,
+	[Total_Comisiones][numeric](18,2) NULL,
+	[Total_Visibilidad][numeric](18,2) NULL,
+	[Fecha][datetime] NOT NULL
 )
-AS
-BEGIN
-		IF EXISTS( select * from LOS_OPTIMISTAS.Usuario Where( Id_Usuario = @p_Id_Usuario)) 
-		UPDATE LOS_OPTIMISTAS.Usuario set Habilitado = 0 Where ( Id_Usuario = @p_Id_Usuario)
-		ELSE
-		PRINT ' No se encontro el Usuario'
-END
-GO
+--Inserto las subastas de empresas
+INSERT INTO LOS_OPTIMISTAS.Maxima_Subasta_Temp(Id_Usuario_Vendedor, Total_Factura, Total_Comisiones, Total_Visibilidad, Fecha)
+SELECT Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio, MAX(Publicacion_Visibilidad_Porcentaje), MAX(Oferta_Monto), MAX(Oferta_Fecha) FROM gd_esquema.Maestra WHERE UPPER(Publicacion_Tipo) = UPPER('Subasta') AND Publ_Cli_Dni IS NOT NULL AND Oferta_Monto IS NOT NULL 
+GROUP BY Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje
 
-GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
-(
-@p_Nombre varchar(255) = null,
-@p_Apellido varchar(255)= null,
-@p_Tipo_Documento varchar(6)= null,
-@p_Numero_Documento varchar (20) = null,
-@p_Mail varchar(255) = null,
-@p_Telefono varchar(40)= null,
-@p_Domicilio_Calle varchar(255)= null,
-@p_Nro_Calle varchar (100) = null,
-@p_Piso numeric(18,0) = 0 ,
-@p_Depto varchar(50) = null,
-@p_Localidad varchar(255) = null,
-@p_CP varchar(50) = null,
-@p_Fecha_Nacimiento smalldatetime,
-@p_Id_Usuario varchar(20),
-@p_Password varchar(64)
-)
-AS
-BEGIN
+--Query 1
+SELECT * FROM gd_esquema.Maestra WHERE Publicacion_Cod = 57090
+--SELECT * FROM gd_esquema.Maestra WHERE Factura_Nro = 166052 AND Item_Factura_Monto IS NOT NULL
 
-		BEGIN TRANSACTION
-							
-				
-			IF (@p_Password != '') UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Password WHERE Id_Usuario = @p_Id_Usuario
-						
-			IF (@p_Numero_Documento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Dni] = @p_Numero_Documento WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Nombre != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Nombre] = @p_Nombre WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Apellido != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Apellido] = @p_Apellido WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Fecha_Nacimiento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Fecha_Nacimiento] = @p_Fecha_Nacimiento WHERE Id_Usuario = @p_Id_Usuario
-			
-			IF (@p_Tipo_Documento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Id_Tipo_Documento] = @p_Tipo_Documento WHERE Id_Usuario = @p_Id_Usuario	
-			
-			IF (@p_Localidad != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Localidad] = @p_Localidad WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Mail != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Mail] = @p_Mail WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Piso != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Piso] = @p_Piso WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Telefono != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Telefono] = @p_Telefono WHERE Id_Usuario = @p_Id_Usuario
-			
-			IF (@p_Domicilio_Calle != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Domicilio] = @p_Domicilio_Calle WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Depto != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Depto] = @p_Domicilio_Calle WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_CP != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Cp] = @p_CP WHERE Id_Usuario = @p_Id_Usuario
-			IF (@p_Nro_Calle != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Calle] = @p_Domicilio_Calle WHERE Id_Usuario = @p_Id_Usuario
-								
-										
-					
-		COMMIT TRANSACTION
-					
-		
-END
-GO
+--query 2
+SELECT * FROM gd_esquema.Maestra WHERE Publicacion_Cod = 68330 AND Factura_Nro IS NOT NULL
 
+--Query 3
+select Factura_Nro from gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL AND Item_Factura_Monto IS NOT NULL
+GROUP BY Factura_Nro, Item_Factura_Monto
+HAVING COUNT(Item_Factura_Monto) > 2
 
-
-
-
-
-
-
-/* Store Procedure para ABM Empresa*/ 
-GO 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarEmpresas]
-
-(
-@p_Razon_Social varchar(255) = null,
-@p_Cuit varchar(50)= null,
-@p_Email varchar(255)=null
-)
-
-AS
-BEGIN
-
-			SELECT DISTINCT
-			
-			Empr.Id_Usuario 'Id Usuario',
-			Empr.Razon_social 'Razon Social',
-			Empr.Cuit 'CUIT',
-			Empr.Fecha_Creacion'Fecha Creacion',
-			Dom_Mail.Mail 'Mail',
-			Dom_Mail.Cp 'Codigo Postal',
-			Dom_Mail.Domicilio 'Domicilio',
-			Dom_Mail.Localidad 'Localidad',
-			Dom_Mail.Telefono 'Telefono'
-			
-			
-			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
-			
-			WHERE
-			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social=@p_Razon_Social ))
-			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit= @p_Cuit ))
-			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail =@p_Email))
-			AND  (Empr.ID_Usuario= Dom_Mail.Id_Usuario)
-			AND (Usar.Id_Usuario = Empr.ID_Usuario)
-			AND (Usar.Habilitado = 1)
-			
- END
- GO
-
-
- 
- 
- 
- --En AltaEmpresa no se agrega un ROL a ese usuario, ya que no es un requerimiento, Si en ALTA USUARIO se debe agregar un ROL
- GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaEmpresa]
- (
-
-@p_Razon_Social varchar(255) = null ,
-@p_Cuit varchar(50) = null,
-@p_Fecha_Creacion smalldatetime = null,
-@p_Domicilio varchar(100) = null,
-@p_Telefono varchar(40) = null,
-@p_CP varchar(50) = null,
-@p_Mail varchar(255) = null, 
-@p_Localidad varchar (255) = null,
-@p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
-@p_Depto varchar(50) = null,
-@p_Id_Usuario varchar (20),
-@p_Password varchar (64)
- )
-AS
-BEGIN
-
-	INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
-	values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
-		
-	INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
-	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion)
-		
-	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
-	Values(@p_Id_Usuario,@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
-							
-END
- 
-GO
- 
- 
- GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarEmpresa]
-(
-@p_Razon_Social varchar(255) = null ,
-@p_Cuit varchar(50) = null,
-@p_Fecha_Creacion smalldatetime = null,
-@p_Nombre_Contacto varchar(255) = null,
-@p_Domicilio varchar(100) = null,
-@p_Telefono varchar(40) = null,
-@p_CP varchar(50) = null,
-@p_Mail varchar(255) = null, 
-@p_Localidad varchar (255) = null,
-@p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
-@p_Depto varchar(50) = null,
-@p_Id_Usuario varchar (20),
-@p_Password varchar (64)
-)
-AS
-BEGIN
-
-		BEGIN TRANSACTION
-							
-							
-							UPDATE LOS_OPTIMISTAS.Usuario
-							SET 
-							Password = @p_Password
-																			
-							WHERE Id_Usuario = @p_Id_Usuario
-							
-								
-							
-							UPDATE LOS_OPTIMISTAS.Empresa
-							SET 
-							[Razon_social] = @p_Razon_Social ,
-							[Cuit] = @p_Cuit,
-							[Fecha_Creacion] = @p_Fecha_Creacion,
-							[Nombre_Contacto] = @p_Nombre_Contacto
-							
-							WHERE ID_Usuario =  @p_Id_Usuario
-							
-																		
-										
-							UPDATE LOS_OPTIMISTAS.Dom_Mail
-							SET 
-							[Domicilio] = @p_Domicilio,
-							[Depto] = @p_Depto,
-							[Cp] = @p_CP,
-							[Calle] = @p_Calle,
-							[Localidad] = @p_Localidad,	
-							[Mail] = @p_Mail,		
-							[Piso] = @p_Piso,		
-							[Telefono] =@p_Telefono			
-							
-							WHERE Id_Usuario = @p_Id_Usuario
-										
-										
-							
-					
-		COMMIT TRANSACTION
-					
-		
-END
-GO
- /* Store Procedure para ABM Rol*/ 
- /*VERIFICAR SI ANDA BIEN Cargando datos en las tablas*/
- GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRoles]
- 
- AS
- BEGIN
-		Select  Rol.Id_Rol,Rol.Descripcion,Rol.Fecha_Baja,Rol_Func.Id_Funcionalidad,Func.Descripcion
-		from LOS_OPTIMISTAS.Rol Rol, LOS_OPTIMISTAS.Rol_Funcionalidad Rol_Func,LOS_OPTIMISTAS.Funcionalidad Func
-		Where
-		(Rol.Id_Rol = Rol.Id_Rol)
-		And (Rol_Func.Id_Funcionalidad = Func.Descripcion)
- END
- GO
- 
-
- 
- 
- 
+--query 4
+SELECT Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio, MAX(Publicacion_Visibilidad_Porcentaje), MAX(Oferta_Monto), MAX(Oferta_Fecha) FROM gd_esquema.Maestra WHERE UPPER(Publicacion_Tipo) = UPPER('Subasta') AND Publ_Cli_Dni IS NOT NULL AND Oferta_Monto IS NOT NULL 
+GROUP BY Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje
