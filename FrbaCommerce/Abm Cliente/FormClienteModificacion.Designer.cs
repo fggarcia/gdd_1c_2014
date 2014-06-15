@@ -62,6 +62,8 @@
             this.labelCodPostal = new System.Windows.Forms.Label();
             this.labelTipoDocumento = new System.Windows.Forms.Label();
             this.labelNumDocumento = new System.Windows.Forms.Label();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.textPassword = new System.Windows.Forms.TextBox();
             this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +88,8 @@
             // 
             // groupBoxDatos
             // 
+            this.groupBoxDatos.Controls.Add(this.textPassword);
+            this.groupBoxDatos.Controls.Add(this.labelPassword);
             this.groupBoxDatos.Controls.Add(this.labelCalle);
             this.groupBoxDatos.Controls.Add(this.labelNombre);
             this.groupBoxDatos.Controls.Add(this.textAnio);
@@ -228,9 +232,9 @@
             // 
             // textNro
             // 
-            this.textNro.Location = new System.Drawing.Point(400, 112);
+            this.textNro.Location = new System.Drawing.Point(387, 112);
             this.textNro.Name = "textNro";
-            this.textNro.Size = new System.Drawing.Size(23, 20);
+            this.textNro.Size = new System.Drawing.Size(44, 20);
             this.textNro.TabIndex = 66;
             // 
             // labelNro
@@ -389,6 +393,23 @@
             this.labelNumDocumento.TabIndex = 3;
             this.labelNumDocumento.Text = "Número de Documento:";
             // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelPassword.Location = new System.Drawing.Point(345, 242);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(64, 15);
+            this.labelPassword.TabIndex = 80;
+            this.labelPassword.Text = "Password:";
+            // 
+            // textPassword
+            // 
+            this.textPassword.Location = new System.Drawing.Point(509, 241);
+            this.textPassword.Name = "textPassword";
+            this.textPassword.Size = new System.Drawing.Size(135, 20);
+            this.textPassword.TabIndex = 81;
+            // 
             // FormClienteModificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -442,6 +463,8 @@
         private System.Windows.Forms.Label labelCodPostal;
         private System.Windows.Forms.Label labelTipoDocumento;
         private System.Windows.Forms.Label labelNumDocumento;
+        private System.Windows.Forms.TextBox textPassword;
+        private System.Windows.Forms.Label labelPassword;
 
 
 

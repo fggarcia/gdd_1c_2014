@@ -15,5 +15,29 @@ namespace FrbaCommerce.Abm_Empresa
         {
             InitializeComponent();
         }
+
+        private void buttonAlta_Click(object sender, EventArgs e)
+        {
+            FormEmpresaAlta formAltaEmpresa = new FormEmpresaAlta();
+            formAltaEmpresa.username = Procedimientos.generarUsername();
+            formAltaEmpresa.password = Procedimientos.generarPassword();
+            MessageBox.Show("El username es: " + formAltaEmpresa.username + "y el password: " + formAltaEmpresa.password);
+            this.Hide();
+            formAltaEmpresa.ShowDialog();
+            this.Close();
+        }
+
+        private void FormABMEmpresa_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonModificarEliminar_Click(object sender, EventArgs e)
+        {
+            FormEmpresaModElim formModElim = new FormEmpresaModElim();
+            this.Hide();
+            formModElim.ShowDialog();
+            this.Close();
+        }
     }
 }

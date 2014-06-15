@@ -41,6 +41,8 @@
             this.labelLocalidad = new System.Windows.Forms.Label();
             this.labelMail = new System.Windows.Forms.Label();
             this.groupBoxDatos = new System.Windows.Forms.GroupBox();
+            this.labelCalle = new System.Windows.Forms.Label();
+            this.labelNombre = new System.Windows.Forms.Label();
             this.textAnio = new System.Windows.Forms.TextBox();
             this.textMes = new System.Windows.Forms.TextBox();
             this.textDia = new System.Windows.Forms.TextBox();
@@ -60,8 +62,6 @@
             this.textApellido = new System.Windows.Forms.TextBox();
             this.textNombre = new System.Windows.Forms.TextBox();
             this.labelTelefono = new System.Windows.Forms.Label();
-            this.labelNombre = new System.Windows.Forms.Label();
-            this.labelCalle = new System.Windows.Forms.Label();
             this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,7 +84,6 @@
             this.labelTipoDocumento.Size = new System.Drawing.Size(118, 15);
             this.labelTipoDocumento.TabIndex = 2;
             this.labelTipoDocumento.Text = "Tipo de Documento:";
-            this.labelTipoDocumento.Click += new System.EventHandler(this.label1_Click);
             // 
             // labelNumDocumento
             // 
@@ -224,7 +223,27 @@
             this.groupBoxDatos.Size = new System.Drawing.Size(678, 300);
             this.groupBoxDatos.TabIndex = 59;
             this.groupBoxDatos.TabStop = false;
-            this.groupBoxDatos.Enter += new System.EventHandler(this.groupBoxAltaCliente_Enter);
+            this.groupBoxDatos.Enter += new System.EventHandler(this.groupBoxDatos_Enter);
+            // 
+            // labelCalle
+            // 
+            this.labelCalle.AutoSize = true;
+            this.labelCalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelCalle.Location = new System.Drawing.Point(13, 113);
+            this.labelCalle.Name = "labelCalle";
+            this.labelCalle.Size = new System.Drawing.Size(38, 15);
+            this.labelCalle.TabIndex = 79;
+            this.labelCalle.Text = "Calle:";
+            // 
+            // labelNombre
+            // 
+            this.labelNombre.AutoSize = true;
+            this.labelNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelNombre.Location = new System.Drawing.Point(13, 26);
+            this.labelNombre.Name = "labelNombre";
+            this.labelNombre.Size = new System.Drawing.Size(55, 15);
+            this.labelNombre.TabIndex = 78;
+            this.labelNombre.Text = "Nombre:";
             // 
             // textAnio
             // 
@@ -311,9 +330,9 @@
             // 
             // textNro
             // 
-            this.textNro.Location = new System.Drawing.Point(400, 112);
+            this.textNro.Location = new System.Drawing.Point(387, 112);
             this.textNro.Name = "textNro";
-            this.textNro.Size = new System.Drawing.Size(23, 20);
+            this.textNro.Size = new System.Drawing.Size(44, 20);
             this.textNro.TabIndex = 66;
             // 
             // labelNro
@@ -372,26 +391,6 @@
             this.labelTelefono.TabIndex = 60;
             this.labelTelefono.Text = "Teléfono:";
             // 
-            // labelNombre
-            // 
-            this.labelNombre.AutoSize = true;
-            this.labelNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelNombre.Location = new System.Drawing.Point(13, 26);
-            this.labelNombre.Name = "labelNombre";
-            this.labelNombre.Size = new System.Drawing.Size(55, 15);
-            this.labelNombre.TabIndex = 78;
-            this.labelNombre.Text = "Nombre:";
-            // 
-            // labelCalle
-            // 
-            this.labelCalle.AutoSize = true;
-            this.labelCalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelCalle.Location = new System.Drawing.Point(13, 113);
-            this.labelCalle.Name = "labelCalle";
-            this.labelCalle.Size = new System.Drawing.Size(38, 15);
-            this.labelCalle.TabIndex = 79;
-            this.labelCalle.Text = "Calle:";
-            // 
             // FormClienteAlta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -402,7 +401,6 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormClienteAlta";
             this.Text = "Alta de Cliente";
-            this.Load += new System.EventHandler(this.FormABMClienteAlta_Load);
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);

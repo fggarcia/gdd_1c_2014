@@ -217,7 +217,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Dom_Mail](
 [Mail] [varchar](255) NULL, 
 [Localidad] [varchar](255) NULL,
 [Calle][varchar](255) NULL,
-[Piso][numeric](18,0) NULL,
+[Piso][varchar](20) NULL,
 [Depto][varchar](50) NULL
 
 CONSTRAINT [FK_Dom_Mail_Empresa_Id_Usuario] FOREIGN KEY(Id_Usuario)

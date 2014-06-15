@@ -48,7 +48,7 @@ BEGIN
 @p_Telefono varchar(40)= null,
 @p_Domicilio_Calle varchar(255)= null,
 @p_Nro_Calle varchar (100) = null,
-@p_Piso numeric(18,0) = 0 ,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
@@ -100,11 +100,11 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
 @p_Telefono varchar(40)= null,
 @p_Domicilio_Calle varchar(255)= null,
 @p_Nro_Calle varchar (100) = null,
-@p_Piso numeric(18,0) = 0 ,
+@p_Piso varchar (20),
 @p_Depto varchar(50) = null,
 @p_Localidad varchar(255) = null,
 @p_CP varchar(50) = null,
-@p_Fecha_Nacimiento datetime,
+@p_Fecha_Nacimiento smalldatetime,
 @p_Id_Usuario varchar(20),
 @p_Password varchar(64)
 )
@@ -113,42 +113,25 @@ BEGIN
 
 		BEGIN TRANSACTION
 							
-							
-							UPDATE LOS_OPTIMISTAS.Usuario
-							SET 
-							Password = @p_Password
-																			
-							WHERE Id_Usuario = @p_Id_Usuario
-							
-								
-							
-							UPDATE LOS_OPTIMISTAS.Cliente
-							SET 
-							[Id_Tipo_Documento] = @p_Tipo_Documento,
-							[DNI] = @p_Numero_Documento,
-							[Nombre] = @p_Nombre,
-							[Apellido] = @p_Apellido,
-							[Fecha_Nacimiento] = @p_Fecha_Nacimiento
-													
-							
-							
-							WHERE Id_Usuario = @p_Id_Usuario
-										
-										
-							UPDATE LOS_OPTIMISTAS.Dom_Mail
-							SET 
-							[Domicilio] = @p_Domicilio_Calle,
-							[Depto] = @p_Depto,
-							[Cp] = @p_CP,
-							[Calle] = @p_Nro_Calle,
-							[Localidad] = @p_Localidad,	
-							[Mail] = @p_Mail,		
-							[Piso] = @p_Piso,		
-							[Telefono] =@p_Telefono			
-							
-							WHERE Id_Usuario = @p_Id_Usuario
-										
-										
+				
+			IF (@p_Password != '') UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Password WHERE Id_Usuario = @p_Id_Usuario
+						
+			IF (@p_Numero_Documento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Dni] = @p_Numero_Documento WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Nombre != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Nombre] = @p_Nombre WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Apellido != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Apellido] = @p_Apellido WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Fecha_Nacimiento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Fecha_Nacimiento] = @p_Fecha_Nacimiento WHERE Id_Usuario = @p_Id_Usuario
+			
+			IF (@p_Tipo_Documento != '') UPDATE LOS_OPTIMISTAS.Cliente SET [Id_Tipo_Documento] = @p_Tipo_Documento WHERE Id_Usuario = @p_Id_Usuario	
+			
+			IF (@p_Localidad != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Localidad] = @p_Localidad WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Mail != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Mail] = @p_Mail WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Piso != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Piso] = @p_Piso WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Telefono != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Telefono] = @p_Telefono WHERE Id_Usuario = @p_Id_Usuario
+			
+			IF (@p_Domicilio_Calle != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Domicilio] = @p_Domicilio_Calle WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Depto != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Depto] = @p_Depto WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_CP != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Cp] = @p_CP WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Nro_Calle != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Calle] = @p_Domicilio_Calle WHERE Id_Usuario = @p_Id_Usuario
 							
 					
 		COMMIT TRANSACTION
@@ -156,12 +139,6 @@ BEGIN
 		
 END
 GO
-
-
-
-
-
-
 
 
 /* Store Procedure para ABM Empresa*/ 
@@ -184,19 +161,17 @@ BEGIN
 			Empr.Cuit 'CUIT',
 			Empr.Fecha_Creacion'Fecha Creacion',
 			Dom_Mail.Mail 'Mail',
-			Dom_Mail.Cp 'Codigo Postal',
-			Dom_Mail.Domicilio 'Domicilio',
-			Dom_Mail.Localidad 'Localidad',
-			Dom_Mail.Telefono 'Telefono'
+			Dom_Mail.Domicilio 'Domicilio'
+			
 			
 			
 			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
 			
 			WHERE
-			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social=@p_Razon_Social ))
-			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit= @p_Cuit ))
-			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail =@p_Email))
-			AND  (Empr.ID_Usuario= Dom_Mail.Id_Usuario)
+			((@p_Razon_Social IS NULL) OR ( Empr.Razon_social like @p_Razon_Social  + '%'))
+			AND  ((@p_Cuit IS NULL) OR (Empr.Cuit = @p_Cuit ))
+			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail like @p_Email  + '%'))
+			AND  (Empr.ID_Usuario = Dom_Mail.Id_Usuario)
 			AND (Usar.Id_Usuario = Empr.ID_Usuario)
 			AND (Usar.Habilitado = 1)
 			
@@ -221,7 +196,7 @@ BEGIN
 @p_Mail varchar(255) = null, 
 @p_Localidad varchar (255) = null,
 @p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
 @p_Password varchar (64)
@@ -256,7 +231,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarEmpresa]
 @p_Mail varchar(255) = null, 
 @p_Localidad varchar (255) = null,
 @p_Calle varchar(255) = null,
-@p_Piso numeric (18,0) = null,
+@p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
 @p_Password varchar (64)
