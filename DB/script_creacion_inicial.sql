@@ -360,9 +360,6 @@ CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
 
 )
 
-
-
-
 --CREO TABLA Historial_Subasta
 CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
 
@@ -483,6 +480,48 @@ CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
 REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
 )
 
+--CREO TABLA FACTURACION DETALLE
+CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
+[Id_Factura][numeric](18,0) NOT NULL,
+[Id_Publicacion][numeric](18,0) NOT NULL,
+[Monto_Compra][numeric](18,2) NOT NULL DEFAULT 0.0,
+[Porcentaje_Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
+[Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
+[Cantidad_Venta][Int] NOT NULL DEFAULT 1,
+[Monto_Visibilidad][numeric](18,2) NOT NULL DEFAULT 0.0,
+[Descripcion_Visibilidad][varchar](255) NOT NULL,
+)
+--Cargo factura detalle con subastas
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Descripcion_Visibilidad)
+SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Oferta_Monto),MAX(C.Publicacion_Visibilidad_Porcentaje),
+	MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje),MAX(C.Publicacion_Visibilidad_Desc)
+FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
+	C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje = D.Item_Factura_Monto AND C.Publicacion_Cod = D.Publicacion_Cod,
+	gd_esquema.Maestra E
+WHERE C.Publicacion_Tipo = 'Subasta' AND C.Cli_Dni IS NOT NULL AND C.Oferta_Monto IS NOT NULL AND C.Publicacion_Cod = E.Publicacion_Cod
+	AND E.Factura_Nro IS NOT NULL
+GROUP BY C.Publicacion_Cod
+
+--Cargo factura detalle con compra inmediata
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
+	Comision,Cantidad_Venta,Descripcion_Visibilidad)
+SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Publicacion_Precio),MAX(C.Publicacion_Visibilidad_Porcentaje),
+	MAX(C.Publicacion_Precio)*MAX(C.Publicacion_Visibilidad_Porcentaje), MAX(C.Compra_Cantidad),MAX(C.Publicacion_Visibilidad_Desc)
+FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
+	C.Publicacion_Precio * C.Publicacion_Visibilidad_Porcentaje = D.Item_Factura_Monto AND C.Publicacion_Cod = D.Publicacion_Cod,
+	gd_esquema.Maestra E
+WHERE C.Publicacion_Tipo = 'Compra Inmediata' AND C.Cli_Dni IS NOT NULL AND C.Publicacion_Cod = E.Publicacion_Cod
+	AND E.Factura_Nro IS NOT NULL
+GROUP BY C.Publicacion_Cod
+
+--Cargo facturacion detalle cobro visibilidad
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Descripcion_Visibilidad)
+SELECT MAX(D.Factura_Nro), C.Publicacion_Cod, MAX(C.Publicacion_Visibilidad_Precio), MAX(C.Publicacion_Visibilidad_Desc) 
+FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
+	C.Publicacion_Visibilidad_Precio = D.Item_Factura_Monto
+WHERE C.Publicacion_Cod = D.Publicacion_Cod AND D.Factura_Nro IS NOT NULL
+GROUP BY C.Publicacion_Cod
+
 
 
 --CREO TABLA FACTURACION PENDIENTE
@@ -537,8 +576,7 @@ REFERENCES [LOS_OPTIMISTAS].[Detalle_Tarjeta](Id_Detalle_Tarjeta),
 CONSTRAINT [FK_Forma_Pago_Id_Tipo_Pago] FOREIGN KEY(Id_Tipo_Pago)
 REFERENCES [LOS_OPTIMISTAS].[Tipo_Pago](Id_Tipo_Pago)
 )
- 
- --MIO
+	
 --CREO TABLA HISTORIAL DE COMPRAS
 CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
 [Id_Vendedor][varchar](20) NOT NULL,
@@ -567,36 +605,3 @@ INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Public
 select LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
 FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publicacion_Tipo != 'Subasta'
 
-
-SELECT * FROM gd_esquema.Maestra WHERE Factura_Nro = 175921
-SELECT Factura_Nro, Publ_Cli_Dni, SUM(Item_Factura_Monto) FROM gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL AND Publ_Cli_Dni IS NOT NULL
-GROUP BY Factura_Nro, Publ_Cli_Dni
-
---CREO TABLA TEMPORAL DE HISTORIAL DE SUBASTAS
-CREATE TABLE [LOS_OPTIMISTAS].[Maxima_Subasta_Temp](
-	[Id_Usuario_Vendedor][varchar](20) NOT NULL,
-	[Total_Factura][numeric](18,2) NOT NULL,
-	[Total_Comisiones][numeric](18,2) NULL,
-	[Total_Visibilidad][numeric](18,2) NULL,
-	[Fecha][datetime] NOT NULL
-)
---Inserto las subastas de empresas
-INSERT INTO LOS_OPTIMISTAS.Maxima_Subasta_Temp(Id_Usuario_Vendedor, Total_Factura, Total_Comisiones, Total_Visibilidad, Fecha)
-SELECT Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio, MAX(Publicacion_Visibilidad_Porcentaje), MAX(Oferta_Monto), MAX(Oferta_Fecha) FROM gd_esquema.Maestra WHERE UPPER(Publicacion_Tipo) = UPPER('Subasta') AND Publ_Cli_Dni IS NOT NULL AND Oferta_Monto IS NOT NULL 
-GROUP BY Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje
-
---Query 1
-SELECT * FROM gd_esquema.Maestra WHERE Publicacion_Cod = 57090
---SELECT * FROM gd_esquema.Maestra WHERE Factura_Nro = 166052 AND Item_Factura_Monto IS NOT NULL
-
---query 2
-SELECT * FROM gd_esquema.Maestra WHERE Publicacion_Cod = 68330 AND Factura_Nro IS NOT NULL
-
---Query 3
-select Factura_Nro from gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL AND Item_Factura_Monto IS NOT NULL
-GROUP BY Factura_Nro, Item_Factura_Monto
-HAVING COUNT(Item_Factura_Monto) > 2
-
---query 4
-SELECT Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio, MAX(Publicacion_Visibilidad_Porcentaje), MAX(Oferta_Monto), MAX(Oferta_Fecha) FROM gd_esquema.Maestra WHERE UPPER(Publicacion_Tipo) = UPPER('Subasta') AND Publ_Cli_Dni IS NOT NULL AND Oferta_Monto IS NOT NULL 
-GROUP BY Publ_Cli_Dni, Publicacion_Cod, Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje
