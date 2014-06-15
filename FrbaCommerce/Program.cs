@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using FrbaCommerce.Abm_Empresa;
 using FrbaCommerce.Abm_Cliente;
 using System.Data.SqlClient;
 
@@ -15,7 +16,7 @@ namespace FrbaCommerce
         [STAThread]
         static void Main()
         {
-            FormClienteModElim formCabm = new FormClienteModElim();
+            FormABMCliente formCabm = new FormABMCliente();
             formCabm.ShowDialog();
         }
     }

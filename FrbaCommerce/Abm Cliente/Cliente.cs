@@ -14,26 +14,11 @@ namespace FrbaCommerce.Abm_Cliente
     {
 
         //**********************************************************
-        //*  GENERACION DE USERNAME Y PASSWORD AUTOMATICOS
-        //**********************************************************
-
-        public static string generarUsername()
-        {
-            return Guid.NewGuid().ToString("N").Substring(0, 8);
-        }
-
-        public static string generarPassword()
-        {
-            return Guid.NewGuid().ToString("N").Substring(0, 10);
-        }
-
-        //**********************************************************
         //*  GUARDAR DATOS DE CLIENTE EN BASE DE DATOS
         //**********************************************************
 
-        public static void crearCliente(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
+        public static void crear(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
-            string diaYhora = Variables.FechaHoraSistema.ToString("yyyy-MM-dd HH:mm:ss");
             SqlCommand command = new SqlCommand();
             command.CommandText = Constantes.procedimientoCrearCliente;
             command.Parameters.AddWithValue("@p_Nombre", nombre);
@@ -49,9 +34,8 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Localidad", localidad);
             command.Parameters.AddWithValue("@p_CP", codP);
             command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
-            //command.Parameters.AddWithValue("@p_Id_Usuario", username);
-
-            //command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Id_Usuario", username);
+            command.Parameters.AddWithValue("@p_Password", password);
             //command.Parameters.AddWithValue("@p_Ultima_Fecha", diaYhora);
             Procedimientos.ejecutarStoredProcedure(command, "Creación de cliente", true);
         }
@@ -60,10 +44,10 @@ namespace FrbaCommerce.Abm_Cliente
         //*  MODIFICAR DATOS DE CLIENTE
         //**********************************************************
 
-        //TODO ver como se van a llamar los datos en el SP
-        public static void modificarCliente(string nombre, string apellido, string domicilio, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
+        public static void modificar(string nombre, string apellido, string domicilio, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password, string usuario)
         {
             SqlCommand command = new SqlCommand();
+            
             command.CommandText = Constantes.procedimientoModificarCliente;
             command.Parameters.AddWithValue("@p_Nombre", nombre);
             command.Parameters.AddWithValue("@p_Apellido", apellido);
@@ -72,11 +56,17 @@ namespace FrbaCommerce.Abm_Cliente
             command.Parameters.AddWithValue("@p_Mail", mail);
             command.Parameters.AddWithValue("@p_Telefono", telefono);
             command.Parameters.AddWithValue("@p_Domicilio_Calle", domicilio);
-            command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
+            command.Parameters.AddWithValue("@p_Nro_Calle", nroCalle);
+            command.Parameters.AddWithValue("@p_Piso", pisoCalle);
+            command.Parameters.AddWithValue("@p_Depto", deptoCalle);
             command.Parameters.AddWithValue("@p_Cp", codP);
             command.Parameters.AddWithValue("@p_Localidad", localidad);
-            command.Parameters.AddWithValue("@p_Id_Usuario", username);
             command.Parameters.AddWithValue("@p_Password", password);
+            command.Parameters.AddWithValue("@p_Id_Usuario", usuario);
+            if (diaN != "" & mesN != "" & anioN != "")
+            {
+                command.Parameters.AddWithValue("@p_Fecha_Nacimiento", Procedimientos.convertirFecha(diaN, mesN, anioN));
+            }
             Procedimientos.ejecutarStoredProcedure(command, "Modificación de cliente", true);
         }
 
@@ -84,11 +74,10 @@ namespace FrbaCommerce.Abm_Cliente
         //*  ELIMINAR CLIENTE
         //**********************************************************
 
-        //TODO ver como se van a llamar los datos en el SP
-        public static void eliminarCliente(string idUsuario)
+        public static void eliminar(string idUsuario)
         {
             SqlCommand command = new SqlCommand();
-            command.CommandText = Constantes.procedimientoEliminarCliente;
+            command.CommandText = Constantes.procedimientoBajaUsuario;
             command.Parameters.AddWithValue("@p_Id_Usuario", idUsuario);
             Procedimientos.ejecutarStoredProcedure(command, "Eliminación de cliente", true);
         }
@@ -100,8 +89,9 @@ namespace FrbaCommerce.Abm_Cliente
         public static bool validarCampos(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
+            
             //Validacion de datos completados
-            if (nombre == "" || apellido == "" || calle == "" || nroCalle == "" || pisoCalle == "" || deptoCalle == "" || diaN == "" || mesN == "" || anioN == "" || telefono == "" || nDoc == "" || codP == "" || localidad == "" || mail == "")
+            if (nombre == "" || apellido == "" || calle == "" || nroCalle == "" || diaN == "" || mesN == "" || anioN == "" || telefono == "" || nDoc == "" || codP == "" || localidad == "" || mail == "")
             {
                 MessageBox.Show("Debe completar todos los campos para poder continuar con el registro");
                 return false;
@@ -132,6 +122,18 @@ namespace FrbaCommerce.Abm_Cliente
                 return false;
             }
 
+            if (Validaciones.validarNumero(nDoc) == false)
+            {
+                MessageBox.Show("Verifique el número de documento ingresado");
+                return false;
+            }
+
+            if (Validaciones.validarNumero(telefono) == false)
+            {
+                MessageBox.Show("Verifique el teléfono ingresado");
+                return false;
+            }
+
             //Validacion de tipos de datos cadena correctos
             if (Validaciones.validarString(nombre) == false)
             {
@@ -142,11 +144,6 @@ namespace FrbaCommerce.Abm_Cliente
             if (Validaciones.validarString(apellido) == false)
             {
                 MessageBox.Show("Verifique el apellido ingresado");
-                return false;
-            }
-            if (Validaciones.validarString(nDoc) == false)
-            {
-                MessageBox.Show("Verifique el número de documento ingresado");
                 return false;
             }
 
@@ -184,7 +181,6 @@ namespace FrbaCommerce.Abm_Cliente
             }
 
             //Validacion telefono ya se encuentra en base de datos
-            //TODO Chequear bien como se va a llamar la tabla que contiene el numero de telefono, ahora suponemos que se llama Dom_Mail
             Boolean unicoTelefono = Procedimientos.esUnico("LOS_OPTIMISTAS.Dom_Mail", "Telefono", telefono);
             if (unicoTelefono == false)
             {
@@ -193,7 +189,6 @@ namespace FrbaCommerce.Abm_Cliente
             }
 
             //Validacion numero y tipo de documento ya se encuentran en la base de datos
-            //TODO Chequear bien como se van a llamar Dni en tabla Cliente
             SqlCommand comm = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Cliente WHERE Dni = @nDoc AND Id_Tipo_Documento = @tipoDoc"), conn);
             comm.Parameters.AddWithValue("@nDoc", nDoc);
             comm.Parameters.AddWithValue("@tipoDoc", tipoDoc);
@@ -206,23 +201,17 @@ namespace FrbaCommerce.Abm_Cliente
 
             //Validacion username ya se encuentra en base de datos
             //TODO Si el username es autogenerado (lo inscribe el administrador) deberá autogenerarse nuevamente
-            SqlCommand comandoUsername = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = {0}", username), conn);
-            comandoUsername.Parameters.AddWithValue("@username", username);
-            Int32 counts = (Int32)comm.ExecuteScalar();
-            if (counts != 0)
-            {
-                MessageBox.Show("El us ingresado ya existe, por favor valide los datos");
-                return false;
-            }
+
+            if (!Validaciones.validacionUsernameYaExiste(conn, username)) return false;
+
             conn.Close();
             return true;
         }
+
         //**********************************************************
         //*  CARGAR LA BUSQUEDA DE CLIENTE EN DATAGRIDVIEW
         //**********************************************************
 
-        //TODO Chequear como se va a llamar el StoredProcedure y sus variables
-        //Ver los tipos de datos
         public static void buscar(string nombre, string apellido, string tipoDoc, string numDoc, string email, DataGridView dgvCliente)
         {
             SqlCommand command = new SqlCommand();

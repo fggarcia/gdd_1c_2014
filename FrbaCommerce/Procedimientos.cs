@@ -203,10 +203,24 @@ namespace FrbaCommerce
             dt.Clear();
         }
 
-        public static string convertirFecha(string dia, string mes, string anio)
+        public static DateTime convertirFecha(string dia, string mes, string anio)
         {
-            DateTime fecha = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia), 00, 00, 00);
-            return fecha.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime fecha = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia), 00, 00, 00,000);
+            return fecha;
+        }
+
+        //**********************************************************
+        //*  GENERACION DE USERNAME Y PASSWORD AUTOMATICOS
+        //**********************************************************
+
+        public static string generarUsername()
+        {
+            return Guid.NewGuid().ToString("N").Substring(0, 8);
+        }
+
+        public static string generarPassword()
+        {
+            return Guid.NewGuid().ToString("N").Substring(0, 10);
         }
 
      }

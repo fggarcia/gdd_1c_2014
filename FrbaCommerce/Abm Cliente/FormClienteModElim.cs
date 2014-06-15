@@ -54,7 +54,7 @@ namespace FrbaCommerce.Abm_Cliente
             string tipoDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[2].Value);
             string nroDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[3].Value);
             SqlCommand command = new SqlCommand(string.Format("SELECT Id_Usuario FROM LOS_OPTIMISTAS.Cliente WHERE Dni = '{0}' AND Tipo_Documento = '{1}'", nroDocumento, tipoDocumento), conn);
-            Cliente.eliminarCliente(command.CommandText);
+            Cliente.eliminar(command.CommandText);
             Procedimientos.cerrarConexion(conn);
         }
 
@@ -65,23 +65,14 @@ namespace FrbaCommerce.Abm_Cliente
             Procedimientos.limpiarDataGridViews(dgvCliente);
         }
 
-        private void dgvCliente_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void buttonModificar_Click(object sender, EventArgs e)
         {
             this.Hide();
             FormClienteModificacion form = new FormClienteModificacion();
-            form.ShowDialog();
-            
             SqlConnection conn = Procedimientos.abrirConexion();
-            string tipoDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[2].Value);
-            string nroDocumento = Convert.ToString(dgvCliente.CurrentRow.Cells[3].Value);
-            SqlCommand command = new SqlCommand(string.Format("SELECT Id_Usuario FROM LOS_OPTIMISTAS.Cliente WHERE Dni = '{0}' AND Tipo_Documento = '{1}'", nroDocumento, tipoDocumento), conn);
-            form.groupBoxDatos.Text = command.CommandText;
+            form.idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
             Procedimientos.cerrarConexion(conn);
+            form.ShowDialog();
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)

@@ -12,6 +12,8 @@ namespace FrbaCommerce.Abm_Cliente
 {
     public partial class FormClienteModificacion : Form
     {
+        public string idUsuario;
+
         public FormClienteModificacion()
         {
             InitializeComponent();
@@ -19,11 +21,7 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void FormABMClienteModificacion_Load(object sender, EventArgs e)
         {
-            textNombre.Text = Procedimientos.obtenerDato("LOS_OPTIMISTAS.Usuario", "Nombre", groupBoxDatos.Text);
-            textApellido.Text = Procedimientos.obtenerDato("LOS_OPTIMISTAS.Usuario", "Apellido", groupBoxDatos.Text);
-            comboBoxTdoc.Text = Procedimientos.obtenerDato("LOS_OPTIMISTAS.Usuario", "Nombre", groupBoxDatos.Text);
-            textNombre.Text = Procedimientos.obtenerDato("LOS_OPTIMISTAS.Usuario", "Nombre", groupBoxDatos.Text);
-            textNombre.Text = Procedimientos.obtenerDato("LOS_OPTIMISTAS.Usuario", "Nombre", groupBoxDatos.Text);
+
         }
 
         private void textNombre_TextChanged(object sender, EventArgs e)
@@ -38,7 +36,7 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            //Cliente.modificarCliente();
+            Cliente.modificar(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, textPassword.Text, idUsuario);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaCommerce
 {
@@ -18,7 +19,7 @@ namespace FrbaCommerce
 
         public static bool validarString(string unString)
         {
-            if (Regex.IsMatch(unString, @"^\w{1,20}$")) return true;
+            if (Regex.IsMatch(unString, @"[\p{L}\s]")) return true;
             else return false;
         }
 
@@ -64,7 +65,7 @@ namespace FrbaCommerce
             else return true;
         }
 
-            //Validacion longitud de Username y Password
+        //Validacion longitud de Username y Password
         public static bool validarUsername(string username)
         {
             if (username.Length < 5) return false;
@@ -73,6 +74,20 @@ namespace FrbaCommerce
         public static bool validarPassword(string password)
         {
             if (password.Length < 6) return false;
+            else return true;
+        }
+
+        //Validacion username ya existe en base de datos
+        public static bool validacionUsernameYaExiste(SqlConnection conn, string username)
+        {
+            SqlCommand comandoUsername = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @username"), conn);
+            comandoUsername.Parameters.AddWithValue("@username", username);
+            Int32 counts = (Int32)comandoUsername.ExecuteScalar();
+            if (counts != 0)
+            {
+                MessageBox.Show("El usuario ingresado ya existe, por favor valide los datos");
+                return false;
+            }
             else return true;
         }
     }
