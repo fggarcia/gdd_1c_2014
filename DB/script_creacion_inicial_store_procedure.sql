@@ -242,40 +242,21 @@ BEGIN
 		BEGIN TRANSACTION
 							
 							
-							UPDATE LOS_OPTIMISTAS.Usuario
-							SET 
-							Password = @p_Password
-																			
-							WHERE Id_Usuario = @p_Id_Usuario
-							
-								
-							
-							UPDATE LOS_OPTIMISTAS.Empresa
-							SET 
-							[Razon_social] = @p_Razon_Social ,
-							[Cuit] = @p_Cuit,
-							[Fecha_Creacion] = @p_Fecha_Creacion,
-							[Nombre_Contacto] = @p_Nombre_Contacto
-							
-							WHERE ID_Usuario =  @p_Id_Usuario
-							
-																		
-										
-							UPDATE LOS_OPTIMISTAS.Dom_Mail
-							SET 
-							[Domicilio] = @p_Domicilio,
-							[Depto] = @p_Depto,
-							[Cp] = @p_CP,
-							[Calle] = @p_Calle,
-							[Localidad] = @p_Localidad,	
-							[Mail] = @p_Mail,		
-							[Piso] = @p_Piso,		
-							[Telefono] =@p_Telefono			
-							
-							WHERE Id_Usuario = @p_Id_Usuario
-										
-										
-							
+			IF (@p_Password != '') UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Password WHERE Id_Usuario = @p_Id_Usuario
+						
+			IF (@p_Razon_Social != '') UPDATE LOS_OPTIMISTAS.Empresa SET [Razon_social] = @p_Razon_Social WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Cuit != '') UPDATE LOS_OPTIMISTAS.Empresa SET [Cuit] = @p_Cuit WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Nombre_Contacto != '') UPDATE LOS_OPTIMISTAS.Empresa SET [Nombre_Contacto] = @p_Nombre_Contacto WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Fecha_Creacion != '') UPDATE LOS_OPTIMISTAS.Empresa SET [Fecha_Creacion] = @p_Fecha_Creacion WHERE Id_Usuario = @p_Id_Usuario
+						
+			IF (@p_Domicilio != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Domicilio] = @p_Domicilio WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Depto != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Depto] = @p_Depto WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_CP != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Cp] = @p_CP WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Calle != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Calle] = @p_Calle WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Localidad != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Localidad] = @p_Localidad WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Mail != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Mail] = @p_Mail WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Piso != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Piso] = @p_Piso WHERE Id_Usuario = @p_Id_Usuario
+			IF (@p_Telefono != '') UPDATE LOS_OPTIMISTAS.Dom_Mail SET [Telefono] = @p_Telefono WHERE Id_Usuario = @p_Id_Usuario
 					
 		COMMIT TRANSACTION
 					

@@ -40,7 +40,7 @@ namespace FrbaCommerce.Abm_Empresa
         //*  MODIFICAR DATOS DE EMPRESA
         //**********************************************************
 
-        public static void modificarEmpresa(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string password)
+        public static void modificar(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string password, string username)
         {
             SqlCommand command = new SqlCommand();
             command.CommandText = Constantes.procedimientoModificarEmpresa;
@@ -61,6 +61,7 @@ namespace FrbaCommerce.Abm_Empresa
             command.Parameters.AddWithValue("@p_Ciudad", ciudad);
             command.Parameters.AddWithValue("@p_Mail", mail);
             command.Parameters.AddWithValue("@p_Password", Login.FormLogin.getSha256(password));
+            command.Parameters.AddWithValue("@p_Id_Usuario", username);
             Procedimientos.ejecutarStoredProcedure(command, "Modificación de empresa", true);
         }
 
@@ -80,7 +81,7 @@ namespace FrbaCommerce.Abm_Empresa
         //*  VALIDACION DE DATOS PARA EL REGISTRO DE NUEVA EMPRESA
         //**********************************************************
 
-        public static bool validarCampos(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string username, string password)
+        public static bool validarCamposCreacion(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string username, string password)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
 
@@ -211,7 +212,7 @@ namespace FrbaCommerce.Abm_Empresa
         //*  VALIDACION DE DATOS PARA LA MODIFICACION DE UNA EMPRESA
         //**********************************************************
         
-        public static bool validarCamposModificacion(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string username, string password)
+        public static bool validarCamposModificacion(string razonSocial, string cuit, string nombreContacto, string telefono, string calle, string nroCalle, string piso, string depto, string codP, string localidad, string ciudad, string diaN, string mesN, string anioN, string mail, string password)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
 
