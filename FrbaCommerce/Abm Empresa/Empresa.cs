@@ -22,12 +22,14 @@ namespace FrbaCommerce.Abm_Empresa
             command.CommandText = Constantes.procedimientoCrearEmpresa;
             command.Parameters.AddWithValue("@p_Razon_Social", razonSocial);
             command.Parameters.AddWithValue("@p_Cuit ", cuit);
+            command.Parameters.AddWithValue("@p_Nombre_Contacto", nombreContacto);
             command.Parameters.AddWithValue("@p_Fecha_Creacion", Procedimientos.convertirFecha(diaN, mesN, anioN));
             command.Parameters.AddWithValue("@p_Domicilio", calle);
             command.Parameters.AddWithValue("@p_Telefono", telefono);
             command.Parameters.AddWithValue("@p_CP", codP);
             command.Parameters.AddWithValue("@p_Mail", mail);
             command.Parameters.AddWithValue("@p_Localidad", localidad);
+            command.Parameters.AddWithValue("@p_Ciudad", ciudad);
             command.Parameters.AddWithValue("@p_Calle", nroCalle);
             command.Parameters.AddWithValue("@p_Piso", piso);
             command.Parameters.AddWithValue("@p_Depto", depto);
