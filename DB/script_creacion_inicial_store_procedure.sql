@@ -199,7 +199,9 @@ BEGIN
 @p_Piso varchar(20) = null,
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
-@p_Password varchar (64)
+@p_Password varchar (64),
+p_Nombre_Contacto varchar(255) = null 
+
  )
 AS
 BEGIN
@@ -207,8 +209,8 @@ BEGIN
 	INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario,Password,Cantidad_Login,Ultima_Fecha,Habilitado)
 	values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
 		
-	INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion)
-	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion)
+	INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion, Nombre_Contacto)
+	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion, p_Nombre_Contacto)
 		
 	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
 	Values(@p_Id_Usuario,@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
