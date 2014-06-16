@@ -92,21 +92,21 @@ VALUES ('admin','5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee0
 CREATE TABLE [LOS_OPTIMISTAS].[Rol](
 	[Id_Rol][Int] NOT NULL,
 	[Descripcion][varchar](20) NOT NULL,
-	[Fecha_Baja][datetime] NULL
+	[Habilitado][bit] NULL
 
 	CONSTRAINT UQ_Rol_Id_Rol UNIQUE(Id_Rol)
 )
 
 --CARGO LOS ROLES INICIALES
-INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(1,'administrador',NULL)
-INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(2,'cliente',NULL)
-INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Fecha_Baja) VALUES(3,'empresa',NULL)
+INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado) VALUES(1,'administrador',1)
+INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado) VALUES(2,'cliente',1)
+INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado) VALUES(3,'empresa',1)
 
 --TABLA USUARIO_ROL
 CREATE TABLE [LOS_OPTIMISTAS].[Usuario_Rol](
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Id_Rol][Int] NOT NULL,
-	[Fecha_Baja][datetime] NULL
+	[Habilitado][bit] NULL
 
 	CONSTRAINT UQ_Usuario_Rol_Id_Usuario UNIQUE(Id_Usuario),
 	CONSTRAINT [FK_Usuario_Rol_Usuario_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -116,11 +116,11 @@ CREATE TABLE [LOS_OPTIMISTAS].[Usuario_Rol](
 )
 
 --INGRESO LOS USUARIOS CARGADOS EN LA TABLA PERSONAL CON ROLES SEGUN CORRESPONDA
-INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Usuario,Id_Rol,Fecha_Baja)
-SELECT Usuario_temp.Id_Usuario, Usuario_temp.Rol,NULL FROM LOS_OPTIMISTAS.Usuario_temp
+INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Usuario,Id_Rol,Habilitado)
+SELECT Usuario_temp.Id_Usuario, Usuario_temp.Rol,1 FROM LOS_OPTIMISTAS.Usuario_temp
 
 --AGREGO AL USUARIO ADMIN A LA TABLA DE ROLES
-INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Usuario,Id_Rol,Fecha_Baja) VALUES ('admin',1,NULL)
+INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Usuario,Id_Rol,Habilitado) VALUES ('admin',1,1)
 
 --DESTRUYO TABLA TEMPORAL
 DROP TABLE LOS_OPTIMISTAS.Usuario_temp
@@ -132,6 +132,23 @@ CREATE TABLE [LOS_OPTIMISTAS].[Funcionalidad](
 
 	CONSTRAINT UQ_Funcionalidad_Id_Funcionalidad UNIQUE(Id_Funcionalidad)	
 )
+
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(1,'Login y Seguridad')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(2,'ABM de Rol')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(3,'Registro de Usuario')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(4,'ABM Cliente')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(5,'ABM Empresa')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(6,'ABM Rubro')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(7,'ABM visibilidad de publicacion')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(8,'Generar publicacion')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(9,'Editar publicacion')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(10,'Gestion de preguntas')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(11,'Comprar/Ofertar')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(12,'Historial del cliente')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(13,'Calificar al vendedor')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(14,'Facturar Publicaciones')
+INSERT INTO LOS_OPTIMISTAS.Funcionalidad(Id_Funcionalidad,Descripcion) values(15,'Listado Estadistico')
+
 
 --TABLA ROL_FUNCIONALIDAD
 CREATE TABLE [LOS_OPTIMISTAS].[Rol_Funcionalidad](

@@ -69,6 +69,9 @@ BEGIN
 	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
 	Values(@p_Id_Usuario,@p_Domicilio_Calle,@p_Depto,@p_CP,@p_Nro_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
 	
+	INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Rol,Id_Usuario,Habilitado)
+	Values(2,@p_Id_Usuario,1)
+	
 END
 
 
@@ -200,7 +203,7 @@ BEGIN
 @p_Depto varchar(50) = null,
 @p_Id_Usuario varchar (20),
 @p_Password varchar (64),
-p_Nombre_Contacto varchar(255) = null 
+@p_Nombre_Contacto varchar(255) = null 
 
  )
 AS
@@ -210,10 +213,13 @@ BEGIN
 	values(@p_Id_Usuario,@p_Password,'0',GETDATE(),1)
 		
 	INSERT INTO LOS_OPTIMISTAS.Empresa(ID_Usuario,Razon_social,Cuit,Fecha_Creacion, Nombre_Contacto)
-	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion, p_Nombre_Contacto)
+	values(@p_Id_Usuario,@p_Razon_Social,@p_Cuit,@p_Fecha_Creacion, @p_Nombre_Contacto)
 		
 	INSERT INTO LOS_OPTIMISTAS.Dom_Mail(Id_Usuario,Domicilio,Depto,Cp,Calle,Localidad,Mail,Piso,Telefono)
 	Values(@p_Id_Usuario,@p_Domicilio,@p_Depto,@p_CP,@p_Calle,@p_Localidad ,@p_Mail,@p_Piso,@p_Telefono)
+	
+	INSERT INTO LOS_OPTIMISTAS.Usuario_Rol(Id_Rol,Id_Usuario,Habilitado)
+	Values(3,@p_Id_Usuario,1)
 							
 END
  
@@ -272,10 +278,169 @@ GO
  
  AS
  BEGIN
-		Select  Rol.Id_Rol,Rol.Descripcion,Rol.Fecha_Baja,Rol_Func.Id_Funcionalidad,Func.Descripcion
+		Select  Rol.Id_Rol,Rol.Descripcion,Rol.Habilitado,Rol_Func.Id_Funcionalidad,Func.Descripcion
 		from LOS_OPTIMISTAS.Rol Rol, LOS_OPTIMISTAS.Rol_Funcionalidad Rol_Func,LOS_OPTIMISTAS.Funcionalidad Func
 		Where
-		(Rol.Id_Rol = Rol.Id_Rol)
-		And (Rol_Func.Id_Funcionalidad = Func.Descripcion)
+		(Rol.Id_Rol = Rol_Func.Id_Rol) And (Rol_Func.Id_Funcionalidad= Func.Id_Funcionalidad) 
+		
+		
  END
  GO
+ 
+ 
+ 
+ /* Procedimiento Alta Rol*/
+GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearRol]
+ (
+ @p_Descripcion_Rol varchar(20) = null
+ )
+ AS
+ BEGIN
+ 
+ Declare @id_rol int
+	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+	 
+	  PRINT 'El rol ya existe'
+	 ELSE
+	  BEGIN
+	 select TOP 1 @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol
+	 order by Id_Rol DESC
+	 
+	 INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado)
+	 values ((@id_rol + 1),@p_Descripcion_Rol,1)
+	  END
+ END 
+ GO
+ 
+ 
+ /* Procedimiento Baja Rol*/
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaRol]
+ (
+  @p_Descripcion_Rol varchar(20) = null
+ )
+ AS
+ BEGIN
+ Declare @id_rol int
+ select @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol
+ 
+ UPDATE LOS_OPTIMISTAS.Rol  SET [Habilitado] = 0 WHERE Id_Rol = @id_rol 
+ 
+ END
+ GO
+ 
+ 
+ /* Procedimiento Baja Rol*/
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[HabilitarRol]
+ (
+  @p_Descripcion_Rol varchar(20) = null
+ )
+ AS
+ BEGIN
+ Declare @id_rol int
+ select @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol
+ 
+ UPDATE LOS_OPTIMISTAS.Rol  SET [Habilitado] = 1 WHERE Id_Rol = @id_rol 
+ 
+ END
+ GO
+ 
+  /* Procedimiento Modificar Rol*/
+  
+  GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarNombreRol]
+ (
+  @p_Descripcion_Rol_Vieja varchar(20) = null,
+  @p_Descripcion_Rol_Nueva varchar(20) = null
+ )
+ AS
+ BEGIN
+ 
+ UPDATE LOS_OPTIMISTAS.Rol  SET [Descripcion] = @p_Descripcion_Rol_Nueva WHERE  Descripcion = @p_Descripcion_Rol_Vieja 
+ 
+ END
+ GO
+ 
+ 
+ 
+ 
+ 
+ 
+ GO 
+ --SP para agregar funcionalidades a un ROL
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[AgregarFuncionalidad]
+ 
+ (
+ @p_Descripcion_Rol varchar(20) = null,
+  @p_Descripcion_Funcionalidad varchar(40) = null
+    )
+ AS
+ BEGIN
+ Declare @p_Id_Rol int
+ Declare @p_Id_Funcionalidad int
+ 
+	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+	--Si existe el ROL entonces...
+			BEGIN
+			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
+			
+						IF EXISTS( select * from LOS_OPTIMISTAS.Funcionalidad Where Descripcion = @p_Descripcion_Funcionalidad)
+						--Si Existe la funcionalidad entonces .....
+						BEGIN
+						select  @p_Id_Funcionalidad = Id_Funcionalidad from LOS_OPTIMISTAS.Funcionalidad Where Descripcion = @p_Descripcion_Funcionalidad
+						INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad(Id_Rol,Id_Funcionalidad)
+						values (@p_Id_Rol,@p_Id_Funcionalidad)
+						END
+						ELSE
+						--Si no existe la funcionalidad
+						PRINT ' No existe la funcionalidad'		
+			
+			END
+	 ELSE
+	 PRINT ' El Rol no existe, DEBE CREAR EL ROL ANTES de agregar funcionalidades'
+	  
+	END 
+	
+	
+
+
+
+ 
+ --SP para agregar funcionalidades a un ROL
+ GO
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[QuitarFuncionalidad]
+ 
+ (
+ @p_Descripcion_Rol varchar(20) = null,
+  @p_Descripcion_Funcionalidad varchar(40) = null
+    )
+ AS
+ BEGIN
+ Declare @p_Id_Rol int
+ Declare @p_Id_Funcionalidad int
+ 
+	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+	--Si existe el ROL entonces...
+			BEGIN
+			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
+			
+						IF EXISTS( select * from LOS_OPTIMISTAS.Funcionalidad Where Descripcion = @p_Descripcion_Funcionalidad)
+						--Si Existe la funcionalidad entonces .....
+						BEGIN
+						select  @p_Id_Funcionalidad = Id_Funcionalidad from LOS_OPTIMISTAS.Funcionalidad Where Descripcion = @p_Descripcion_Funcionalidad
+						
+						DELETE LOS_OPTIMISTAS.Rol_Funcionalidad Where ((Id_Rol = @p_Id_Rol) AND (Id_Funcionalidad = @p_Id_Funcionalidad ))
+					
+						
+						END
+						ELSE
+						--Si no existe la funcionalidad
+						PRINT ' No existe la funcionalidad'		
+			
+			END
+	 ELSE
+	 PRINT ' El Rol no existe, DEBE CREAR EL ROL ANTES de agregar funcionalidades'
+	  
+	END 
