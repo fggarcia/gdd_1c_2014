@@ -20,5 +20,12 @@ namespace FrbaCommerce
         public const String procedimientoModificarEmpresa = "LOS_OPTIMISTAS.ModificarEmpresa";
 
         public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.BajaUsuario";
+
+
+        //************************************
+        //*  CONSTANTES VALIDACIONES
+        //************************************
+
+        public const int cantidadDeFallasIgualATres = 3;
     }
 }
