@@ -69,7 +69,7 @@ namespace FrbaCommerce.Login
             Administracion administracion = new Administracion();
             if (administracion.validarUsuario(usuario))
             {
-                if (administracion.statusUsuario(usuario))
+                if (administracion.usuarioHabilitado(usuario))
                 {
                     if (administracion.validarContraseña(usuario))
                     {
@@ -83,7 +83,7 @@ namespace FrbaCommerce.Login
                     }
                     else
                     {
-                        usuario.cantidadFallasEnPass++;
+                        administracion.actualizarCantidadDeFallas(usuario);
                         if (usuario.cantidadFallasEnPass < Constantes.cantidadDeFallasIgualATres)
                         {
                             MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);

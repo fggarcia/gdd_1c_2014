@@ -32,19 +32,19 @@ namespace FrbaCommerce
 
         public Boolean validarUsuario(Usuarios user)
         {
-            //llamar a un stored y pasarle user y que me devuelva si esta o no.
-            //en el true iria la invocacion al stored
 
-            SqlConnection conn = Procedimientos.abrirConexion();
-            SqlCommand comando = new SqlCommand(string.Format("Select Id_usuario from LOS_OPTIMISTAS.Usuario where Id_usuario = {0}", user.user_id), conn);
-            comando.BeginExecuteReader();
-            if (true)
+            if (!Procedimientos.esUnico("LOS_OPTIMISTAS.Usuario", "Id_Usuario", user.user_id))
             {
+                SqlConnection conn = Procedimientos.abrirConexion();
+                SqlCommand command = new SqlCommand("select Cantidad_Login from LOS_OPTIMISTAS.Usuario where Id_usuario = @user", conn);
+                command.Parameters.AddWithValue("@user", user);
+                user.cantidadFallasEnPass = (Int32)command.ExecuteScalar();
+                Procedimientos.cerrarConexion(conn);
+
                 return true;
-                //setear el atributo de los errores en contraseña de la clase usuario aca, cuando voy a validar al usuario!!
-                //Si el usuario es valido seteo los errores en contraña.
             }
             return false;
+
         }
 
         public Boolean validarContraseña(Usuarios user)
@@ -61,19 +61,54 @@ namespace FrbaCommerce
 
         public void deshabilitarUsuario(Usuarios user)
         {
-            //llamo a un stored y le paso el id de usuario a deshabilitar
+            
+            SqlCommand command = new SqlCommand();
+            command.Parameters.AddWithValue("@p_Id_Usuario",user.user_id);
+            Procedimientos.ejecutarStoredProcedure(command, "BajaUsuario", false);
         }
 
         public Boolean validarCantidadDeFallasMayorAdos(Usuarios user)
         {
-            //Sacar la cantidad de fallas de la base y verificar que sea menor a tres.
-            return true;
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand("select Cantidad_Login from LOS_OPTIMISTAS.Usuario where Id_usuario = @user", conn);
+            command.Parameters.AddWithValue("@user", user);
+            Int32 cantidadDeFallas = (Int32)command.ExecuteScalar();
+            Procedimientos.cerrarConexion(conn);
+
+            if (cantidadDeFallas > 2)
+            {
+                return true;
+            }
+
+            return false;
+            
         }
 
-        public Boolean statusUsuario(Usuarios user)
+        public Boolean usuarioHabilitado(Usuarios user)
         {
-            //Sacar el status de la base y ver si esta habilitado o no;
-            return true;
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand("select Habilitado from LOS_OPTIMISTAS.Usuario where Id_usuario = @user", conn);
+            command.Parameters.AddWithValue("@user", user);
+            Int32 statusUsuario = (Int32)command.ExecuteScalar();
+            Procedimientos.cerrarConexion(conn);
+
+            if(statusUsuario != 1)
+            {
+                return false;
+            }  
+            else
+            {
+                return true;
+            }
+        }
+
+        public void actualizarCantidadDeFallas(Usuarios user)
+        {
+            user.cantidadFallasEnPass++;
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand(string.Format("update LOS_OPTIMISTAS.Usuario set Cantidad_Login = {0} where Id_Usuario = {1}", user.cantidadFallasEnPass, user.user_id), conn);
+            int numeroDeFilasAfectadas = command.ExecuteNonQuery();
+            Procedimientos.cerrarConexion(conn);
         }
     }
 }
