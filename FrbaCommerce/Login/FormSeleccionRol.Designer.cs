@@ -49,6 +49,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(215, 21);
             this.comboBox1.TabIndex = 1;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // button1
             // 
@@ -58,6 +59,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Aceptar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormSeleccionRol
             // 
@@ -69,6 +71,7 @@
             this.Controls.Add(this.labelSeleccionRol);
             this.Name = "FormSeleccionRol";
             this.Text = "Rol de Usuario";
+            this.Load += new System.EventHandler(this.FormSeleccionRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -59,7 +59,7 @@ namespace FrbaCommerce.Login
 
         private void buttonIngresar_Click(object sender, EventArgs e)
         {
-            Usuarios usuario = new Usuarios(textBox1.Text, textBox2.Text, "");
+            Usuarios usuario = new Usuarios(textBox1.Text, textBox2.Text);
             if (usuario.user_id == "" || usuario.password == "")
             {
                 MessageBox.Show("Los campos usuario y contraseña son obligatorios", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -77,9 +77,20 @@ namespace FrbaCommerce.Login
                         {
                             MessageBox.Show("Su usuario se encuentra bloqueado, por favor contacte al administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
-                        //Salio todo bien. Se accede al sistema.
-                        //Se accede a la seleccion del rol.
 
+                        if (administracion.obtenerRolesDe(usuario).Count > 1)
+                        {
+                            administracion.limpiarIntentosFallidos(usuario);
+                            FormSeleccionRol formSeleccionRol = new FormSeleccionRol(usuario);
+                            this.Hide();
+                            formSeleccionRol.ShowDialog();
+                            this.Close();
+                        }
+                        else
+                        {
+                            administracion.limpiarIntentosFallidos(usuario);
+                            //Acceso al sistema directamente con el rol que tengo asignado.
+                        }
                     }
                     else
                     {

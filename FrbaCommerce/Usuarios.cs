@@ -15,15 +15,13 @@ namespace FrbaCommerce
     {
         public string user_id;
         public string password;
-        public string rol;
         public int cantidadFallasEnPass;
         //tendria que tener unos atributos para cada rol!!
 
-        public Usuarios(string user, string pass, string rol)
+        public Usuarios(string user, string pass)
         {
             this.user_id = user;
             this.password = pass;
-            this.rol = rol;
         }
     }
 
@@ -110,6 +108,37 @@ namespace FrbaCommerce
             int numeroDeFilasAfectadas = command.ExecuteNonQuery();
             Procedimientos.cerrarConexion(conn);
         }
+
+        public void limpiarIntentosFallidos(Usuarios user)
+        {
+            user.cantidadFallasEnPass = 0;
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand(string.Format("update LOS_OPTIMISTAS.Usuario set Cantidad_Login = 0 where Id_Usuario = {0}", user.user_id), conn);
+            int numeroDeFilasAfectadas = command.ExecuteNonQuery();
+            Procedimientos.cerrarConexion(conn);
+        }
+
+        public List<Rol> obtenerRolesDe(Usuarios user)
+        {
+            List<Rol> listaRol = new List<Rol>();
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand(string.Format("select UR.Id_Rol, R.Descripcion from LOS_OPTIMISTAS.Usuario_Rol UR join LOS_OPTIMISTAS.Rol R on UR.Id_Rol = R.Id_Rol where UR.Id_usuario = {0} and UR.Habilitado <> 0", user.user_id), conn);
+            SqlDataReader lectura = command.ExecuteReader();
+            while (lectura.Read())
+            {
+                Rol rolUsuario = new Rol();
+                rolUsuario.Id_Rol = lectura.GetInt32(0);
+                rolUsuario.Descripcion = lectura.GetString(1);
+
+                listaRol.Add(rolUsuario);
+            }
+            Procedimientos.cerrarConexion(conn);
+            return listaRol;
+
+        }
+
+
+
     }
 }
 
