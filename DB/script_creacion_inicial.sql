@@ -465,23 +465,68 @@ CONSTRAINT [FK_Stock_Id_Usuario] FOREIGN KEY(Id_Usuario)
 CONSTRAINT [PK_Stock_Id_Articulo] PRIMARY KEY(Id_Articulo)
 )
 
-CREATE TABLE [LOS_OPTIMISTAS].[Stock_Temp](
-
-[Id_Articulo][numeric](18,0) NOT NULL,
-[Id_Usuario][varchar](20) NOT NULL
-)
-
---por default el stock de cada articulo es 100
-INSERT INTO LOS_OPTIMISTAS.Stock_Temp(Id_Articulo, Id_Usuario)
-select LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni) FROM gd_esquema.Maestra WHERE (Publicacion_Descripcion IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
-
-INSERT INTO LOS_OPTIMISTAS.Stock_Temp(Id_Articulo, Id_Usuario)
-select LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit) from gd_esquema.Maestra WHERE (Publicacion_Descripcion IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
-
+--STOCK DE COMPRAS INMEDIATAS DE CLIENTES
 INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
-SELECT DISTINCT(Id_Articulo),Id_Usuario, 100 FROM LOS_OPTIMISTAS.Stock_Temp
+SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
+	LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),MAX(Publicacion_Stock) - SUM(Compra_Cantidad)
+FROM gd_esquema.Maestra
+WHERE 
+Publ_Cli_Dni IS NOT NULL AND 
+Publ_Empresa_Cuit IS NULL AND
+Compra_Cantidad IS NOT NULL AND 
+Publicacion_Tipo = 'Compra Inmediata' AND
+Calificacion_Cant_Estrellas IS NULL
+GROUP BY Publicacion_Descripcion, Publ_Cli_Dni
 
-DROP TABLE LOS_OPTIMISTAS.Stock_Temp 
+--STOCK DE COMPRAS INMEDIATAS DE EMPRESAS
+INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
+SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
+	LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),MAX(Publicacion_Stock) - SUM(Compra_Cantidad)
+FROM gd_esquema.Maestra
+WHERE 
+Publ_Cli_Dni IS NULL AND 
+Publ_Empresa_Cuit IS NOT NULL AND
+Compra_Cantidad IS NOT NULL AND 
+Publicacion_Tipo = 'Compra Inmediata' AND
+Calificacion_Cant_Estrellas IS NULL
+GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
+
+
+--AL COMPROBAR QUE NO ARITUCULOS QUE SE PUBLIQUEN COMO COMPRA INMEDIATA Y SUBASTA A LA VEZ A TRAVES
+--SELECT Distinct(C.Publicacion_Cod) FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D
+--ON
+--LOS_OPTIMISTAS.obtenerCodigoArticulo(C.Publicacion_Descripcion) = 
+--	LOS_OPTIMISTAS.obtenerCodigoArticulo(D.Publicacion_Descripcion) AND
+--C.Publicacion_Tipo = 'Compra Inmediata' AND
+--D.Publicacion_Tipo = 'Subasta'
+
+--STOCK DE SUBASTAS CLIENTES
+INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
+SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
+	LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),MAX(Publicacion_Stock) - SUM(Compra_Cantidad)
+FROM gd_esquema.Maestra
+WHERE 
+Publ_Cli_Dni IS NOT NULL AND 
+Publ_Empresa_Cuit IS NULL AND
+Compra_Cantidad IS NOT NULL AND 
+Publicacion_Tipo = 'Subasta' AND
+Calificacion_Cant_Estrellas IS NULL
+GROUP BY Publicacion_Descripcion, Publ_Cli_Dni
+
+
+--STOCK DE SUBASTAS EMPRESAS
+INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
+SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
+	LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),MAX(Publicacion_Stock) - SUM(Compra_Cantidad)
+FROM gd_esquema.Maestra
+WHERE 
+Publ_Cli_Dni IS NULL AND 
+Publ_Empresa_Cuit IS NOT NULL AND
+Compra_Cantidad IS NOT NULL AND 
+Publicacion_Tipo = 'Subasta' AND
+Calificacion_Cant_Estrellas IS NULL
+GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
+
 
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
@@ -570,7 +615,7 @@ REFERENCES [LOS_OPTIMISTAS].[Facturacion] (Id_Factura)
 ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
 REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion)
 
-ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Descripcion_Visibilidad] FOREIGN KEY(Descripcion_Visibilidad)
+ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Descripcion_Visibilidad] FOREIGN KEY(Id_Visibilidad)
 REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad)
 
 --CREO TABLA FACTURACION PENDIENTE
