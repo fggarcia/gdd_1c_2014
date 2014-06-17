@@ -327,6 +327,14 @@ GO
  
  UPDATE LOS_OPTIMISTAS.Rol  SET [Habilitado] = 0 WHERE Id_Rol = @id_rol 
  
+ --Deshabilito todos de la tabla Usuario_Rol todos los usuarios que tengan ese ROL
+ 
+UPDATE LOS_OPTIMISTAS.Usuario_Rol
+SET [Habilitado] = 0
+Where Id_Rol = @id_rol 
+ 
+ 
+ 
  END
  GO
  
