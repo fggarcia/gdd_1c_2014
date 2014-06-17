@@ -32,5 +32,14 @@ namespace FrbaCommerce.Registro_de_Usuario
         Procedimientos.cerrarConexion(conn);
         return resultado;
     }
+
+    public static string obtenerDescripcionRol(int idRol)
+    {
+        SqlConnection conn = Procedimientos.abrirConexion();
+        SqlCommand command = new SqlCommand(string.Format("select Descripcion from LOS_OPTIMISTAS.Rol where Id_Rol = {0}", idRol), conn);
+        string descripcion = (string)command.ExecuteScalar();
+        Procedimientos.cerrarConexion(conn);
+        return descripcion;
+    }
     }
 }

@@ -113,7 +113,6 @@
             this.textNombreUsuario.Name = "textNombreUsuario";
             this.textNombreUsuario.Size = new System.Drawing.Size(235, 20);
             this.textNombreUsuario.TabIndex = 9;
-            this.textNombreUsuario.TextChanged += new System.EventHandler(this.textNombreUsuario_TextChanged);
             // 
             // labelContrasenia
             // 
@@ -178,6 +177,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "FormRegistro";
             this.Text = "Registro de Usuario";
+            this.Load += new System.EventHandler(this.FormRegistro_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

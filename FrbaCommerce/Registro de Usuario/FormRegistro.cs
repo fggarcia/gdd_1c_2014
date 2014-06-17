@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlTypes;
+using FrbaCommerce.Abm_Cliente;
+using FrbaCommerce.Abm_Empresa;
 
 namespace FrbaCommerce.Registro_de_Usuario
 {
@@ -15,6 +17,7 @@ namespace FrbaCommerce.Registro_de_Usuario
         public FormRegistro()
         {
             InitializeComponent();
+            //ver como pasarle a los formularios el nombre de usuario y contraseña.
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -23,21 +26,37 @@ namespace FrbaCommerce.Registro_de_Usuario
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {/*
-            if (Registro.crearCliente(textNombreUsuario.Text, textContrasenia.Text, 0) > 0)
+        {
+            if (!comboBoxRol.SelectedValue.Equals(null))
             {
-                MessageBox.Show("Cuenta creada con éxito");
+                if (comboBoxRol.SelectedText.Equals(Constantes.RolCliente))
+                {
+                    FormClienteAlta formCliente = new FormClienteAlta();
+                    this.Hide();
+                    formCliente.ShowDialog();
+                    this.Close();
+                }
+                if (comboBoxRol.SelectedText.Equals(Constantes.RolEmpresa))
+                {
+                    FormEmpresaAlta formEmpresa = new FormEmpresaAlta();
+                    this.Hide();
+                    formEmpresa.ShowDialog();
+                    this.Close();
+                }
+                
+
             }
             else
             {
-                MessageBox.Show("No se ha creado la cuenta");
+                MessageBox.Show("Debe seleccionar un rol", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            */
+
+
         }
 
-        private void textNombreUsuario_TextChanged(object sender, EventArgs e)
+        private void FormRegistro_Load(object sender, EventArgs e)
         {
-
+            Procedimientos.LlenarComboBox(comboBoxRol, "LOS_OPTIMISTAS.Rol", "Id_Rol", "Descripcion", null, null);
         }
     }
 }

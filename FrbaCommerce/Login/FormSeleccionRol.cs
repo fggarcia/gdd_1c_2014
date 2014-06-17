@@ -30,7 +30,7 @@ namespace FrbaCommerce.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            //Ir a un Form y cargar solo las funcionalidades que tenga el usuario.
         }
     }
 }
