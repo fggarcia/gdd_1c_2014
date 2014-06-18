@@ -90,6 +90,7 @@
             this.buttonAlta.TabIndex = 14;
             this.buttonAlta.Text = "Dar da Alta";
             this.buttonAlta.UseVisualStyleBackColor = true;
+            this.buttonAlta.Click += new System.EventHandler(this.buttonAlta_Click);
             // 
             // TextOpcion
             // 

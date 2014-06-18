@@ -30,5 +30,13 @@ namespace FrbaCommerce.ABM_Rol
         {
 
         }
+
+        private void buttonAlta_Click(object sender, EventArgs e)
+        {
+            FormABMRolAlta formRolAlta = new FormABMRolAlta();
+            this.Hide();
+            formRolAlta.ShowDialog();
+            this.Close();
+        }
     }
 }
