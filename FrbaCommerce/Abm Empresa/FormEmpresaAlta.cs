@@ -21,17 +21,27 @@ namespace FrbaCommerce.Abm_Empresa
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            if (Empresa.validarCamposCreacion(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, username, password))
+            Empresa.validarCamposCreacion(textRazonSocial, textCuit, textNombreC, textTelefono, textCalle, textNro, textPiso, textDepto, textCodP, textLocalidad, textCiudad, textDia, textMes, textAnio, textMail, username, password);
+
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+            bool passed = this.ValidateChildren();
+
+            if (passed == false)
             {
-                Empresa.crearEmpresa(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, username, password);
+                MessageBox.Show("Por favor completar el formulario correctamente");
+                return;
             }
+
+            Empresa.crearEmpresa(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, username, password);
+            
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            FormABMEmpresa formCliente = new FormABMEmpresa();
+            FormABMEmpresa form = new FormABMEmpresa();
             this.Hide();
-            formCliente.ShowDialog();
+            form.ShowDialog();
         }
+
     }
 }

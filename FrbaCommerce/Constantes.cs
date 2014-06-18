@@ -28,6 +28,6 @@ namespace FrbaCommerce
 
         public const int cantidadDeFallasIgualATres = 3;
         public const string RolCliente = "Cliente";
-        public const string RolEMpresa = "Empresa";
+        public const string RolEmpresa = "Empresa";
     }
 }

@@ -31,6 +31,8 @@
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.groupBoxDatos = new System.Windows.Forms.GroupBox();
+            this.textPassword = new System.Windows.Forms.TextBox();
+            this.labelPassword = new System.Windows.Forms.Label();
             this.labelCalle = new System.Windows.Forms.Label();
             this.labelNombre = new System.Windows.Forms.Label();
             this.textAnio = new System.Windows.Forms.TextBox();
@@ -62,8 +64,6 @@
             this.labelCodPostal = new System.Windows.Forms.Label();
             this.labelTipoDocumento = new System.Windows.Forms.Label();
             this.labelNumDocumento = new System.Windows.Forms.Label();
-            this.labelPassword = new System.Windows.Forms.Label();
-            this.textPassword = new System.Windows.Forms.TextBox();
             this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,6 +75,7 @@
             this.buttonCancelar.TabIndex = 61;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
             // buttonGuardar
             // 
@@ -126,6 +127,23 @@
             this.groupBoxDatos.Size = new System.Drawing.Size(678, 300);
             this.groupBoxDatos.TabIndex = 62;
             this.groupBoxDatos.TabStop = false;
+            // 
+            // textPassword
+            // 
+            this.textPassword.Location = new System.Drawing.Point(509, 241);
+            this.textPassword.Name = "textPassword";
+            this.textPassword.Size = new System.Drawing.Size(135, 20);
+            this.textPassword.TabIndex = 81;
+            // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.labelPassword.Location = new System.Drawing.Point(345, 242);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(64, 15);
+            this.labelPassword.TabIndex = 80;
+            this.labelPassword.Text = "Password:";
             // 
             // labelCalle
             // 
@@ -393,23 +411,6 @@
             this.labelNumDocumento.TabIndex = 3;
             this.labelNumDocumento.Text = "Número de Documento:";
             // 
-            // labelPassword
-            // 
-            this.labelPassword.AutoSize = true;
-            this.labelPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.labelPassword.Location = new System.Drawing.Point(345, 242);
-            this.labelPassword.Name = "labelPassword";
-            this.labelPassword.Size = new System.Drawing.Size(64, 15);
-            this.labelPassword.TabIndex = 80;
-            this.labelPassword.Text = "Password:";
-            // 
-            // textPassword
-            // 
-            this.textPassword.Location = new System.Drawing.Point(509, 241);
-            this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(135, 20);
-            this.textPassword.TabIndex = 81;
-            // 
             // FormClienteModificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,7 +421,6 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormClienteModificacion";
             this.Text = "Modificación de Datos";
-            this.Load += new System.EventHandler(this.FormABMClienteModificacion_Load_1);
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);

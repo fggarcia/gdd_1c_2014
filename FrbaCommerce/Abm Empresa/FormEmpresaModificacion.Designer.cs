@@ -419,7 +419,6 @@
             this.Controls.Add(this.buttonGuardar);
             this.Name = "FormEmpresaModificacion";
             this.Text = "Modificación de datos";
-            this.Load += new System.EventHandler(this.FormEmpresaModificacion_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

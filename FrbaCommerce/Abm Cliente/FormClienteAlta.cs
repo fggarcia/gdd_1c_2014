@@ -18,13 +18,22 @@ namespace FrbaCommerce.Abm_Cliente
         {
             InitializeComponent();
             Procedimientos.LlenarComboBox(comboBoxTdoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
-            
         }
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            
-            if (Cliente.validarCamposCreacion(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password))
+            bool camposOK = Cliente.validarCamposCreacion(textNombre, textApellido, textCalle, textNro, textPiso, textDepto, textDia, textMes, textAnio, textTelefono, comboBoxTdoc, textNumeroDoc, textCodP, textLocalidad, textMail, username, password);
+
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+            bool passed = this.ValidateChildren();
+
+            if (passed == false)
+            {
+                MessageBox.Show("Por favor completar el formulario correctamente");
+                return;
+            }
+
+            if (camposOK)
             {
                 Cliente.crear(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password);
             }
@@ -32,14 +41,10 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            FormABMCliente formCliente = new FormABMCliente();
+            FormABMCliente form = new FormABMCliente();
             this.Hide();
-            formCliente.ShowDialog();
+            form.ShowDialog();
         }
 
-        private void groupBoxDatos_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
 }

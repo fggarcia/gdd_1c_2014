@@ -7,6 +7,7 @@ using System.Data.SqlTypes;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Data;
+using System.ComponentModel;
 
 namespace FrbaCommerce.Abm_Cliente
 {
@@ -90,275 +91,109 @@ namespace FrbaCommerce.Abm_Cliente
         //*  VALIDACION DE DATOS PARA EL REGISTRO DE NUEVO CLIENTE
         //**********************************************************
 
-        public static bool validarCamposCreacion(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
+        //TODO ver tema de username y password
+        public static bool validarCamposCreacion(TextBox nombre, TextBox apellido, TextBox calle, TextBox nroCalle, TextBox pisoCalle, TextBox deptoCalle, TextBox diaN, TextBox mesN, TextBox anioN, TextBox telefono, ComboBox tipoDoc, TextBox nDoc, TextBox codP, TextBox localidad, TextBox mail, string username, string password)
         {
+            //Validación todos los campos obligatorios están completos
+            nombre.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            apellido.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            calle.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            nroCalle.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            diaN.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            mesN.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            anioN.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            telefono.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            tipoDoc.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            nDoc.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            codP.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            localidad.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+            mail.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+
+            //Validaciones de tipos de datos correctos
+            nombre.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            apellido.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            //calle.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            nroCalle.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            //pisoCalle.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            //deptoCalle.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            diaN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            mesN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            anioN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            telefono.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            tipoDoc.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            nDoc.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            //textCodP.Validating += new CancelEventHandler(Validaciones.ValidarCampoNumerico_Validating);
+            localidad.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            mail.Validating += new CancelEventHandler(Validaciones.validarCampoMail_Validating);
+            telefono.Validating += new CancelEventHandler(Validaciones.validarUnicidadTelefono_Validating);
+            Validaciones.validarFecha(diaN, mesN, anioN);
+
+            //Validación documento ya se encuentra en la base de datos
             SqlConnection conn = Procedimientos.abrirConexion();
-
-            //Validacion de datos completados
-            if (nombre == "" || apellido == "" || calle == "" || nroCalle == "" || diaN == "" || mesN == "" || anioN == "" || telefono == "" || nDoc == "" || codP == "" || localidad == "" || mail == "")
-            {
-                MessageBox.Show("Debe completar todos los campos para poder continuar con el registro");
-                return false;
-            }
-
-            //Validacion de tipos de datos numéricos correctos
-            if (Validaciones.validarNumero(diaN) == false)
-            {
-                MessageBox.Show("Verifique el día en la fecha de Nacimiento");
-                return false;
-            }
-
-            if (Validaciones.validarNumero(mesN) == false)
-            {
-                MessageBox.Show("Verifique el mes en la fecha de Nacimiento");
-                return false;
-            }
-
-            if (Validaciones.validarNumero(anioN) == false)
-            {
-                MessageBox.Show("Verifique el año en la fecha de Nacimiento");
-                return false;
-            }
-
-            if (Validaciones.validarNumero(pisoCalle) == false)
-            {
-                MessageBox.Show("Verifique el piso de su domicilio ingresado");
-                return false;
-            }
-
-            if (Validaciones.validarNumero(nDoc) == false)
-            {
-                MessageBox.Show("Verifique el número de documento ingresado");
-                return false;
-            }
-
-            if (Validaciones.validarNumero(telefono) == false)
-            {
-                MessageBox.Show("Verifique el teléfono ingresado");
-                return false;
-            }
-
-            //Validacion de tipos de datos cadena correctos
-            if (Validaciones.validarString(nombre) == false)
-            {
-                MessageBox.Show("Verifique el nombre ingresado");
-                return false;
-            }
-
-            if (Validaciones.validarString(apellido) == false)
-            {
-                MessageBox.Show("Verifique el apellido ingresado");
-                return false;
-            }
-
-            if (Validaciones.validarString(localidad) == false)
-            {
-                MessageBox.Show("Verifique la localidad ingresada");
-                return false;
-            }
-
-            //Validacion de formato de mail correcto
-            if (Validaciones.validarMail(mail) == false)
-            {
-                MessageBox.Show("Por favor verifique el mail ingresado");
-                return false;
-            }
-
-            //Validacion formato de fecha de nacimiento correcto
-            if (Validaciones.validarFechaNacimiento(diaN, mesN, anioN) == false)
-            {
-                MessageBox.Show("Por favor verifique la fecha de nacimiento ingresada");
-                return false;
-            }
-
-            //Validacion longitud de Username y Password
-            if (Validaciones.validarUsername(username) == false)
-            {
-                MessageBox.Show("El nombre de usuario debe contener al menos 5 caracteres");
-                return false;
-            }
-
-            if (Validaciones.validarPassword(password) == false)
-            {
-                MessageBox.Show("La contraseña debe contener al menos 6 caracteres");
-                return false;
-            }
-
-            //Validacion telefono ya se encuentra en base de datos
-            Boolean unicoTelefono = Procedimientos.esUnico("LOS_OPTIMISTAS.Dom_Mail", "Telefono", telefono);
-            if (unicoTelefono == false)
-            {
-                MessageBox.Show("El número de teléfono ingresado ya existe, por favor valide los datos");
-                return false;
-            }
-
-            //Validacion numero y tipo de documento ya se encuentran en la base de datos
             SqlCommand comm = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Cliente WHERE Dni = @nDoc AND Id_Tipo_Documento = @tipoDoc"), conn);
-            comm.Parameters.AddWithValue("@nDoc", nDoc);
-            comm.Parameters.AddWithValue("@tipoDoc", tipoDoc);
+            comm.Parameters.AddWithValue("@nDoc", nDoc.Text);
+            comm.Parameters.AddWithValue("@tipoDoc", tipoDoc.Text);
             Int32 count = (Int32)comm.ExecuteScalar();
+            conn.Close();
             if (count != 0)
             {
                 MessageBox.Show("El documento ingresado ya existe, por favor valide los datos");
                 return false;
             }
-
-            //Validacion username ya se encuentra en base de datos
-            //TODO Si el username es autogenerado (lo inscribe el administrador) deberá autogenerarse nuevamente
-
-            if (!Validaciones.validacionUsernameYaExiste(conn, username)) return false;
-
-            conn.Close();
-            return true;
+            else return true;
         }
 
         //**********************************************************
         //*  VALIDACION DE DATOS PARA LA MODIFICACION DE UN CLIENTE
         //**********************************************************
 
-        public static bool validarCamposModificacion(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password)
+        public static bool validarCamposModificacion(TextBox nombre, TextBox apellido, TextBox calle, TextBox nroCalle, TextBox pisoCalle, TextBox deptoCalle, TextBox diaN, TextBox mesN, TextBox anioN, TextBox telefono, ComboBox tipoDoc, TextBox nDoc, TextBox codP, TextBox localidad, TextBox mail, TextBox password)
         {
-            SqlConnection conn = Procedimientos.abrirConexion();
 
-
-            //Validacion de tipos de datos numéricos correctos
-            if (diaN != "")
+            //Si no se completa ningún campo no se muestra cartel de modificación realizada correctamente
+            if(nombre.Text == "" &  apellido.Text == "" & calle.Text == "" & nroCalle.Text == "" & pisoCalle.Text == "" & deptoCalle.Text == "" & diaN.Text == "" & mesN.Text == "" & anioN.Text == "" & telefono.Text == "" & tipoDoc.Text == "" & nDoc.Text == "" & codP.Text == "" & localidad.Text == "" & mail.Text == "" & password.Text == "")
             {
-                if (Validaciones.validarNumero(diaN) == false)
-                {
-                    MessageBox.Show("Verifique el día en la fecha de Nacimiento");
-                    return false;
-                }
-                if (mesN == "" || anioN == "")
-                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+                MessageBox.Show("No se ha modificado ningún dato", "Modificación de cliente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
             }
 
-            if (mesN != "")
+            //Validaciones de tipos de datos correctos
+            nombre.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            apellido.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            //calle.Validating += new CancelEventHandler(Validaciones.ValidarCampoSoloLetras_Validating);
+            //nroCalle.Validating += new CancelEventHandler(Validaciones.ValidarCampoNumerico_Validating);
+            //pisoCalle.Validating += new CancelEventHandler(Validaciones.ValidarCampoNumerico_Validating);
+            //deptoCalle.Validating += new CancelEventHandler(Validaciones.ValidarCampoNumerico_Validating);
+            diaN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            mesN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            anioN.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            telefono.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            tipoDoc.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            nDoc.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            //textCodP.Validating += new CancelEventHandler(Validaciones.ValidarCampoNumerico_Validating);
+            localidad.Validating += new CancelEventHandler(Validaciones.validarCampoSoloLetras_Validating);
+            mail.Validating += new CancelEventHandler(Validaciones.validarCampoMail_Validating);
+
+            if (diaN.Text != "" || mesN.Text != "" || anioN.Text != "")
             {
-                if (Validaciones.validarNumero(mesN) == false)
-                {
-                    MessageBox.Show("Verifique el mes en la fecha de Nacimiento");
-                    return false;
-                }
-                if (diaN == "" || anioN == "")
-                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+                Validaciones.validarFecha(diaN, mesN, anioN);
             }
 
-            if (anioN != "")
+            if (password.Text != "")
             {
-                if (Validaciones.validarNumero(anioN) == false)
-                {
-                    MessageBox.Show("Verifique el año en la fecha de Nacimiento");
-                    return false;
-                }
-                if (diaN == "" || mesN == "")
-                    MessageBox.Show("Debe completar todos los campos en la fecha de Nacimiento");
+                password.Validating += new CancelEventHandler(Validaciones.validarPassword_Validating);
             }
 
-            if (pisoCalle != "")
-            {
-                if (Validaciones.validarNumero(pisoCalle) == false)
-                {
-                    MessageBox.Show("Verifique el piso de su domicilio ingresado");
-                    return false;
-                }
-            }
-
-            if (nDoc != "")
-            {
-                if (Validaciones.validarNumero(nDoc) == false)
-                {
-                    MessageBox.Show("Verifique el número de documento ingresado");
-                    return false;
-                }
-            }
-
-            if (telefono != "")
-            {
-                if (Validaciones.validarNumero(telefono) == false)
-                {
-                    MessageBox.Show("Verifique el teléfono ingresado");
-                    return false;
-                }
-            }
-
-
-            //Validacion de tipos de datos cadena correctos
-            if (nombre != "")
-            {
-                if (Validaciones.validarString(nombre) == false)
-                {
-                    MessageBox.Show("Verifique el nombre ingresado");
-                    return false;
-                }
-            }
-
-            if (apellido != "")
-            {
-                if (Validaciones.validarString(apellido) == false)
-                {
-                    MessageBox.Show("Verifique el apellido ingresado");
-                    return false;
-                }
-            }
-
-            if (localidad != "")
-            {
-                if (Validaciones.validarString(localidad) == false)
-                {
-                    MessageBox.Show("Verifique la localidad ingresada");
-                    return false;
-                }
-            }
-
-            //Validacion de formato de mail correcto
-
-            if (mail != "")
-            {
-                if (Validaciones.validarMail(mail) == false)
-                {
-                    MessageBox.Show("Por favor verifique el mail ingresado");
-                    return false;
-                }
-            }
-            //Validacion formato de fecha de nacimiento correcto
-
-            if (diaN != "" & mesN != "" & anioN != "")
-            {
-                if (Validaciones.validarFechaNacimiento(diaN, mesN, anioN) == false)
-                {
-                    return false;
-                }
-            }
-
-            //Validacion longitud de Password
-
-            if (password != "")
-            {
-                if (Validaciones.validarPassword(password) == false)
-                {
-                    MessageBox.Show("La contraseña debe contener al menos 6 caracteres");
-                    return false;
-                }
-            }
-
-            //Validacion telefono ya se encuentra en base de datos
-            if (telefono != "")
-            {
-                Boolean unicoTelefono = Procedimientos.esUnico("LOS_OPTIMISTAS.Dom_Mail", "Telefono", telefono);
-                if (unicoTelefono == false)
-                {
-                    MessageBox.Show("El número de teléfono ingresado ya existe en la base de datos");
-                    return false;
-                }
-            }
+            //Validacion teléfono ya se encuentra en la base de datos
+            telefono.Validating += new CancelEventHandler(Validaciones.validarUnicidadTelefono_Validating);
 
             //Validacion numero y tipo de documento ya se encuentran en la base de datos
-            if (nDoc != "" || tipoDoc != "")
+            SqlConnection conn = Procedimientos.abrirConexion();
+            if (nDoc.Text != "" || tipoDoc.Text != "")
             {
                 SqlCommand comm = new SqlCommand(string.Format("SELECT COUNT(*) FROM LOS_OPTIMISTAS.Cliente WHERE Dni = @nDoc AND Id_Tipo_Documento = @tipoDoc"), conn);
-                comm.Parameters.AddWithValue("@nDoc", nDoc);
-                comm.Parameters.AddWithValue("@tipoDoc", tipoDoc);
+                comm.Parameters.AddWithValue("@nDoc", nDoc.Text);
+                comm.Parameters.AddWithValue("@tipoDoc", tipoDoc.Text);
                 Int32 count = (Int32)comm.ExecuteScalar();
                 if (count != 0)
                 {

@@ -18,16 +18,26 @@ namespace FrbaCommerce.Abm_Empresa
             InitializeComponent();
         }
 
-        private void FormEmpresaModificacion_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            if (Empresa.validarCamposModificacion(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text,textMail.Text, textPassword.Text))
+            bool camposOK = Empresa.validarCamposModificacion(textRazonSocial, textCuit, textNombreC, textTelefono, textCalle, textNro, textPiso, textDepto, textCodP, textLocalidad, textCiudad, textDia, textMes, textAnio, textMail, textPassword);
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+            bool passed = this.ValidateChildren();
+
+            if (passed == false)
+            {
+                MessageBox.Show("Por favor completar el formulario correctamente");
+                return;
+            }
+            if (camposOK)
             {
                 Empresa.modificar(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, textPassword.Text, idUsuario);
+            }
+            else
+            {
+                this.Hide();
+                FormABMEmpresa form = new FormABMEmpresa();
+                form.ShowDialog();
             }
         }
     }

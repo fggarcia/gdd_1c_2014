@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaCommerce.Abm_Cliente
 {
@@ -27,7 +28,14 @@ namespace FrbaCommerce.Abm_Cliente
         private void buttonAlta_Click(object sender, EventArgs e)
         {
             FormClienteAlta formAltaCliente = new FormClienteAlta();
+
+            SqlConnection conn = Procedimientos.abrirConexion();
             formAltaCliente.username = Procedimientos.generarUsername();
+            while (Validaciones.validacionUsernameYaExiste(conn, formAltaCliente.username, false))
+            {
+                formAltaCliente.username = Procedimientos.generarUsername();
+            }
+            conn.Close();
             formAltaCliente.password = Procedimientos.generarPassword();
             MessageBox.Show("El username es: " + formAltaCliente.username + "y el password: " + formAltaCliente.password);
             this.Hide();
