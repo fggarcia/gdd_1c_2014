@@ -320,7 +320,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 --SE PONE EL VALOR 1 COMO CANTIDAD DE VENTA POR PUBLICACION DEFAULT
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
 	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Stock,Descripcion)
-SELECT INTO (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),
+SELECT (CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
 	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion 
