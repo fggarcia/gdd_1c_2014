@@ -16,7 +16,7 @@ namespace FrbaCommerce
         public string user_id;
         public string password;
         public int cantidadFallasEnPass;
-        //tendria que tener unos atributos para cada rol!!
+        
 
         public Usuarios(string user, string pass)
         {
