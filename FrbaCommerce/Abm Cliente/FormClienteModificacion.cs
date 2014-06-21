@@ -48,6 +48,7 @@ namespace FrbaCommerce.Abm_Cliente
             {
                 FormABMCliente formABMCliente = new FormABMCliente();
                 formABMCliente.MdiParent = this.MdiParent;
+                MdiParent.Size = formABMCliente.Size + Constantes.aumentoTamanio;
                 this.Close();
                 formABMCliente.Show();
             }
@@ -58,6 +59,7 @@ namespace FrbaCommerce.Abm_Cliente
         {
             FormABMCliente formABMCliente = new FormABMCliente();
             formABMCliente.MdiParent = this.MdiParent;
+            MdiParent.Size = formABMCliente.Size + Constantes.aumentoTamanio;
             this.Close();
             formABMCliente.Show();
         }

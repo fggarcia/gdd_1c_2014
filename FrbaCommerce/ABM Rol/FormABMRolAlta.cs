@@ -25,6 +25,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             FormABMRol formAbmRol = new FormABMRol();
             formAbmRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formAbmRol.Size + Constantes.aumentoTamanio;
             this.Close();
             formAbmRol.Show();
         }
@@ -60,7 +61,7 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }

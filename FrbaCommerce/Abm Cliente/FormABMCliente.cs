@@ -21,6 +21,7 @@ namespace FrbaCommerce.Abm_Cliente
         {
             FormClienteModElim formModElim = new FormClienteModElim();
             formModElim.MdiParent = this.MdiParent;
+            this.MdiParent.Size = formModElim.Size + Constantes.aumentoTamanio;
             formModElim.Show();
             this.Close();
         }
@@ -29,6 +30,7 @@ namespace FrbaCommerce.Abm_Cliente
         {
             FormClienteAlta formAltaCliente = new FormClienteAlta();
             formAltaCliente.MdiParent = this.MdiParent;
+            this.MdiParent.Size = formAltaCliente.Size + Constantes.aumentoTamanio;
             formAltaCliente.Show();
             this.Close();
 

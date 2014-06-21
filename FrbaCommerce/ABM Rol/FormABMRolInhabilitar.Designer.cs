@@ -52,6 +52,7 @@
             this.buttonVolver.TabIndex = 10;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // buttonInhabilitar
             // 
@@ -61,6 +62,7 @@
             this.buttonInhabilitar.TabIndex = 9;
             this.buttonInhabilitar.Text = "Inhabilitar";
             this.buttonInhabilitar.UseVisualStyleBackColor = true;
+            this.buttonInhabilitar.Click += new System.EventHandler(this.buttonInhabilitar_Click);
             // 
             // dataGridView1
             // 

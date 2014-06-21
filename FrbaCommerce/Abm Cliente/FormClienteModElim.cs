@@ -39,6 +39,12 @@ namespace FrbaCommerce.Abm_Cliente
             string idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
             Cliente.eliminar(idUsuario);
             Procedimientos.cerrarConexion(conn);
+
+            FormABMCliente formABMCliente = new FormABMCliente();
+            formABMCliente.MdiParent = this.MdiParent;
+            MdiParent.Size = formABMCliente.Size + Constantes.aumentoTamanio;
+            this.Close();
+            formABMCliente.Show();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -52,12 +58,12 @@ namespace FrbaCommerce.Abm_Cliente
         {
             FormClienteModificacion formClienteMod = new FormClienteModificacion();
             formClienteMod.MdiParent = this.MdiParent;
+            MdiParent.Size = formClienteMod.Size + Constantes.aumentoTamanio;
             formClienteMod.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
             formClienteMod.idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
             Procedimientos.cerrarConexion(conn);
             this.Close();
-            
         }
 
 
@@ -75,6 +81,7 @@ namespace FrbaCommerce.Abm_Cliente
         {
             FormABMCliente formABMCliente = new FormABMCliente();
             formABMCliente.MdiParent = this.MdiParent;
+            MdiParent.Size = formABMCliente.Size + Constantes.aumentoTamanio;
             this.Close();
             formABMCliente.Show();
         }

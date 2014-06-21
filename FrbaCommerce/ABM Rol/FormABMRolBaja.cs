@@ -23,12 +23,21 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void textBoxBuscarRol_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            FormABMRol formAbmRol = new FormABMRol();
+            formAbmRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formAbmRol.Size + Constantes.aumentoTamanio;
+            this.Close();
+            formAbmRol.Show();
         }
     }
 }

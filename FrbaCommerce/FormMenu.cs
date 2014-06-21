@@ -72,21 +72,19 @@ namespace FrbaCommerce
 
             formAux = (Form)Activator.CreateInstance(null, "FrbaCommerce." + func.carpeta + "." + func.form).Unwrap();
 
-
             formAux.MdiParent = this;
 
             formAux.StartPosition = FormStartPosition.CenterScreen;
-            
-
+          
             Form formActivo = (Form)this.ActiveMdiChild;
-
 
             if (formActivo != null)
             {
                 Validaciones.setearValidacion(formActivo, false);
                 formActivo.Close();
             }
-
+            Size tamanio = new Size(30, 30);
+            this.Size = formAux.Size + tamanio;
             formAux.Show();
         }
     

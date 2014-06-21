@@ -35,6 +35,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             FormABMRolAlta formAltaRol = new FormABMRolAlta();
             formAltaRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formAltaRol.Size + Constantes.aumentoTamanio;
             formAltaRol.Show();
             this.Close();
         }
@@ -50,6 +51,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             FormABMRolModificar formModificarRol = new FormABMRolModificar();
             formModificarRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formModificarRol.Size + Constantes.aumentoTamanio;
             formModificarRol.Show();
             this.Close();
         }
@@ -58,6 +60,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             FormABMRolInhabilitar formInhabilitarRol = new FormABMRolInhabilitar();
             formInhabilitarRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formInhabilitarRol.Size + Constantes.aumentoTamanio;
             formInhabilitarRol.Show();
             this.Close();
         }

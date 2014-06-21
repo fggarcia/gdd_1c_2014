@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace FrbaCommerce
 {
@@ -31,6 +32,12 @@ namespace FrbaCommerce
         public const int cantidadDeFallasIgualATres = 3;
         public const string RolCliente = "Cliente";
         public const string RolEmpresa = "Empresa";
+
+        //************************************
+        //*  CONSTANTES FORMS
+        //************************************
+
+        public static Size aumentoTamanio = new Size(10, 30);
 
         //************************************
         //*  CONSTANTES FUNCIONALIDADES ROLES

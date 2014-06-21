@@ -41,6 +41,7 @@ namespace FrbaCommerce.Abm_Empresa
             {
                 FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
                 formABMEmpresa.MdiParent = this.MdiParent;
+                MdiParent.Size = formABMEmpresa.Size + Constantes.aumentoTamanio;
                 this.Close();
                 formABMEmpresa.Show();
             }
@@ -50,6 +51,7 @@ namespace FrbaCommerce.Abm_Empresa
         {
             FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
             formABMEmpresa.MdiParent = this.MdiParent;
+            MdiParent.Size = formABMEmpresa.Size + Constantes.aumentoTamanio;
             this.Close();
             formABMEmpresa.Show();
         }

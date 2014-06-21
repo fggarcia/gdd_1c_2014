@@ -156,12 +156,6 @@
     <Compile Include="Abm Visibilidad\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmptyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmptyForm.Designer.cs">
-      <DependentUpon>EmptyForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Procedimientos.cs" />
     <Compile Include="Calificar Vendedor\Form1.cs">
       <SubType>Form</SubType>
