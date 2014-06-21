@@ -258,6 +258,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Visibilidad](
 	[Precio][numeric](18,2) NOT NULL,
 	[Porcentaje][numeric](18,2) NOT NULL,
 	[Peso][Int] NOT NULL,
+	[Habilitado][Bit] DEFAULT 1
 
 	CONSTRAINT [PK_Visibilidad_Id_Visibilidad] PRIMARY KEY(Id_Visibilidad),
 	CONSTRAINT [UQ_Visibilidad_Id_Visibilidad] UNIQUE (Id_Visibilidad)
@@ -288,8 +289,39 @@ CREATE TABLE [LOS_OPTIMISTAS].[Tipo_Publicacion](
 INSERT INTO LOS_OPTIMISTAS.Tipo_Publicacion(Descripcion)
 SELECT DISTINCT(UPPER(Publicacion_Tipo)) FROM gd_esquema.maestra
 
---CREO TABLA PUBLICACION
+--CREO TABLA estado
+CREATE TABLE [LOS_OPTIMISTAS].[Estado](
+	[Id_Estado][Int] IDENTITY(1,1) NOT NULL,
+	[Descripcion][varchar](30) NOT NULL,
 
+	CONSTRAINT [UQ_Estado_descripcion] UNIQUE (Descripcion),
+	CONSTRAINT [PK_Estado_Id_Estado] PRIMARY KEY(Id_Estado)
+)
+
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion)
+SELECT DISTINCT UPPER(Publicacion_Estado) FROM gd_esquema.Maestra WHERE Publicacion_Estado IS NOT NULL
+
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Borrador'))
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Activa'))
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Pausada'))
+INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Finalizada'))
+
+--CREO TABLA estado_publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Estado_Publicacion](
+	[Id_Publicacion][numeric](18,0) NOT NULL,
+	[Id_Estado][Int] NOT NULL,
+
+	CONSTRAINT [FK_Estado_Publicacion_Id_Estado] FOREIGN KEY(Id_Estado)
+		REFERENCES [LOS_OPTIMISTAS].[Estado](Id_Estado),
+	CONSTRAINT [UQ_Estado_Publicacion_Id_Publicacion] UNIQUE (Id_Publicacion)	
+)
+
+--verifique en la tabla y no habia iguales
+INSERT INTO LOS_OPTIMISTAS.Estado_Publicacion(Id_Publicacion, Id_Estado)
+SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra 
+	INNER JOIN LOS_OPTIMISTAS.Estado Estado ON (UPPER(maestra.Publicacion_Estado) = UPPER(Estado.Descripcion))
+
+--CREO TABLA PUBLICACION
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	[Id_Publicacion][numeric] (18,0) NOT NULL,
 	[Id_Usuario][varchar](20) NOT NULL,
@@ -308,7 +340,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
 			REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
 
-	CONSTRAINT [PK_Publicacion_Id_Publicacion] UNIQUE(Id_Publicacion),
+	CONSTRAINT [PK_Publicacion_Id_Publicacion] PRIMARY KEY(Id_Publicacion),
 			
 	CONSTRAINT [FK_Publicacion_Id_Visibilidad] FOREIGN KEY(Id_Visibilidad)
 			REFERENCES [LOS_OPTIMISTAS].[Visibilidad](Id_Visibilidad),
@@ -323,7 +355,7 @@ INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publica
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
-	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion 
+	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Descripcion 
 	FROM gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
 
 
@@ -333,8 +365,12 @@ INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publica
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
-	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Rubro_Descripcion 
+	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Descripcion 
 	FROM gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
+
+--AGREGO RESTRICCION EN ESTADO_PUBLICACION
+ALTER TABLE [LOS_OPTIMISTAS].[Estado_Publicacion] ADD CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] 
+	FOREIGN KEY (Id_Publicacion) REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
 
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 	[Id_Publicacion][numeric] (18,0) NOT NULL,
@@ -419,35 +455,6 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
 		REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
 )
 
---CREO TABLA estado
-CREATE TABLE [LOS_OPTIMISTAS].[Estado](
-	[Id_Estado][Int] IDENTITY(1,1) NOT NULL,
-	[Descripcion][varchar](30) NOT NULL,
-
-	CONSTRAINT [UQ_Estado_descripcion] UNIQUE (Descripcion),
-	CONSTRAINT [PK_Estado_Id_Estado] PRIMARY KEY(Id_Estado)
-)
-
-INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion)
-SELECT DISTINCT UPPER(Publicacion_Estado) FROM gd_esquema.Maestra WHERE Publicacion_Estado IS NOT NULL
-
---CREO TABLA estado_publicacion
-CREATE TABLE [LOS_OPTIMISTAS].[Estado_Publicacion](
-	[Id_Publicacion][numeric](18,0) NOT NULL,
-	[Id_Estado][Int] NOT NULL,
-
-	CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-		REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
-	CONSTRAINT [FK_Estado_Publicacion_Id_Estado] FOREIGN KEY(Id_Estado)
-		REFERENCES [LOS_OPTIMISTAS].[Estado](Id_Estado),
-	CONSTRAINT [UQ_Estado_Publicacion_Id_Publicacion] UNIQUE (Id_Publicacion)	
-)
-
---verifique en la tabla y no habia iguales
-INSERT INTO LOS_OPTIMISTAS.Estado_Publicacion(Id_Publicacion, Id_Estado)
-SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra 
-	INNER JOIN LOS_OPTIMISTAS.Estado Estado ON (UPPER(maestra.Publicacion_Estado) = UPPER(Estado.Descripcion))
-
 --CREO TABLA Stock
 CREATE TABLE [LOS_OPTIMISTAS].[Stock](
 	[Id_Articulo][numeric](18,0) NOT NULL,
@@ -514,6 +521,10 @@ SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Tipo = 'Subasta' AND
 	Calificacion_Cant_Estrellas IS NULL
 	GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
+
+--CREO RESTRICCION EN PUBLICACION
+ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
+	REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
 
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](

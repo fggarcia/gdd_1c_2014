@@ -452,3 +452,105 @@ Where Id_Rol = @id_rol
 	 PRINT ' El Rol no existe, DEBE CREAR EL ROL ANTES de agregar funcionalidades'
 	  
 	END 
+	GO
+
+--ABM VISIBILIDAD
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarVisibilidades]
+AS
+BEGIN
+	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
+	ORDER BY Descripcion ASC
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarVisibilidad]
+(
+	@id_visibilidad numeric(18,0),
+	@descripcion varchar(255),
+	@precio numeric(18,2),
+	@porcentaje numeric(18,2),
+	@peso int,
+	@habilitado int
+)
+AS 
+BEGIN
+	IF EXISTS(SELECT 1 FROM LOS_OPTIMISTAS.Visibilidad WHERE Id_Visibilidad = @id_visibilidad)
+	BEGIN		
+		UPDATE LOS_OPTIMISTAS.Visibilidad SET 
+		Descripcion=@descripcion,
+		Precio=@precio,
+		Porcentaje=@porcentaje,
+		Peso=@peso,
+		Habilitado=@habilitado
+		WHERE Id_Visibilidad = @id_visibilidad
+	END
+		ELSE
+		--Si no existe la funcionalidad
+		PRINT ' No existe la visibilidad'		
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[EliminarVisibilidad]
+(
+	@id_visibilidad numeric(18,0)
+)
+AS
+BEGIN
+	IF EXISTS(SELECT 1 FROM LOS_OPTIMISTAS.Visibilidad WHERE Id_Visibilidad = @id_visibilidad)
+	BEGIN		
+		UPDATE LOS_OPTIMISTAS.Visibilidad SET 
+			Habilitado=0
+		WHERE Id_Visibilidad = @id_visibilidad
+	END
+		ELSE
+		--Si no existe la funcionalidad
+		PRINT ' No existe la visibilidad'
+END
+GO
+
+--ABM Publicacion
+[Id_Publicacion][numeric] (18,0) NOT NULL,
+[Id_Usuario][varchar](20) NOT NULL,
+[Id_Tipo_Publicacion][int] NOT NULL,
+[Id_Articulo][numeric](18,0) NOT NULL,             
+[Id_Visibilidad][numeric](18,0)NOT NULL,
+[Id_Estado][varchar](255)NOT NULL,
+[Precio][numeric](18,2) NULL,
+[Fecha_Inicio][datetime] NULL,
+[Fecha_Vencimiento][datetime] NULL,
+[Pemite_Preguntas][Bit] NULL,
+[Cant_por_Venta][numeric] (18,0) NULL,
+[Stock][numeric](18,0) NOT NULL,
+[Descripcion][varchar](255) NULL
+
+CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
+		REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+
+CONSTRAINT [PK_Publicacion_Id_Publicacion] UNIQUE(Id_Publicacion),
+		
+CONSTRAINT [FK_Publicacion_Id_Visibilidad] FOREIGN KEY(Id_Visibilidad)
+		REFERENCES [LOS_OPTIMISTAS].[Visibilidad](Id_Visibilidad),
+
+CONSTRAINT [FK_Publicacion_Id_Tipo_Publicacion] FOREIGN KEY(Id_Tipo_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
+	@Id_Usuario varchar(20),
+	@Tipo_Publicacion int,
+	@Descripcion_Articulo varchar(255),
+	@Precio numeric(18,0),
+	@Permite_Preguntas bit,
+	@Cant_por_Venta numeric(18,0),
+	@Stock numeric(18,0)
+)
+AS
+BEGIN 
+	BEGIN TRANSACTION
+		BEGIN TRY
+			COMMIT TRANSACTION
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANSACTION
+		END CATCH
+	END TRANSACTION
+END
