@@ -267,7 +267,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Visibilidad](
 --INSERTO 0 EN EL PESO PARA ACONTINUACION MODIFICARLO
 INSERT INTO LOS_OPTIMISTAS.Visibilidad(Id_Visibilidad, Descripcion, Precio, Porcentaje, Peso)
 SELECT DISTINCT(Publicacion_Visibilidad_Cod), Publicacion_Visibilidad_Desc,
-	Publicacion_Visibilidad_Porcentaje, Publicacion_Visibilidad_Precio,0
+	Publicacion_Visibilidad_Precio,Publicacion_Visibilidad_Porcentaje,0
 	FROM gd_esquema.Maestra WHERE Publicacion_Visibilidad_Cod IS NOT NULL
 	ORDER BY Publicacion_Visibilidad_Cod ASC
 
@@ -323,7 +323,7 @@ SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra
 
 --CREO TABLA PUBLICACION
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
+	[Id_Publicacion][numeric] (18,0)IDENTITY(1,1) NOT NULL,
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Id_Tipo_Publicacion][int] NOT NULL,
 	[Id_Articulo][numeric](18,0) NOT NULL,             
@@ -334,7 +334,6 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	[Fecha_Vencimiento][datetime] NULL,
 	[Pemite_Preguntas][Bit] NULL,
 	[Cant_por_Venta][numeric] (18,0) NULL,
-	[Stock][numeric](18,0) NOT NULL,
 	[Descripcion][varchar](255) NULL
 
 	CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
@@ -348,29 +347,36 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	CONSTRAINT [FK_Publicacion_Id_Tipo_Publicacion] FOREIGN KEY(Id_Tipo_Publicacion)
 			REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)		
 )
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
+GO
+
 --INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
 --SE PONE EL VALOR 1 COMO CANTIDAD DE VENTA POR PUBLICACION DEFAULT
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
-	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Stock,Descripcion)
+	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
-	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Descripcion 
+	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Descripcion 
 	FROM gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NULL) 
 
 
 --INSERTO EN PUBLICACION LOS CASOS EN QUE LA EMPRESA ES LA QUE PUBLICA
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
-	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Stock,Descripcion)
+	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
-	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Stock,Publicacion_Descripcion 
+	LOS_OPTIMISTAS.obtenerCondicionPreguntas(Publicacion_Estado),1,Publicacion_Descripcion 
 	FROM gd_esquema.Maestra WHERE (Publicacion_Cod IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL AND Publ_Cli_Dni IS NULL)
 
 --AGREGO RESTRICCION EN ESTADO_PUBLICACION
 ALTER TABLE [LOS_OPTIMISTAS].[Estado_Publicacion] ADD CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] 
 	FOREIGN KEY (Id_Publicacion) REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
+GO
 
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 	[Id_Publicacion][numeric] (18,0) NOT NULL,
@@ -457,7 +463,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
 
 --CREO TABLA Stock
 CREATE TABLE [LOS_OPTIMISTAS].[Stock](
-	[Id_Articulo][numeric](18,0) NOT NULL,
+	[Id_Articulo][numeric](18,0)IDENTITY(1,1) NOT NULL,
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Cantidad][numeric](18,0) NOT NULL,
 
@@ -465,6 +471,9 @@ CREATE TABLE [LOS_OPTIMISTAS].[Stock](
 		REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
 	CONSTRAINT [PK_Stock_Id_Articulo] PRIMARY KEY(Id_Articulo)
 )
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
+GO
 
 --STOCK DE COMPRAS INMEDIATAS DE CLIENTES
 INSERT INTO LOS_OPTIMISTAS.Stock(Id_Articulo, Id_Usuario, Cantidad)
@@ -521,6 +530,9 @@ SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Tipo = 'Subasta' AND
 	Calificacion_Cant_Estrellas IS NULL
 	GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
+GO
 
 --CREO RESTRICCION EN PUBLICACION
 ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
@@ -621,8 +633,9 @@ REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad)
 
 --CREO TABLA FACTURACION PENDIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
+	[Id_Registro][numeric](18,0)IDENTITY(1,1),
 	[Id_Usuario][varchar](20) NOT NULL,
-	[Id_Usuario_Comprador][varchar](20) NOT NULL,
+	[Id_Usuario_Comprador][varchar](20) DEFAULT NULL,
 	[Id_Publicacion][numeric](18,0) NULL,
 	[Comision][numeric](18,2) NOT NULL,
 	[Visibilidad][varchar](255) NOT NULL,
@@ -630,6 +643,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
 	[Precio_Publicacion][numeric](18,2) NULL,
 	[Precio_Visibilidad][numeric](18,2) NULL,
 
+	CONSTRAINT [PK_Facturacion_Pendiente_Id_Registro] PRIMARY KEY (Id_Registro),
 	CONSTRAINT [FK_Facturacion_Pendiente_Id_Usuario] FOREIGN KEY(Id_Usuario)
 	REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
 	CONSTRAINT [FK_Facturacion_Pendiente_Id_Publicacion] FOREIGN KEY(Id_Publicacion)

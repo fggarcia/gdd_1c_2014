@@ -509,44 +509,43 @@ END
 GO
 
 --ABM Publicacion
-[Id_Publicacion][numeric] (18,0) NOT NULL,
-[Id_Usuario][varchar](20) NOT NULL,
-[Id_Tipo_Publicacion][int] NOT NULL,
-[Id_Articulo][numeric](18,0) NOT NULL,             
-[Id_Visibilidad][numeric](18,0)NOT NULL,
-[Id_Estado][varchar](255)NOT NULL,
-[Precio][numeric](18,2) NULL,
-[Fecha_Inicio][datetime] NULL,
-[Fecha_Vencimiento][datetime] NULL,
-[Pemite_Preguntas][Bit] NULL,
-[Cant_por_Venta][numeric] (18,0) NULL,
-[Stock][numeric](18,0) NOT NULL,
-[Descripcion][varchar](255) NULL
-
-CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
-		REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
-
-CONSTRAINT [PK_Publicacion_Id_Publicacion] UNIQUE(Id_Publicacion),
-		
-CONSTRAINT [FK_Publicacion_Id_Visibilidad] FOREIGN KEY(Id_Visibilidad)
-		REFERENCES [LOS_OPTIMISTAS].[Visibilidad](Id_Visibilidad),
-
-CONSTRAINT [FK_Publicacion_Id_Tipo_Publicacion] FOREIGN KEY(Id_Tipo_Publicacion)
-		REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)
-
 CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
 	@Id_Usuario varchar(20),
 	@Tipo_Publicacion int,
+	@Id_Visibilidad numeric(18,0),
 	@Descripcion_Articulo varchar(255),
 	@Precio numeric(18,0),
 	@Permite_Preguntas bit,
-	@Cant_por_Venta numeric(18,0),
-	@Stock numeric(18,0)
+	@Cant_por_Venta numeric(18,0)
 )
 AS
 BEGIN 
+	Declare @Id_Articulo numeric(18,0),
+	Declare @Id_Publicacion numeric(18,0),
+	Declare @Precio_Publicacion_Pendiente numeric(18,2),
+	Declare @Cantidad_Visibilidad_Cobrar int,
+	Declare @Visibilidad varchar(255),
+	Declare @Comision numeric(18,2)
+
+	SET @Precio_Publicacion_Pendiente = 0.0
+	SET @Comision = 0.0
+	SET @Cantidad_Visibilidad_Cobrar = 1
 	BEGIN TRANSACTION
 		BEGIN TRY
+			
+			INSERT INTO LOS_OPTIMISTAS.Stock(@Id_Usuario, @Stock)
+			SET @Id_Articulo = SELECT @@IDENTITY
+			INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,
+				Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Stock,Descripcion)
+				VALUES (@Id_Articulo,@Id_Visibilidad,@Precio,DATEADD(day,0,DATEDIFF(day,0,GETDATE())),
+					DATEADD(month,1,DATEDIFF(day,0,GETDATE())),@Permite_Preguntas,@Cant_por_Venta)
+			SET @Id_Publicacion = @@IDENTITY
+			SELECT @Visibilidad = UPPER(Descripcion) ,@Precio_Publicacion_Pendiente  = Precio FROM
+				LOS_OPTIMISTAS.Visibilidad WHERE Id_Visibilidad = @Id_Visibilidad
+			INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario, Id_Publicacion,Comision,Visibilidad,
+				Cantidad,Precio_Publicacion, Precio_Visibilidad)
+				VALUES (@Id_Usuario,@Id_Publicacion,@Comision,@Visibilidad,@Cantidad_Visibilidad_Cobrar,
+					@Precio_Publicacion_Pendiente,@Precio_Visibilidad)
 			COMMIT TRANSACTION
 		END TRY
 		BEGIN CATCH
