@@ -134,7 +134,6 @@
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(180, 21);
             this.comboBoxTipoDoc.TabIndex = 9;
-            this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
             // 
             // groupBoxTituloBusqueda
             // 
@@ -233,7 +232,7 @@
             this.Controls.Add(this.groupBoxTituloBusqueda);
             this.Name = "FormClienteModElim";
             this.Text = "Selección de Cliente";
-            this.Load += new System.EventHandler(this.FormABMClienteModElim_Load_1);
+            this.Load += new System.EventHandler(this.FormClienteModElim_Load);
             this.groupBoxTituloBusqueda.ResumeLayout(false);
             this.groupBoxTituloBusqueda.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCliente)).EndInit();

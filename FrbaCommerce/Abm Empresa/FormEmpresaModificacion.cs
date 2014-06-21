@@ -32,13 +32,26 @@ namespace FrbaCommerce.Abm_Empresa
             if (camposOK)
             {
                 Empresa.modificar(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, textPassword.Text, idUsuario);
+                FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
+                formABMEmpresa.MdiParent = this.MdiParent;
+                this.Close();
+                formABMEmpresa.Show();
             }
             else
             {
-                this.Hide();
-                FormABMEmpresa form = new FormABMEmpresa();
-                form.ShowDialog();
+                FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
+                formABMEmpresa.MdiParent = this.MdiParent;
+                this.Close();
+                formABMEmpresa.Show();
             }
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
+            formABMEmpresa.MdiParent = this.MdiParent;
+            this.Close();
+            formABMEmpresa.Show();
         }
     }
 }

@@ -46,6 +46,7 @@
             this.buttonInhabilitar.TabIndex = 18;
             this.buttonInhabilitar.Text = "Inhabilitar";
             this.buttonInhabilitar.UseVisualStyleBackColor = true;
+            this.buttonInhabilitar.Click += new System.EventHandler(this.buttonInhabilitar_Click_1);
             // 
             // buttonEliminar
             // 
@@ -57,6 +58,7 @@
             this.buttonEliminar.TabIndex = 17;
             this.buttonEliminar.Text = "Eliminar";
             this.buttonEliminar.UseVisualStyleBackColor = true;
+            this.buttonEliminar.Click += new System.EventHandler(this.buttonEliminar_Click);
             // 
             // buttonVolver
             // 
@@ -68,6 +70,7 @@
             this.buttonVolver.TabIndex = 16;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // buttonModificar
             // 
@@ -79,6 +82,7 @@
             this.buttonModificar.TabIndex = 15;
             this.buttonModificar.Text = "Modificar";
             this.buttonModificar.UseVisualStyleBackColor = true;
+            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // buttonAlta
             // 
@@ -118,6 +122,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "FormABMRol";
             this.Text = "Rol";
+            this.Load += new System.EventHandler(this.FormABMRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

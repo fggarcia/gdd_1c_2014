@@ -400,6 +400,7 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormClienteAlta";
             this.Text = "Alta de Cliente";
+            this.Load += new System.EventHandler(this.FormClienteAlta_Load);
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);

@@ -39,21 +39,31 @@ namespace FrbaCommerce.Abm_Cliente
             if (camposOK)
             {
                 Cliente.modificar(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, textPassword.Text, idUsuario);
+                FormABMCliente formABMCliente = new FormABMCliente();
+                formABMCliente.MdiParent = this.MdiParent;
+                this.Close();
+                formABMCliente.Show();
             }
             else
             {
-                this.Hide();
-                FormABMCliente form = new FormABMCliente();
-                form.ShowDialog();
+                FormABMCliente formABMCliente = new FormABMCliente();
+                formABMCliente.MdiParent = this.MdiParent;
+                this.Close();
+                formABMCliente.Show();
             }
 
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            FormABMCliente form = new FormABMCliente();
-            form.ShowDialog();
+            FormABMCliente formABMCliente = new FormABMCliente();
+            formABMCliente.MdiParent = this.MdiParent;
+            this.Close();
+            formABMCliente.Show();
+        }
+
+        private void FormClienteModificacion_Load(object sender, EventArgs e)
+        {
         }
     }
 }

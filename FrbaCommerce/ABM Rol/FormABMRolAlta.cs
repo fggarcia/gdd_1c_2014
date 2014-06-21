@@ -24,9 +24,9 @@ namespace FrbaCommerce.ABM_Rol
         private void buttonVolver_Click(object sender, EventArgs e)
         {
             FormABMRol formAbmRol = new FormABMRol();
-            this.Hide();
-            formAbmRol.ShowDialog();
+            formAbmRol.MdiParent = this.MdiParent;
             this.Close();
+            formAbmRol.Show();
         }
 
         private void buttonAgregarFunc_Click(object sender, EventArgs e)
@@ -56,6 +56,11 @@ namespace FrbaCommerce.ABM_Rol
             {
                 MessageBox.Show("Debe seleccionar una funcionalidad de las incluidas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

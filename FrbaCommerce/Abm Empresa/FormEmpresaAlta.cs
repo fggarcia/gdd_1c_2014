@@ -33,14 +33,19 @@ namespace FrbaCommerce.Abm_Empresa
             }
 
             Empresa.crearEmpresa(textRazonSocial.Text, textCuit.Text, textNombreC.Text, textTelefono.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textCodP.Text, textLocalidad.Text, textCiudad.Text, textDia.Text, textMes.Text, textAnio.Text, textMail.Text, username, password);
-            
+            this.Close();
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            FormABMEmpresa form = new FormABMEmpresa();
-            this.Hide();
-            form.ShowDialog();
+            FormABMEmpresa formABMEmpresa = new FormABMEmpresa();
+            formABMEmpresa.MdiParent = this.MdiParent;
+            this.Close();
+            formABMEmpresa.Show();
+        }
+
+        private void FormEmpresaAlta_Load(object sender, EventArgs e)
+        {
         }
 
     }

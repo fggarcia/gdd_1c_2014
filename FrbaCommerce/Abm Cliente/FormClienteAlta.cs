@@ -37,13 +37,19 @@ namespace FrbaCommerce.Abm_Cliente
             {
                 Cliente.crear(textNombre.Text, textApellido.Text, textCalle.Text, textNro.Text, textPiso.Text, textDepto.Text, textDia.Text, textMes.Text, textAnio.Text, textTelefono.Text, comboBoxTdoc.Text, textNumeroDoc.Text, textCodP.Text, textLocalidad.Text, textMail.Text, username, password);
             }
+            this.Close();
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            FormABMCliente form = new FormABMCliente();
-            this.Hide();
-            form.ShowDialog();
+            FormABMCliente formABMCliente = new FormABMCliente();
+            formABMCliente.MdiParent = this.MdiParent;
+            this.Close();
+            formABMCliente.Show();
+        }
+
+        private void FormClienteAlta_Load(object sender, EventArgs e)
+        {
         }
 
     }

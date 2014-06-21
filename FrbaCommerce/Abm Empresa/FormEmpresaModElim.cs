@@ -40,19 +40,21 @@ namespace FrbaCommerce.Abm_Empresa
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            FormEmpresaModificacion form = new FormEmpresaModificacion();
+            FormEmpresaModificacion formEmpresaMod = new FormEmpresaModificacion();
+            formEmpresaMod.MdiParent = this.MdiParent;
+            formEmpresaMod.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
-            form.idUsuario = Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value);
+            formEmpresaMod.idUsuario = Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value);
             Procedimientos.cerrarConexion(conn);
-            form.ShowDialog();
+            this.Close();
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)
         {
-            FormABMEmpresa formCliente = new FormABMEmpresa();
-            this.Hide();
-            formCliente.ShowDialog();
+            FormABMEmpresa formABMEmpres = new FormABMEmpresa();
+            formABMEmpres.MdiParent = this.MdiParent;
+            this.Close();
+            formABMEmpres.Show();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)

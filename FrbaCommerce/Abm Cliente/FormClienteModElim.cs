@@ -22,24 +22,9 @@ namespace FrbaCommerce.Abm_Cliente
             Procedimientos.LlenarComboBox(comboBoxTipoDoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
         }
 
-        private void FormABMClienteModElim_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBoxTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
             Cliente.buscar(textBoxNombre.Text, textBoxApellido.Text, comboBoxTipoDoc.Text, textBoxnDoc.Text, textBoxEmail.Text, dgvCliente);
-        }
-
-        private void dgvCliente_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
         }
 
         private void dgvCliente_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -65,24 +50,33 @@ namespace FrbaCommerce.Abm_Cliente
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            FormClienteModificacion form = new FormClienteModificacion();
+            FormClienteModificacion formClienteMod = new FormClienteModificacion();
+            formClienteMod.MdiParent = this.MdiParent;
+            formClienteMod.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
-            form.idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
+            formClienteMod.idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
             Procedimientos.cerrarConexion(conn);
-            form.ShowDialog();
+            this.Close();
+            
         }
 
-        private void buttonVolver_Click(object sender, EventArgs e)
-        {
-            FormABMCliente formCliente = new FormABMCliente();
-            this.Hide();
-            formCliente.ShowDialog();
-        }
 
         private void buttonBuscar_Click_1(object sender, EventArgs e)
         {
             Cliente.buscar(textBoxNombre.Text, textBoxApellido.Text, comboBoxTipoDoc.Text, textBoxnDoc.Text, textBoxEmail.Text, dgvCliente);
+        }
+
+        private void FormClienteModElim_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            FormABMCliente formABMCliente = new FormABMCliente();
+            formABMCliente.MdiParent = this.MdiParent;
+            this.Close();
+            formABMCliente.Show();
         }
 
     }

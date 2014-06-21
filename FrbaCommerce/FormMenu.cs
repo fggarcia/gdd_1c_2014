@@ -24,6 +24,19 @@ namespace FrbaCommerce
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
+            MdiClient ctlMDI; 
+            foreach (Control ctl in this.Controls)
+            { 
+                try 
+                { 
+                    ctlMDI = (MdiClient)ctl; ctlMDI.BackColor = this.BackColor; 
+                }
+                catch (InvalidCastException exc)
+                {
+                    // Catch and ignore the error if casting failed.
+                }
+            }
+
             //TODO id_Rol debe venir del Login
             int id_Rol = 1;
 
@@ -58,6 +71,7 @@ namespace FrbaCommerce
             Form formAux;
 
             formAux = (Form)Activator.CreateInstance(null, "FrbaCommerce." + func.carpeta + "." + func.form).Unwrap();
+
 
             formAux.MdiParent = this;
 
