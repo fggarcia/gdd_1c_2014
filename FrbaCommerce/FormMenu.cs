@@ -7,86 +7,75 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Data.SqlClient;
+using System.Reflection;
 
 namespace FrbaCommerce
 {
     public partial class FormMenu : Form
     {
+        public SortedList<int, OpcionMenu> opcionesMenu = new SortedList<int, OpcionMenu>();
+
         public FormMenu()
         {
             InitializeComponent();
-        }
 
-        public class OpcionMenu
-        {
-            public int IdFuncionalidad = 1;
-            public string NombreFuncionalidad = "carla";
-            public string NombreForm = "FormABMEmpresa";
-            public int NodoPadre = 0;
         }
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            SortedList<int, OpcionMenu> opcionesMenu = new SortedList<int, OpcionMenu>();
-
-            //BaseDeDatos.ObtenerOpcionesMenu(opcionesMenu);
+            //TODO id_Rol debe venir del Login
+            int id_Rol = 1;
 
             ToolStripMenuItem menuItem = new ToolStripMenuItem("&Menu");
 
+            Procedimientos.obtenerOpcionesMenu(opcionesMenu, id_Rol);
+
             foreach (KeyValuePair<int, OpcionMenu> kvp in opcionesMenu)
             {
-                ToolStripMenuItem subItem = new ToolStripMenuItem("Hola", null, opcionMenu_Click);
-                subItem.Tag = kvp.Value.NombreForm;
-
+                ToolStripMenuItem subItem = new ToolStripMenuItem(kvp.Value.DescripcionFuncionalidad, null, opcionMenu_Click);
+                subItem.Tag = kvp.Value.DescripcionFuncionalidad;
                 menuItem.DropDownItems.Add(subItem);
             }
 
-            //MenuStrip menuStrip = Formularios.ObtenerMenuStrip();
-
-            // Agrego el boton salir al menu
             ToolStripMenuItem subItemSalir = new ToolStripMenuItem("Salir", null, opcionMenuSalir_Click);
             subItemSalir.Tag = "Salir";
 
             menuItem.DropDownItems.Add(subItemSalir);
 
-            //menuStrip.Items.Add(menuItem);
-
-            //this.Controls.Add(menuStrip);
-
+            menuStrip.Items.Add(menuItem);
+            this.Controls.Add(menuStrip);
         }
-        // Event that is called from menu item.}
 
         private void opcionMenu_Click(object sender, EventArgs e)
         {
-
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
 
+            Constantes.funcionalidad func;
+
+            func = Constantes.obtenerFuncionalidad(menuItem.Tag.ToString());
+
             Form formAux;
-            formAux = (Form)Activator.CreateInstance(null, "Clinica_Frba." + menuItem.Tag.ToString()).Unwrap();
+
+            formAux = (Form)Activator.CreateInstance(null, "FrbaCommerce." + func.carpeta + "." + func.form).Unwrap();
 
             formAux.MdiParent = this;
 
+            formAux.StartPosition = FormStartPosition.CenterScreen;
+            
+
             Form formActivo = (Form)this.ActiveMdiChild;
+
 
             if (formActivo != null)
             {
-                //Formularios.setearValidacion(formActivo, false);
+                Validaciones.setearValidacion(formActivo, false);
                 formActivo.Close();
             }
 
             formAux.Show();
-
-            /*
-            Form formulario;
-            Type tipoObjeto = Type.GetType("Clinica_Frba" + menuItem.Tag.ToString());
-            Object objeto = Activator.CreateInstance(tipoObjeto);
-            formulario = (Form)objeto;
-            formulario.Show();
-            */
         }
-
-        // Event that is called from menu item.
-
+    
         private void opcionMenuSalir_Click(object sender, EventArgs e)
         {
 
@@ -94,7 +83,7 @@ namespace FrbaCommerce
 
             if (formActivo != null)
             {
-                //Formularios.setearValidacion(formActivo, false);
+                Validaciones.setearValidacion(formActivo, false);
                 formActivo.Close();
             }
 

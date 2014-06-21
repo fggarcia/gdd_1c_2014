@@ -681,3 +681,15 @@ SELECT Id_Factura, Id_Tipo_Pago FROM LOS_OPTIMISTAS.Facturacion F INNER JOIN
 	(SELECT Factura_Nro, Forma_Pago_Desc FROM gd_esquema.Maestra
 	GROUP BY Factura_Nro, Forma_Pago_Desc) M ON F.Id_Factura = M.Factura_Nro 
 	INNER JOIN LOS_OPTIMISTAS.Tipo_Pago TP ON UPPER(M.Forma_Pago_Desc) = UPPER(TP.Descripcion)
+
+--Agrego Funcionalidades al Administrador (FALTA!!)
+
+INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,1)
+
+INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,2)
+
+INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,3)
+
+INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,4)
+
+INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,5)

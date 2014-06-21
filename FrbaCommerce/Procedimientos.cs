@@ -7,9 +7,16 @@ using System.Configuration;
 using FrbaCommerce.Properties;
 using System.Data;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace FrbaCommerce
 {
+    public class OpcionMenu
+    {
+        public int IdFuncionalidad { get; set; }
+        public string DescripcionFuncionalidad { get; set; }
+    }
+
     public class Procedimientos
     {
 
@@ -54,7 +61,7 @@ namespace FrbaCommerce
         //**********************************************************
         //*         PROCEDIMIENTO PARA LLENAR COMBOBOX
         //**********************************************************
-        
+
         public static void LlenarComboBox(ComboBox comboBox, String dataSource, String valueMember, String displayMember, String whereMember, String orderMember)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
@@ -68,13 +75,13 @@ namespace FrbaCommerce
             comboBox.DisplayMember = "Display";
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox.Text = "(Seleccione una Opcion)";
-         }
-        
+        }
+
 
         //*************************************************************************
         //*    PROCEDIMIENTO PARA VALIDAR SI UN REGISTRO YA SE ENCUENTRA EN LA BD
         //****************************************************************************
-        
+
         public static Boolean esUnico(String nombreTabla, String nombreCampo, String nombreTextBox)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
@@ -94,7 +101,7 @@ namespace FrbaCommerce
         //*************************************************
         //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW
         //*************************************************
-        
+
         public static void llenarDataGridView(SqlCommand command, DataGridView dataGridView, String operacion)
         {
             SqlConnection conn = abrirConexion();
@@ -104,7 +111,7 @@ namespace FrbaCommerce
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
             sqlDataAdapter.Fill(dataTable);
             dataGridView.DataSource = dataTable;
-            
+
             // Seteo las propiedades del DGV
             dataGridView.RowHeadersVisible = false;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -119,9 +126,9 @@ namespace FrbaCommerce
             }
 
             cerrarConexion(conn);
-          }
+        }
 
-       //*******************************************************
+        //*******************************************************
         //*    PROCEDIMIENTO PARA EJECUTAR UN STORED PROCEDURE
         //******************************************************
 
@@ -208,7 +215,7 @@ namespace FrbaCommerce
 
         public static DateTime convertirFecha(string dia, string mes, string anio)
         {
-            DateTime fecha = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia), 00, 00, 00,000);
+            DateTime fecha = new DateTime(Convert.ToInt32(anio), Convert.ToInt32(mes), Convert.ToInt32(dia), 00, 00, 00, 000);
             return fecha;
         }
 
@@ -226,5 +233,35 @@ namespace FrbaCommerce
             return Guid.NewGuid().ToString("N").Substring(0, 10);
         }
 
-     }
+        //**********************************************************
+        //*  OBTENCIÓN DE LAS OPCIONES DE MENÚ CON ID_ROL
+        //**********************************************************
+
+        public static void obtenerOpcionesMenu(SortedList<int, OpcionMenu> opcionesMenu, int id_Rol)
+        {
+
+            SqlConnection conn = abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@p_Id_Rol", id_Rol);
+
+            SqlDataReader reader = command.ExecuteReader();
+            int i = 0;
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                   // MessageBox.Show("ES: " + (int)reader["Id_Funcionalidad"]);
+                    OpcionMenu opcionesDeMenu = new OpcionMenu();
+                    opcionesDeMenu.DescripcionFuncionalidad = reader["Descripcion"].ToString();
+                    opcionesDeMenu.IdFuncionalidad = Convert.ToInt32(reader["Id_Funcionalidad"]);
+                    opcionesMenu.Add(i, opcionesDeMenu);
+                    i++;
+                }
+            }
+            cerrarConexion(conn);
+
+        }
+    }
 }

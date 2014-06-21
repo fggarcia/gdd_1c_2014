@@ -554,3 +554,21 @@ BEGIN
 		END CATCH
 	END TRANSACTION
 END
+GO
+
+--Procedimiento para listar funcionalidades dado el Id del Rol
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarMenuFuncionalidadesRol]
+(
+	@p_Id_Rol int
+)
+
+AS
+
+BEGIN	
+		
+	SELECT fun.Descripcion, fun.Id_Funcionalidad FROM LOS_OPTIMISTAS.Funcionalidad fun
+	INNER JOIN LOS_OPTIMISTAS.Rol_Funcionalidad funR ON fun.Id_Funcionalidad = funR.Id_Funcionalidad 
+	WHERE @p_Id_Rol = funR.Id_Rol
+
+END

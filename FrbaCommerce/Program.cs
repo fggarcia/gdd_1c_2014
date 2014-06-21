@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FrbaCommerce.Abm_Empresa;
 using FrbaCommerce.Abm_Cliente;
+using FrbaCommerce;
 using System.Data.SqlClient;
 
 namespace FrbaCommerce
@@ -16,7 +17,7 @@ namespace FrbaCommerce
         [STAThread]
         static void Main()
         {
-            FormABMEmpresa formCabm = new FormABMEmpresa();
+            FormMenu formCabm = new FormMenu();
             formCabm.ShowDialog();
         }
     }
