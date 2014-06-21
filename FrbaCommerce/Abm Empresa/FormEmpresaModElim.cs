@@ -25,6 +25,7 @@ namespace FrbaCommerce.Abm_Empresa
             string idUsuario = Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value);
             Empresa.eliminar(idUsuario);
             Procedimientos.cerrarConexion(conn);
+            this.Close();
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -40,19 +41,23 @@ namespace FrbaCommerce.Abm_Empresa
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            FormEmpresaModificacion form = new FormEmpresaModificacion();
+            FormEmpresaModificacion formEmpresaMod = new FormEmpresaModificacion();
+            formEmpresaMod.MdiParent = this.MdiParent;
+            MdiParent.Size = formEmpresaMod.Size + Constantes.aumentoTamanio;
+            formEmpresaMod.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
-            form.idUsuario = Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value);
+            formEmpresaMod.idUsuario = Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value);
             Procedimientos.cerrarConexion(conn);
-            form.ShowDialog();
+            this.Close();
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)
         {
-            FormABMEmpresa formCliente = new FormABMEmpresa();
-            this.Hide();
-            formCliente.ShowDialog();
+            FormABMEmpresa formABMEmpres = new FormABMEmpresa();
+            formABMEmpres.MdiParent = this.MdiParent;
+            MdiParent.Size = formABMEmpres.Size + Constantes.aumentoTamanio;
+            this.Close();
+            formABMEmpres.Show();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)

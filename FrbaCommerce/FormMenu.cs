@@ -24,6 +24,19 @@ namespace FrbaCommerce
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
+            MdiClient ctlMDI; 
+            foreach (Control ctl in this.Controls)
+            { 
+                try 
+                { 
+                    ctlMDI = (MdiClient)ctl; ctlMDI.BackColor = this.BackColor; 
+                }
+                catch (InvalidCastException exc)
+                {
+                    // Catch and ignore the error if casting failed.
+                }
+            }
+
             //TODO id_Rol debe venir del Login
             int id_Rol = 1;
 
@@ -62,17 +75,16 @@ namespace FrbaCommerce
             formAux.MdiParent = this;
 
             formAux.StartPosition = FormStartPosition.CenterScreen;
-            
-
+          
             Form formActivo = (Form)this.ActiveMdiChild;
-
 
             if (formActivo != null)
             {
                 Validaciones.setearValidacion(formActivo, false);
                 formActivo.Close();
             }
-
+            Size tamanio = new Size(30, 30);
+            this.Size = formAux.Size + tamanio;
             formAux.Show();
         }
     

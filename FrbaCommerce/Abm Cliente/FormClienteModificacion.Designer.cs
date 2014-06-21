@@ -421,6 +421,7 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Name = "FormClienteModificacion";
             this.Text = "Modificación de Datos";
+            this.Load += new System.EventHandler(this.FormClienteModificacion_Load);
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
             this.ResumeLayout(false);

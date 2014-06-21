@@ -20,14 +20,19 @@ namespace FrbaCommerce.Abm_Cliente
         private void buttonModificar_Click(object sender, EventArgs e)
         {
             FormClienteModElim formModElim = new FormClienteModElim();
-            this.Hide();
-            formModElim.ShowDialog();
+            formModElim.MdiParent = this.MdiParent;
+            this.MdiParent.Size = formModElim.Size + Constantes.aumentoTamanio;
+            formModElim.Show();
             this.Close();
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
             FormClienteAlta formAltaCliente = new FormClienteAlta();
+            formAltaCliente.MdiParent = this.MdiParent;
+            this.MdiParent.Size = formAltaCliente.Size + Constantes.aumentoTamanio;
+            formAltaCliente.Show();
+            this.Close();
 
             SqlConnection conn = Procedimientos.abrirConexion();
             formAltaCliente.username = Procedimientos.generarUsername();
@@ -38,14 +43,19 @@ namespace FrbaCommerce.Abm_Cliente
             conn.Close();
             formAltaCliente.password = Procedimientos.generarPassword();
             MessageBox.Show("El username es: " + formAltaCliente.username + "y el password: " + formAltaCliente.password);
-            this.Hide();
-            formAltaCliente.ShowDialog();
-            this.Close();
+            
         }
 
         private void FormABMCliente_Load(object sender, EventArgs e)
         {
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+        }
 
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

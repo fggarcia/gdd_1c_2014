@@ -61,6 +61,7 @@
             this.buttonVolver.TabIndex = 6;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // labelSeleccionRol
             // 

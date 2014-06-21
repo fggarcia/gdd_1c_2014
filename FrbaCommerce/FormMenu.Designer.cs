@@ -43,11 +43,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(892, 673);
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "FormMenu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Menú FrbaCommerce";
             this.Load += new System.EventHandler(this.FormMenu_Load);
             this.ResumeLayout(false);

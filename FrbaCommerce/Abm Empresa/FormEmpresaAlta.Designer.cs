@@ -399,6 +399,7 @@
             this.Controls.Add(this.buttonGuardar);
             this.Name = "FormEmpresaAlta";
             this.Text = "Alta de Empresa";
+            this.Load += new System.EventHandler(this.FormEmpresaAlta_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

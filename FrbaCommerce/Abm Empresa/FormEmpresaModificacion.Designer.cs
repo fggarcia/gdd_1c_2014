@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textPassword = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -62,8 +64,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textPassword = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,6 +107,23 @@
             this.groupBox1.Size = new System.Drawing.Size(678, 300);
             this.groupBox1.TabIndex = 91;
             this.groupBox1.TabStop = false;
+            // 
+            // textPassword
+            // 
+            this.textPassword.Location = new System.Drawing.Point(509, 241);
+            this.textPassword.Name = "textPassword";
+            this.textPassword.Size = new System.Drawing.Size(135, 20);
+            this.textPassword.TabIndex = 91;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(345, 242);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 15);
+            this.label1.TabIndex = 90;
+            this.label1.Text = "Password:";
             // 
             // label9
             // 
@@ -381,6 +398,7 @@
             this.buttonCancelar.TabIndex = 90;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
             // buttonGuardar
             // 
@@ -391,23 +409,6 @@
             this.buttonGuardar.Text = "Guardar";
             this.buttonGuardar.UseVisualStyleBackColor = true;
             this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(345, 242);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 15);
-            this.label1.TabIndex = 90;
-            this.label1.Text = "Password:";
-            // 
-            // textPassword
-            // 
-            this.textPassword.Location = new System.Drawing.Point(509, 241);
-            this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(135, 20);
-            this.textPassword.TabIndex = 91;
             // 
             // FormEmpresaModificacion
             // 

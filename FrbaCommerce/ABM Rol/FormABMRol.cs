@@ -33,9 +33,45 @@ namespace FrbaCommerce.ABM_Rol
 
         private void buttonAlta_Click(object sender, EventArgs e)
         {
-            FormABMRolAlta formRolAlta = new FormABMRolAlta();
-            this.Hide();
-            formRolAlta.ShowDialog();
+            FormABMRolAlta formAltaRol = new FormABMRolAlta();
+            formAltaRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formAltaRol.Size + Constantes.aumentoTamanio;
+            formAltaRol.Show();
+            this.Close();
+        }
+
+        private void FormABMRol_Load(object sender, EventArgs e)
+        {
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void buttonModificar_Click(object sender, EventArgs e)
+        {
+            FormABMRolModificar formModificarRol = new FormABMRolModificar();
+            formModificarRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formModificarRol.Size + Constantes.aumentoTamanio;
+            formModificarRol.Show();
+            this.Close();
+        }
+
+        private void buttonInhabilitar_Click_1(object sender, EventArgs e)
+        {
+            FormABMRolInhabilitar formInhabilitarRol = new FormABMRolInhabilitar();
+            formInhabilitarRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formInhabilitarRol.Size + Constantes.aumentoTamanio;
+            formInhabilitarRol.Show();
+            this.Close();
+        }
+
+        private void buttonEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
             this.Close();
         }
     }

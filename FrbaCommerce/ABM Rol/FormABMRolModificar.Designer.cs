@@ -52,6 +52,7 @@
             this.buttonVolver.TabIndex = 11;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
             // buttonModificar
             // 
@@ -61,6 +62,7 @@
             this.buttonModificar.TabIndex = 10;
             this.buttonModificar.Text = "Modificar";
             this.buttonModificar.UseVisualStyleBackColor = true;
+            this.buttonModificar.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
             // dataGridView1
             // 

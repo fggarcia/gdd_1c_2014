@@ -15,5 +15,19 @@ namespace FrbaCommerce.ABM_Rol
         {
             InitializeComponent();
         }
+
+        private void buttonVolver_Click(object sender, EventArgs e)
+        {
+            FormABMRol formAbmRol = new FormABMRol();
+            formAbmRol.MdiParent = this.MdiParent;
+            MdiParent.Size = formAbmRol.Size + Constantes.aumentoTamanio;
+            this.Close();
+            formAbmRol.Show();
+        }
+
+        private void buttonInhabilitar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
