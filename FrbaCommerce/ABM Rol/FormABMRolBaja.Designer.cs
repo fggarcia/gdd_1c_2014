@@ -28,20 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.buttonEliminar = new System.Windows.Forms.Button();
             this.buttonVolver = new System.Windows.Forms.Button();
             this.labelSeleccionRol = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(25, 56);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(401, 345);
-            this.dataGridView1.TabIndex = 1;
             // 
             // buttonEliminar
             // 
@@ -72,18 +63,26 @@
             this.labelSeleccionRol.TabIndex = 7;
             this.labelSeleccionRol.Text = "Seleccione el Rol que desea eliminar:";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(25, 60);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(401, 21);
+            this.comboBox1.TabIndex = 8;
+            // 
             // FormABMRolBaja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(451, 483);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.labelSeleccionRol);
             this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.buttonEliminar);
-            this.Controls.Add(this.dataGridView1);
             this.Name = "FormABMRolBaja";
             this.Text = "Baja de Rol";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.FormABMRolBaja_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,9 +90,9 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button buttonEliminar;
         private System.Windows.Forms.Button buttonVolver;
         private System.Windows.Forms.Label labelSeleccionRol;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

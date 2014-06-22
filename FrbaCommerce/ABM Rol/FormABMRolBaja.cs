@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using FrbaCommerce.ABM_Rol;
 
 namespace FrbaCommerce.ABM_Rol
 {
@@ -16,6 +19,11 @@ namespace FrbaCommerce.ABM_Rol
             InitializeComponent();
         }
 
+        private void FormABMRolBaja_Load(object sender, EventArgs e)
+        {
+            Procedimientos.LlenarComboBox(comboBox1, "LOS_OPTIMISTAS.Rol", "Id_Rol", "Descripcion", null, null);
+        }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -23,7 +31,16 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (!comboBox1.SelectedItem.Equals(null))
+            {
+                SqlCommand bajaRolSP = new SqlCommand();
+                bajaRolSP.Parameters.AddWithValue("@p_Descripcion_Rol", comboBox1.SelectedItem.ToString());
+                Procedimientos.ejecutarStoredProcedure(bajaRolSP, "BajaRol", false);
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un rol", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void textBoxBuscarRol_TextChanged(object sender, EventArgs e)
@@ -39,5 +56,7 @@ namespace FrbaCommerce.ABM_Rol
             this.Close();
             formAbmRol.Show();
         }
+
+
     }
 }
