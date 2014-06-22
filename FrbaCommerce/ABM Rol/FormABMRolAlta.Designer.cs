@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nombreRol = new System.Windows.Forms.TextBox();
             this.labelNombre = new System.Windows.Forms.Label();
             this.labelFuncionalidad = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -40,12 +40,12 @@
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // nombreRol
             // 
-            this.textBox1.Location = new System.Drawing.Point(147, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(373, 20);
-            this.textBox1.TabIndex = 0;
+            this.nombreRol.Location = new System.Drawing.Point(147, 12);
+            this.nombreRol.Name = "nombreRol";
+            this.nombreRol.Size = new System.Drawing.Size(373, 20);
+            this.nombreRol.TabIndex = 0;
             // 
             // labelNombre
             // 
@@ -151,7 +151,7 @@
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.labelFuncionalidad);
             this.Controls.Add(this.labelNombre);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.nombreRol);
             this.Name = "FormABMRolAlta";
             this.Text = "Alta de Rol";
             this.Load += new System.EventHandler(this.FormABMRolAlta_Load);
@@ -162,7 +162,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox nombreRol;
         private System.Windows.Forms.Label labelNombre;
         private System.Windows.Forms.Label labelFuncionalidad;
         private System.Windows.Forms.ComboBox comboBox1;

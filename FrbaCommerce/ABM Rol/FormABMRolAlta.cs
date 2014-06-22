@@ -6,14 +6,22 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+
 
 namespace FrbaCommerce.ABM_Rol
 {
     public partial class FormABMRolAlta : Form
     {
-        public FormABMRolAlta()
+        public FormABMRolAlta(String rolNombre, ComboBox comboFuncionalidades)
         {
             InitializeComponent();
+            nombreRol.Text = rolNombre;
+            if (!rolNombre.Equals(null))
+            {
+                //Llenar listBox con funcionalidades del Rol que me pasan
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -44,7 +52,7 @@ namespace FrbaCommerce.ABM_Rol
 
         private void FormABMRolAlta_Load(object sender, EventArgs e)
         {
-            Procedimientos.LlenarComboBox(comboBox1, "LOS_OPTIMISTAS.Funcionalidad", "Id_Funcionalidad", "Descripcion", null, null);
+            Procedimientos.LlenarComboBox(comboBox1, "LOS_OPTIMISTAS.Funcionalidad", "Descripcion", "Descripcion", null, null);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -61,7 +69,27 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (!listBox1.SelectedItem.Equals(null))
+            {
+                SqlCommand rolSP = new SqlCommand();
+                rolSP.Parameters.AddWithValue("@p_Descripcion_Rol", nombreRol.Text);
+                Procedimientos.ejecutarStoredProcedure(rolSP, "CrearRol", false);
+
+                for (int i = 0; i < listBox1.Items.Count - 1; i++)
+                {
+                    string funcionalidad = listBox1.Items[i].ToString();
+                    SqlCommand funcionalidadSP = new SqlCommand();
+                    funcionalidadSP.Parameters.AddWithValue("@p_Id_Rol", nombreRol.Text);
+                    funcionalidadSP.Parameters.AddWithValue("@p_Id_Funcionalidad", funcionalidad);
+                    Procedimientos.ejecutarStoredProcedure(funcionalidadSP, "AgregarFuncionalidad", false);
+                }
+                listBox1.Items.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Debe incluir funcionalidades", "FrbaCommerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }
