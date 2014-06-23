@@ -79,14 +79,43 @@ SELECT empl_codigo, empl_jefe, RTRIM(empl_apellido)+', '+RTRIM(empl_nombre),
 FROM gdd_practica.dbo.Empleado WHERE empl_jefe IS NOT NULL
 
 --10
-SELECT prod_codigo, fact_cliente, SUM(item_cantidad) FROM 
+SELECT prod_codigo
+,(SELECT TOP 1 fact_cliente FROM gdd_practica.dbo.Item_Factura
+INNER JOIN gdd_practica.dbo.Factura ON item_tipo = fact_tipo AND item_sucursal = fact_sucursal AND item_numero = fact_numero
+WHERE item_producto = prod_codigo
+GROUP BY item_producto,fact_cliente
+ORDER BY SUM(item_cantidad * item_precio) DESC) 
+FROM 
 	(SELECT prod_codigo FROM gdd_practica.dbo.Producto WHERE prod_codigo IN 
 	(SELECT TOP 10 item_producto FROM gdd_practica.dbo.Item_Factura
 	GROUP BY item_producto ORDER BY SUM(item_cantidad) DESC)
-	UNION
+	UNION ALL
 	SELECT prod_codigo FROM gdd_practica.dbo.Producto WHERE prod_codigo IN 
 	(SELECT TOP 10 item_producto FROM gdd_practica.dbo.Item_Factura GROUP BY item_producto ORDER BY SUM(item_cantidad) ASC)) AS productos
-INNER JOIN gdd_practica.dbo.Item_Factura ON item_producto = productos.prod_codigo
-INNER JOIN gdd_practica.dbo.Factura ON fact_tipo = item_tipo AND fact_sucursal = item_sucursal AND fact_numero = item_numero
-GROUP BY prod_codigo, fact_cliente
-ORDER BY prod_codigo, SUM
+
+--11
+SELECT fami_detalle,COUNT(DISTINCT(pfm.prod_codigo)), SUM(item_cantidad * item_precio) FROM (gdd_practica.dbo.Familia INNER JOIN gdd_practica.dbo.Producto pfm
+ON pfm.prod_familia = fami_id) 
+INNER JOIN gdd_practica.dbo.Item_Factura ON pfm.prod_codigo = item_producto
+INNER JOIN gdd_practica.dbo.Factura ON item_tipo = fact_tipo AND item_sucursal = fact_sucursal AND item_numero = fact_numero
+WHERE YEAR(fact_fecha) = 2012
+GROUP BY fami_detalle
+HAVING SUM(item_cantidad * item_precio) > 20000
+ORDER BY COUNT(DISTINCT(pfm.prod_codigo)) DESC
+
+--12
+--nombre del producto,cantidad de clientes distintos que lo compraron,importe promedio pagado
+--por el producto, cantidad de depositos en los cuales hay stock del producto y stock actual
+--del producto en todos los depositos
+--solo aquellos que hayan tenido operacion en el 2012 y los datos deben ordenarse de mayor a
+--menor por monto vendido del producto
+
+SELECT prod_detalle,SUM(item_cantidad * item_precio), COUNT(DISTINCT(fact_cliente)),
+(SELECT COUNT(stoc_deposito) FROM gdd_practica.dbo.Stock WHERE stoc_producto = prod_codigo
+AND stoc_cantidad > 0), (SELECT SUM(stoc_cantidad) FROM gdd_practica.dbo.Stock WHERE stoc_producto = prod_codigo) 
+FROM gdd_practica.dbo.Producto 
+INNER JOIN gdd_practica.dbo.Item_Factura ON prod_codigo = item_producto
+INNER JOIN gdd_practica.dbo.Factura ON item_tipo = fact_tipo AND item_sucursal = fact_sucursal
+AND item_numero = fact_numero AND YEAR(fact_fecha) = 2012
+GROUP BY prod_codigo,prod_detalle,item_producto
+ORDER BY SUM(item_cantidad * item_precio) DESC
