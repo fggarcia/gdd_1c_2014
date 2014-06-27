@@ -437,8 +437,9 @@ CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
 
 --Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
 INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
-SELECT Publicacion_Cod, Cli_Dni,Oferta_Monto,Oferta_Fecha 
-	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL )
+SELECT Publicacion_Cod, LOS_OPTIMISTAS.obtenerDNI(Cli_Dni),Oferta_Monto,Oferta_Fecha 
+	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL 
+	AND Calificacion_Codigo IS NULL AND Compra_Cantidad IS NULL)
 
 --CREO TABLA Rubro
 CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
