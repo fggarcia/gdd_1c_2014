@@ -542,7 +542,7 @@ ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Art
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Factura][numeric](18,0) NOT NULL,
-	[Id_Publicacion][numeric](18,0) NOT NULL,
+	[Id_Publicacion][numeric](18,0) NOT NULL,	
 	[Monto_Compra][numeric](18,2) NOT NULL DEFAULT 0.0,
 	[Porcentaje_Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
 	[Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
@@ -551,17 +551,24 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Visibilidad][numeric](18,0) NOT NULL,
 )
 --Cargo factura detalle con subastas
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Id_Visibilidad)
-SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Oferta_Monto),MAX(C.Publicacion_Visibilidad_Porcentaje),
-	CONVERT(numeric(18,2),MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje)),MAX(C.Publicacion_Visibilidad_Cod)
-	FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	CONVERT(numeric(18,2),C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje) = D.Item_Factura_Monto AND 
-	C.Publicacion_Cod = D.Publicacion_Cod,
-	gd_esquema.Maestra E
-	WHERE C.Publicacion_Tipo = 'Subasta' AND C.Cli_Dni IS NOT NULL AND C.Oferta_Monto IS NOT NULL AND 
-	C.Publicacion_Cod = E.Publicacion_Cod
-	AND E.Factura_Nro IS NOT NULL
-	GROUP BY C.Publicacion_Cod
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,
+	Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, 
+	CONVERT(numeric(18,2),((1 * Item_Factura_Monto) / Publicacion_Visibilidad_Porcentaje)/Item_Factura_Cantidad) AS monto_compra,
+	Publicacion_Visibilidad_Porcentaje, 
+	CONVERT(numeric(18,2),Item_Factura_Monto/Item_Factura_Cantidad) AS comision, 
+	Item_Factura_Cantidad, Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Subasta'
+	AND Publicacion_Visibilidad_Precio != Item_Factura_Monto / Item_Factura_Cantidad
+
+--Cargo facturacion detalle cobro visibilidad subastas
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
+	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra
+	WHERE AND Publicacion_Tipo = 'Subasta'
+	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
 --Cargo factura detalle con compra inmediata
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
@@ -570,17 +577,17 @@ SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_
 	CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje), Item_Factura_Cantidad, 
 	Publicacion_Visibilidad_Cod
 	FROM gd_esquema.Maestra
-	WHERE CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad) = Item_Factura_Monto
-	AND Calificacion_Codigo IS NULL AND Publicacion_Tipo = 'Compra Inmediata'
-	AND Factura_Nro IS NOT NULL
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Compra Inmediata'
+	AND Publicacion_Visibilidad_Precio != Item_Factura_Monto / Item_Factura_Cantidad
 
 --Cargo facturacion detalle cobro visibilidad
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Id_Visibilidad)
-SELECT MAX(D.Factura_Nro), C.Publicacion_Cod, MAX(C.Publicacion_Visibilidad_Precio), MAX(C.Publicacion_Visibilidad_Cod)
-	FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	C.Publicacion_Visibilidad_Precio = D.Item_Factura_Monto
-	WHERE C.Publicacion_Cod = D.Publicacion_Cod AND D.Factura_Nro IS NOT NULL
-	GROUP BY C.Publicacion_Cod
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
+	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra
+	WHERE Factura_Nro IS NOT NULL AND Factura_Total IS NOT NULL
+	AND Item_Factura_Monto / Item_Factura_Cantidad = Publicacion_Visibilidad_Precio
 
 --CREO TABLA FACTURACION
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
