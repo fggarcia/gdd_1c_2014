@@ -348,7 +348,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 			REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)		
 )
 
-SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Publicacion ON
 GO
 
 --INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
@@ -375,7 +375,7 @@ SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCu
 ALTER TABLE [LOS_OPTIMISTAS].[Estado_Publicacion] ADD CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] 
 	FOREIGN KEY (Id_Publicacion) REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
 
-SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Publicacion OFF
 GO
 
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
@@ -473,6 +473,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Stock](
 	CONSTRAINT [PK_Stock_Id_Articulo] PRIMARY KEY(Id_Articulo)
 )
 
+GO
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
 GO
 
@@ -532,6 +533,7 @@ SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Calificacion_Cant_Estrellas IS NULL
 	GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
 
+GO
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
 GO
 
@@ -567,7 +569,8 @@ INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_
 SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
 	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
 	FROM gd_esquema.Maestra
-	WHERE AND Publicacion_Tipo = 'Subasta'
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Subasta'
 	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
 --Cargo factura detalle con compra inmediata
@@ -581,13 +584,14 @@ SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_
 	AND Publicacion_Tipo = 'Compra Inmediata'
 	AND Publicacion_Visibilidad_Precio != Item_Factura_Monto / Item_Factura_Cantidad
 
---Cargo facturacion detalle cobro visibilidad
+--Cargo facturacion detalle cobro visibilidad compra inmediata
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Cantidad_Venta,Id_Visibilidad)
 SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
 	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
 	FROM gd_esquema.Maestra
-	WHERE Factura_Nro IS NOT NULL AND Factura_Total IS NOT NULL
-	AND Item_Factura_Monto / Item_Factura_Cantidad = Publicacion_Visibilidad_Precio
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Compra Inmediata'
+	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
 --CREO TABLA FACTURACION
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
