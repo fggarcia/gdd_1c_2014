@@ -86,12 +86,11 @@ WHERE item_producto = prod_codigo
 GROUP BY item_producto,fact_cliente
 ORDER BY SUM(item_cantidad * item_precio) DESC) 
 FROM 
-	(SELECT prod_codigo FROM gdd_practica.dbo.Producto WHERE prod_codigo IN 
+	gdd_practica.dbo.Producto WHERE prod_codigo IN
 	(SELECT TOP 10 item_producto FROM gdd_practica.dbo.Item_Factura
 	GROUP BY item_producto ORDER BY SUM(item_cantidad) DESC)
-	UNION ALL
-	SELECT prod_codigo FROM gdd_practica.dbo.Producto WHERE prod_codigo IN 
-	(SELECT TOP 10 item_producto FROM gdd_practica.dbo.Item_Factura GROUP BY item_producto ORDER BY SUM(item_cantidad) ASC)) AS productos
+	OR prod_codigo IN
+	(SELECT TOP 10 item_producto FROM gdd_practica.dbo.Item_Factura GROUP BY item_producto ORDER BY SUM(item_cantidad) ASC)
 
 --11
 SELECT fami_detalle,COUNT(DISTINCT(pfm.prod_codigo)), SUM(item_cantidad * item_precio) FROM (gdd_practica.dbo.Familia INNER JOIN gdd_practica.dbo.Producto pfm

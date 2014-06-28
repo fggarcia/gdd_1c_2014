@@ -696,14 +696,8 @@ SELECT Id_Factura, Id_Tipo_Pago FROM LOS_OPTIMISTAS.Facturacion F INNER JOIN
 	GROUP BY Factura_Nro, Forma_Pago_Desc) M ON F.Id_Factura = M.Factura_Nro 
 	INNER JOIN LOS_OPTIMISTAS.Tipo_Pago TP ON UPPER(M.Forma_Pago_Desc) = UPPER(TP.Descripcion)
 
---Agrego Funcionalidades al Administrador (FALTA!!)
+--Agrego Funcionalidades al Administrador, Cliente y Empresa
 
-INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,1)
-
-INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,2)
-
-INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,3)
-
-INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,4)
-
-INSERT INTO [GD1C2014].[LOS_OPTIMISTAS].[Rol_Funcionalidad] ([Id_Rol],[Id_Funcionalidad]) VALUES (1,5)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (1,2),(1,4),(1,5),(1,6),(1,7)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (3,8),(3,9),(3,10),(3,11),(3,12),(3,13),(3,14),(3,15)

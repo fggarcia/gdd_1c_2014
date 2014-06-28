@@ -1,6 +1,6 @@
 ﻿namespace FrbaCommerce.Historial_Cliente
 {
-    partial class Form1
+    partial class HistorialCliente
     {
         /// <summary>
         /// Required designer variable.
