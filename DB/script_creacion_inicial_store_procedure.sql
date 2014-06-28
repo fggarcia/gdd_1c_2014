@@ -520,13 +520,15 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
 )
 AS
 BEGIN 
-	Declare @Id_Articulo numeric(18,0),
-	Declare @Id_Publicacion numeric(18,0),
-	Declare @Precio_Publicacion_Pendiente numeric(18,2),
-	Declare @Cantidad_Visibilidad_Cobrar int,
-	Declare @Visibilidad varchar(255),
+	Declare @Id_Articulo numeric(18,0)
+	Declare @Id_Publicacion numeric(18,0)
+	Declare @Precio_Publicacion_Pendiente numeric(18,2)
+	Declare @Cantidad_Visibilidad_Cobrar int
+	Declare @Visibilidad varchar(255)
 	Declare @Comision numeric(18,2)
-
+	Declare @Stock numeric(18,0)
+	Declare @Precio_Visibilidad numeric(18,2)
+	
 	SET @Precio_Publicacion_Pendiente = 0.0
 	SET @Comision = 0.0
 	SET @Cantidad_Visibilidad_Cobrar = 1
