@@ -16,6 +16,7 @@ namespace FrbaCommerce
         public string user_id;
         public string password;
         public int cantidadFallasEnPass;
+        public int Id_Rol { get; set; }
         
 
         public Usuarios(string user, string pass)
@@ -30,31 +31,53 @@ namespace FrbaCommerce
 
         public Boolean validarUsuario(Usuarios user)
         {
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_LoginUsuarioValido";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Usuario", user.user_id);
 
-            if (!Procedimientos.esUnico("LOS_OPTIMISTAS.Usuario", "Id_Usuario", user.user_id))
+            SqlDataReader reader = command.ExecuteReader();
+            Int32 existencia = 0;
+            if (reader.HasRows)
             {
-                SqlConnection conn = Procedimientos.abrirConexion();
-                SqlCommand command = new SqlCommand("select Cantidad_Login from LOS_OPTIMISTAS.Usuario where Id_usuario = @user", conn);
-                command.Parameters.AddWithValue("@user", user);
-                user.cantidadFallasEnPass = (Int32)command.ExecuteScalar();
-                Procedimientos.cerrarConexion(conn);
-
+                while (reader.Read())
+                {
+                    existencia = Convert.ToInt32(reader["Valido"].ToString());
+                }
+            }
+            Procedimientos.cerrarConexion(conn);
+            if (existencia == 1)
+            {
                 return true;
             }
-            return false;
-
+            else
+            {
+                return false;
+            }
         }
 
-        public Boolean validarContraseña(Usuarios user)
+        public Int32 loguear(Usuarios user)
         {
-            //llamar a un stored y  pasarle pass y que me devuelva si esta bien o no.
-            //en el true iria la invocacion al stored.
-            //EN VEZ DE PONER TANTOS IF, PODRIA HACER QUE EL STORED DEVUELVA TRUE OR FALSE SI LA CONTRASEÑA ESTA BIEN O NO
-            //Y DIRECTAMENTE RETORNO LO QUE ME DEVUELVA EL STORED.
-            if (true)
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_Login";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Usuario", user.user_id);
+            command.Parameters.AddWithValue("@Password", user.password);
+
+            SqlDataReader reader = command.ExecuteReader();
+            Int32 intento = 0;
+            if (reader.HasRows)
             {
-                return true;
+                while (reader.Read())
+                {
+                    intento = Convert.ToInt32(reader["Intento"].ToString());
+                }
             }
+            Procedimientos.cerrarConexion(conn);
+
+            return intento;
         }
 
         public void deshabilitarUsuario(Usuarios user)
@@ -121,24 +144,30 @@ namespace FrbaCommerce
         public List<Rol> obtenerRolesDe(Usuarios user)
         {
             List<Rol> listaRol = new List<Rol>();
-            SqlConnection conn = Procedimientos.abrirConexion();
-            SqlCommand command = new SqlCommand(string.Format("select UR.Id_Rol, R.Descripcion from LOS_OPTIMISTAS.Usuario_Rol UR join LOS_OPTIMISTAS.Rol R on UR.Id_Rol = R.Id_Rol where UR.Id_usuario = {0} and UR.Habilitado <> 0", user.user_id), conn);
-            SqlDataReader lectura = command.ExecuteReader();
-            while (lectura.Read())
-            {
-                Rol rolUsuario = new Rol();
-                rolUsuario.Id_Rol = lectura.GetInt32(0);
-                rolUsuario.Descripcion = lectura.GetString(1);
 
-                listaRol.Add(rolUsuario);
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_UsuarioRol";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Id_Usuario", user.user_id);
+
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Rol rolUsuario = new Rol();
+                    rolUsuario.Id_Rol = Convert.ToInt32(reader["Id_Rol"].ToString());
+                    rolUsuario.Descripcion = reader["Descripcion"].ToString();
+                    rolUsuario.Habilitado = Convert.ToBoolean(reader["Habilitado"].ToString());
+
+                    listaRol.Add(rolUsuario);
+                }
             }
             Procedimientos.cerrarConexion(conn);
+
             return listaRol;
-
         }
-
-
-
     }
 }
 

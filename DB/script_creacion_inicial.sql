@@ -462,7 +462,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
 [Id_Articulo][numeric](18,0) NOT NULL,
 [Compra_Cantidad][numeric](18,0) NOT NULL,
 [Compra_Fecha][smalldatetime] NOT NULL,
-[Calificado][Int] NOT NULL DEFAULT 0
+[Calificado][bit] NOT NULL DEFAULT 0
 
 CONSTRAINT [FK_Historial_Compra_Id_Vendedor] FOREIGN KEY(Id_Vendedor)
 REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),

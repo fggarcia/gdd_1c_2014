@@ -15,11 +15,11 @@ namespace FrbaCommerce
     public partial class FormMenu : Form
     {
         public SortedList<int, OpcionMenu> opcionesMenu = new SortedList<int, OpcionMenu>();
-
-        public FormMenu()
+        public Usuarios usuario;
+        public FormMenu(Usuarios usuario)
         {
             InitializeComponent();
-
+            this.usuario = usuario;
         }
 
         private void FormMenu_Load(object sender, EventArgs e)
@@ -37,12 +37,9 @@ namespace FrbaCommerce
                 }
             }
 
-            //TODO id_Rol debe venir del Login
-            int id_Rol = 1;
-
             ToolStripMenuItem menuItem = new ToolStripMenuItem("&Menu");
 
-            Procedimientos.obtenerOpcionesMenu(opcionesMenu, id_Rol);
+            Procedimientos.obtenerOpcionesMenu(opcionesMenu, usuario.Id_Rol);
 
             foreach (KeyValuePair<int, OpcionMenu> kvp in opcionesMenu)
             {

@@ -572,22 +572,23 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_login_usuario_valido](
-	@Usuario varchar(20),
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_LoginUsuarioValido](
+	@Usuario varchar(20)
 )
 AS 
 BEGIN
-	SELECT 1 FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+	SELECT 1 AS Valido FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
 END
 GO
 
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Login](
 	@Usuario varchar(20),
-	@Password varchar(64),
-	@Intento int OUTPUT
+	@Password varchar(64)
 )
 AS
 BEGIN
+	Declare @Intento Int
+
 	SELECT 1 FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password
 
 	IF (@@ROWCOUNT = 1)
@@ -596,7 +597,7 @@ BEGIN
 		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = 0, Ultima_Fecha = GETDATE()
 			WHERE Id_Usuario = @Usuario
 
-		SELECT @Intento
+		SELECT @Intento as Intento
 	END
 	ELSE
 	BEGIN
@@ -608,7 +609,21 @@ BEGIN
 		IF(@Intento >= 3)
 			UPDATE LOS_OPTIMISTAS.Usuario SET Habilitado = 0
 
-		SELECT @Intento
+		SELECT @Intento as Intento
 	END
 END
 GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_UsuarioRol](
+	@Id_Usuario varchar(20)
+)
+AS
+BEGIN
+	Declare @Habilitado Int = 1
+
+	SELECT ur.Id_Rol, r.Descripcion,ur.Habilitado FROM Usuario_Rol ur INNER JOIN Rol r
+		ON ur.Id_Rol = r.Id_Rol
+		WHERE ur.Id_Usuario = @Id_Usuario 
+		AND ur.Habilitado = @Habilitado
+		AND r.Habilitado = @Habilitado
+END

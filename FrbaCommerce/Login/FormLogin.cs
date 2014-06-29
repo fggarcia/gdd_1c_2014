@@ -65,53 +65,25 @@ namespace FrbaCommerce.Login
                 MessageBox.Show("Los campos usuario y contraseña son obligatorios", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-
             Administracion administracion = new Administracion();
             if (administracion.validarUsuario(usuario))
             {
-                if (administracion.usuarioHabilitado(usuario))
+                Int32 cantidadLogin = administracion.loguear(usuario);
+
+                if (cantidadLogin == 0)
                 {
-                    if (administracion.validarContraseña(usuario))
-                    {
-                        if (administracion.validarCantidadDeFallasMayorAdos(usuario))
-                        {
-                            MessageBox.Show("Su usuario se encuentra bloqueado, por favor contacte al administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-
-                        if (administracion.obtenerRolesDe(usuario).Count > 1)
-                        {
-                            administracion.limpiarIntentosFallidos(usuario);
-                            FormSeleccionRol formSeleccionRol = new FormSeleccionRol(usuario);
-                            this.Hide();
-                            formSeleccionRol.ShowDialog();
-                            this.Close();
-                        }
-                        else
-                        {
-                            administracion.limpiarIntentosFallidos(usuario);
-                            //Acceso al sistema directamente con el rol que tengo asignado.
-                        }
-                    }
-                    else
-                    {
-                        administracion.actualizarCantidadDeFallas(usuario);
-                        if (usuario.cantidadFallasEnPass < Constantes.cantidadDeFallasIgualATres)
-                        {
-                            MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        else
-                        {
-                            administracion.deshabilitarUsuario(usuario);
-                            MessageBox.Show("Tu login esta deshabilitado. Por favor contactarse con el administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-
+                    FormSeleccionRol formSeleccionRol = new FormSeleccionRol(usuario);
+                    this.Hide();
+                    formSeleccionRol.ShowDialog();
+                    this.Close();
                 }
-                else
+                else if (cantidadLogin > 0 && cantidadLogin < 3)
                 {
-                    MessageBox.Show("Tu login esta deshabilitado. Por favor contactarse con el administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
+                else {
+                    MessageBox.Show("Su usuario se encuentra bloqueado, por favor contacte al administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

@@ -6,6 +6,7 @@ using FrbaCommerce.Abm_Empresa;
 using FrbaCommerce.Abm_Cliente;
 using FrbaCommerce;
 using System.Data.SqlClient;
+using FrbaCommerce.Login;
 
 namespace FrbaCommerce
 {
@@ -17,8 +18,8 @@ namespace FrbaCommerce
         [STAThread]
         static void Main()
         {
-            FormMenu formCabm = new FormMenu();
-            formCabm.ShowDialog();
+            FormLogin formLogin = new FormLogin();
+            formLogin.ShowDialog();
         }
     }
 }
