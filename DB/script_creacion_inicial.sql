@@ -378,90 +378,6 @@ ALTER TABLE [LOS_OPTIMISTAS].[Estado_Publicacion] ADD CONSTRAINT [FK_Estado_Publ
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Publicacion OFF
 GO
 
-CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Calificacion][numeric](18,0)NOT NULL,
-	[Id_Usuario_Calificador][varchar](20) NOT NULL,
-	[Fecha_Calificacion][datetime] NULL,
-	[Detalle][varchar] (255) NULL,
-	[Calificacion][Numeric](18,0)  NULL
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Calificacion] PRIMARY KEY (Id_Calificacion),	
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Usuario_Calificador] FOREIGN KEY(Id_Usuario_Calificador)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
-)
-
---Inserto en publicacion_Calificaciones COnsideramos poner la fecha de compra como la de calificacion en todos los casos de migracion
-INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones(Id_Calificacion,Id_Publicacion,Id_Usuario_Calificador,Fecha_Calificacion,
-	Detalle,Calificacion)
-SELECT DISTINCT(CONVERT(numeric(18,0),Calificacion_Codigo)),Publicacion_Cod,Cli_Dni,Compra_Fecha,Calificacion_Descripcion,
-	Calificacion_Cant_Estrellas FROM gd_esquema.Maestra WHERE (Calificacion_codigo IS NOT NULL)
-
---CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
-CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
-	[Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Usuario][varchar](20) NOT NULL,
-	[Fecha_Creacion][datetime],
-	[Preg_Descripcion][varchar](255) NULL,
-	[Preg_Respuesta][varchar](255) NULL,
-	[Fecha_Respuesta][datetime]
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
-)
-
---CREO TABLA Historial_Subasta
-CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Usuario][varchar](20) NOT NULL,
-	[Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
-	[Fecha_Oferta][datetime],
-
-
-	CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
-)
-
---Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
-INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
-SELECT Publicacion_Cod, LOS_OPTIMISTAS.obtenerDNI(Cli_Dni),Oferta_Monto,Oferta_Fecha 
-	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL 
-	AND Calificacion_Codigo IS NULL AND Compra_Cantidad IS NULL)
-
---CREO TABLA Rubro
-CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
-	[Id_Rubro][Int] NOT NULL,
-	[Descripcion][varchar](60) NOT NULL,
-	[Fecha_Baja][datetime] NULL,
-
-	CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
-)
-
---CREO TABLA Rubro_Publicacion
-CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
-	[Id_Publicacion][numeric](18,0) NOT NULL,
-	[Id_Rubro][Int] NOT NULL,
-
-	CONSTRAINT [FK_Rubro_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-		REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
-
-	CONSTRAINT [FK_Rubro_Publicacion_Id_Rubro] FOREIGN KEY(Id_Rubro)
-		REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
-)
-
 --CREO TABLA Stock
 CREATE TABLE [LOS_OPTIMISTAS].[Stock](
 	[Id_Articulo][numeric](18,0)IDENTITY(1,1) NOT NULL,
@@ -537,18 +453,16 @@ GO
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
 GO
 
---CREO RESTRICCION EN PUBLICACION
-ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
-	REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
-
 --CREO TABLA HISTORIAL DE COMPRAS
 CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
+[Id_Historial_Compra][numeric](18,0) IDENTITY(1,1) NOT NULL,
 [Id_Vendedor][varchar](20) NOT NULL,
 [Id_Comprador][varchar](20) NOT NULL,
 [Id_Publicacion][numeric](18,0) NOT NULL,
 [Id_Articulo][numeric](18,0) NOT NULL,
 [Compra_Cantidad][numeric](18,0) NOT NULL,
 [Compra_Fecha][smalldatetime] NOT NULL,
+[Calificado][Int] NOT NULL DEFAULT 0
 
 CONSTRAINT [FK_Historial_Compra_Id_Vendedor] FOREIGN KEY(Id_Vendedor)
 REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
@@ -557,24 +471,139 @@ REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
 CONSTRAINT [FK_Historial_Compra_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
 REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
 CONSTRAINT [FK_Historial_Compra_Id_Articulo] FOREIGN KEY(Id_Articulo)
-REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
+REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo),
+CONSTRAINT [PK_Historial_Compra_Id_Historial_Compra] PRIMARY KEY(Id_Historial_Compra)
 )
+
 --HISTORIAL COMPRAS POR CLIENTES A CLIENTES
-INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo, Compra_Cantidad, Compra_Fecha)
-SELECT LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), Publicacion_Cod, 
-	LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
-	FROM gd_esquema.Maestra 
-	WHERE Cli_Dni IS NOT NULL AND Publ_Cli_Dni IS NOT NULL
-	AND Compra_Cantidad IS NOT NULL AND Compra_Fecha IS NOT NULL
-	AND Calificacion_Cant_Estrellas IS NULL
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo, Compra_Cantidad, Compra_Fecha,Calificado)
+SELECT LOS_OPTIMISTAS.obtenerDNI(m1.Publ_Cli_Dni), LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni), m1.Publicacion_Cod, 
+	LOS_OPTIMISTAS.obtenerCodigoArticulo(m1.Publicacion_Descripcion), m1.Compra_Cantidad, m1.Compra_Fecha,
+	(SELECT TOP 1 1 FROM gd_esquema.Maestra m2 WHERE m2.Calificacion_codigo IS NOT NULL 
+		AND m2.Calificacion_Cant_Estrellas IS NOT NULL
+		AND m2.Cli_Dni IS NOT NULL AND LOS_OPTIMISTAS.obtenerDNI(m2.Publ_Cli_Dni) = m1.Publ_Cli_Dni AND 
+		LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni) = LOS_OPTIMISTAS.obtenerDNI(m2.Cli_Dni) AND m1.Publicacion_Cod = m2.Publicacion_Cod)
+	FROM gd_esquema.Maestra m1
+	WHERE m1.Cli_Dni IS NOT NULL AND m1.Publ_Cli_Dni IS NOT NULL
+	AND m1.Compra_Cantidad IS NOT NULL AND m1.Compra_Fecha IS NOT NULL
+	AND m1.Calificacion_Cant_Estrellas IS NULL
 
 --HISTORIAL COMPRAS POR CLIENTES A EMPRESAS
-INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo,Compra_Cantidad, Compra_Fecha)
-SELECT LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(Cli_Dni), 
-	Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion), Compra_Cantidad, Compra_Fecha
-	FROM gd_esquema.Maestra WHERE Cli_Dni IS NOT NULL AND Publ_Empresa_Cuit IS NOT NULL
-	AND Compra_Cantidad IS NOT NULL AND Compra_Fecha IS NOT NULL
-	AND Calificacion_Cant_Estrellas IS NULL
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo,Compra_Cantidad, Compra_Fecha,Calificado)
+SELECT LOS_OPTIMISTAS.obtenerCuit(m1.Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni), 
+	m1.Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(m1.Publicacion_Descripcion), m1.Compra_Cantidad, m1.Compra_Fecha,
+	(SELECT TOP 1 1 FROM gd_esquema.Maestra m2 WHERE m2.Calificacion_codigo IS NOT NULL 
+		AND m2.Calificacion_Cant_Estrellas IS NOT NULL
+		AND m2.Cli_Dni IS NOT NULL AND LOS_OPTIMISTAS.obtenerCuit(m2.Publ_Empresa_Cuit) = LOS_OPTIMISTAS.obtenerCuit(m1.Publ_Empresa_Cuit) 
+		AND LOS_OPTIMISTAS.obtenerDNI(m2.Cli_Dni) = LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni) AND m2.Publicacion_Cod = m1.Publicacion_Cod)
+	FROM gd_esquema.Maestra m1 WHERE m1.Cli_Dni IS NOT NULL AND m1.Publ_Empresa_Cuit IS NOT NULL
+	AND m1.Compra_Cantidad IS NOT NULL AND m1.Compra_Fecha IS NOT NULL
+	AND m1.Calificacion_Cant_Estrellas IS NULL
+
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
+	[Id_Historial_Compra][numeric](18,0) NOT NULL,
+	[Id_Calificacion][numeric](18,0)NOT NULL,
+	[Fecha_Calificacion][datetime] NULL,
+	[Detalle][varchar] (255) NULL,
+	[Calificacion][Numeric](18,0)  NULL
+
+	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Calificacion] PRIMARY KEY (Id_Calificacion),	
+	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Historial_Compra)
+			REFERENCES [LOS_OPTIMISTAS].[Historial_Compra](Id_Historial_Compra)
+)
+
+--Inserto en publicacion_Calificaciones COnsideramos
+--poner la fecha de compra como la de calificacion en todos los casos de migracion
+INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Calificacion, Fecha_Calificacion, Detalle, Calificacion, Id_Historial_Compra)
+SELECT 	Calificacion_Codigo,Compra_Fecha,
+		Calificacion_Descripcion,Calificacion_Cant_Estrellas,
+		(SELECT TOP 1 Id_Historial_Compra
+			FROM LOS_OPTIMISTAS.Historial_Compra 
+			WHERE Id_Comprador = LOS_OPTIMISTAS.obtenerDNI(Cli_Dni)
+			AND Id_Publicacion = Publicacion_Cod
+			AND Compra_Fecha = Compra_Fecha) FROM gd_esquema.Maestra
+		WHERE Calificacion_codigo IS NOT NULL 
+		AND Calificacion_Cant_Estrellas IS NOT NULL
+		AND Publ_Cli_Dni IS NOT NULL
+		AND Cli_Dni IS NOT NULL
+
+INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Calificacion, Fecha_Calificacion, Detalle, Calificacion, Id_Historial_Compra)
+SELECT 	Calificacion_Codigo,Compra_Fecha,
+		Calificacion_Descripcion,Calificacion_Cant_Estrellas,
+		(SELECT TOP 1 Id_Historial_Compra
+			FROM LOS_OPTIMISTAS.Historial_Compra 
+			WHERE Id_Comprador = LOS_OPTIMISTAS.obtenerDNI(Cli_Dni)
+			AND Id_Publicacion = Publicacion_Cod
+			AND Compra_Fecha = Compra_Fecha) FROM gd_esquema.Maestra
+		WHERE Calificacion_codigo IS NOT NULL 
+		AND Calificacion_Cant_Estrellas IS NOT NULL
+		AND Publ_Empresa_Cuit IS NOT NULL
+		AND Cli_Dni IS NOT NULL
+
+--CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
+	[Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
+	[Id_Publicacion][numeric] (18,0) NOT NULL,
+	[Id_Usuario][varchar](20) NOT NULL,
+	[Fecha_Creacion][datetime],
+	[Preg_Descripcion][varchar](255) NULL,
+	[Preg_Respuesta][varchar](255) NULL,
+	[Fecha_Respuesta][datetime]
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
+			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
+)
+
+--CREO TABLA Historial_Subasta
+CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
+	[Id_Publicacion][numeric] (18,0) NOT NULL,
+	[Id_Usuario][varchar](20) NOT NULL,
+	[Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
+	[Fecha_Oferta][datetime],
+
+
+	CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+
+	CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
+			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
+)
+
+--Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
+INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
+SELECT Publicacion_Cod, LOS_OPTIMISTAS.obtenerDNI(Cli_Dni),Oferta_Monto,Oferta_Fecha 
+	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL 
+	AND Calificacion_Codigo IS NULL AND Compra_Cantidad IS NULL)
+
+--CREO TABLA Rubro
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
+	[Id_Rubro][Int] NOT NULL,
+	[Descripcion][varchar](60) NOT NULL,
+	[Fecha_Baja][datetime] NULL,
+
+	CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
+)
+
+--CREO TABLA Rubro_Publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
+	[Id_Publicacion][numeric](18,0) NOT NULL,
+	[Id_Rubro][Int] NOT NULL,
+
+	CONSTRAINT [FK_Rubro_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+
+	CONSTRAINT [FK_Rubro_Publicacion_Id_Rubro] FOREIGN KEY(Id_Rubro)
+		REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
+)
+
+--CREO RESTRICCION EN PUBLICACION
+ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
+	REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
 
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
