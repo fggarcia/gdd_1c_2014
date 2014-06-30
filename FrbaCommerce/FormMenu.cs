@@ -99,5 +99,10 @@ namespace FrbaCommerce
             this.Close();
         }
 
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
     }
 }

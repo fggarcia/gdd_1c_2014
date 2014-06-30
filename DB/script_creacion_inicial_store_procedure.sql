@@ -627,3 +627,9 @@ BEGIN
 		AND ur.Habilitado = @Habilitado
 		AND r.Habilitado = @Habilitado
 END
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
+AS
+BEGIN
+	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
+END

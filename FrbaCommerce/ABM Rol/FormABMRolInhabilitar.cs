@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaCommerce.ABM_Rol
 {
@@ -14,6 +15,10 @@ namespace FrbaCommerce.ABM_Rol
         public FormABMRolInhabilitar()
         {
             InitializeComponent();
+            SqlCommand command = new SqlCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = Constantes.listarRoles;
+            Procedimientos.llenarDataGridView(command, dataGridView1, "DataGridView Inhabilitar Rol");
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)
@@ -28,6 +33,11 @@ namespace FrbaCommerce.ABM_Rol
         private void buttonInhabilitar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void FormABMRolInhabilitar_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

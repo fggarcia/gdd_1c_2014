@@ -49,6 +49,7 @@ namespace FrbaCommerce.ABM_Rol
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
+            
             FormABMRolModificar formModificarRol = new FormABMRolModificar();
             formModificarRol.MdiParent = this.MdiParent;
             MdiParent.Size = formModificarRol.Size + Constantes.aumentoTamanio;

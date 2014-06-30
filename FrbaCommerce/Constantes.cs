@@ -24,6 +24,8 @@ namespace FrbaCommerce
 
         public const String listarMenuFuncionalidades = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
 
+        public const String listarRoles = "LOS_OPTIMISTAS.proc_ListarRoles";
+
 
         //************************************
         //*  CONSTANTES VALIDACIONES
