@@ -508,7 +508,6 @@ BEGIN
 END
 GO
 
---ABM Publicacion
 CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
 	@Id_Usuario varchar(20),
 	@Tipo_Publicacion int,
@@ -572,4 +571,67 @@ BEGIN
 	INNER JOIN LOS_OPTIMISTAS.Rol_Funcionalidad funR ON fun.Id_Funcionalidad = funR.Id_Funcionalidad 
 	WHERE @p_Id_Rol = funR.Id_Rol
 
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_LoginUsuarioValido](
+	@Usuario varchar(20)
+)
+AS 
+BEGIN
+	SELECT 1 AS Valido FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Login](
+	@Usuario varchar(20),
+	@Password varchar(64)
+)
+AS
+BEGIN
+	Declare @Intento Int
+
+	SELECT 1 FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password
+
+	IF (@@ROWCOUNT = 1)
+	BEGIN
+		SET @Intento = 0
+		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = 0, Ultima_Fecha = GETDATE()
+			WHERE Id_Usuario = @Usuario
+
+		SELECT @Intento as Intento
+	END
+	ELSE
+	BEGIN
+		SELECT @Intento = Cantidad_Login FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario
+
+		SET @Intento = @Intento + 1
+		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = @Intento
+			WHERE Id_Usuario = @Usuario
+		IF(@Intento >= 3)
+			UPDATE LOS_OPTIMISTAS.Usuario SET Habilitado = 0
+
+		SELECT @Intento as Intento
+	END
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_UsuarioRol](
+	@Id_Usuario varchar(20)
+)
+AS
+BEGIN
+	Declare @Habilitado Int = 1
+
+	SELECT ur.Id_Rol, r.Descripcion,ur.Habilitado FROM Usuario_Rol ur INNER JOIN Rol r
+		ON ur.Id_Rol = r.Id_Rol
+		WHERE ur.Id_Usuario = @Id_Usuario 
+		AND ur.Habilitado = @Habilitado
+		AND r.Habilitado = @Habilitado
+END
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
+AS
+BEGIN
+	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
 END

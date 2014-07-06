@@ -348,7 +348,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 			REFERENCES [LOS_OPTIMISTAS].[Tipo_Publicacion](Id_Tipo_Publicacion)		
 )
 
-SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Publicacion ON
 GO
 
 --INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
@@ -375,91 +375,8 @@ SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCu
 ALTER TABLE [LOS_OPTIMISTAS].[Estado_Publicacion] ADD CONSTRAINT [FK_Estado_Publicacion_Id_Publicacion] 
 	FOREIGN KEY (Id_Publicacion) REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion)
 
-SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].Publicacion OFF
 GO
-
-CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Calificacion][numeric](18,0)NOT NULL,
-	[Id_Usuario_Calificador][varchar](20) NOT NULL,
-	[Fecha_Calificacion][datetime] NULL,
-	[Detalle][varchar] (255) NULL,
-	[Calificacion][Numeric](18,0)  NULL
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Calificacion] PRIMARY KEY (Id_Calificacion),	
-
-	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Usuario_Calificador] FOREIGN KEY(Id_Usuario_Calificador)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario),
-)
-
---Inserto en publicacion_Calificaciones COnsideramos poner la fecha de compra como la de calificacion en todos los casos de migracion
-INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones(Id_Calificacion,Id_Publicacion,Id_Usuario_Calificador,Fecha_Calificacion,
-	Detalle,Calificacion)
-SELECT DISTINCT(CONVERT(numeric(18,0),Calificacion_Codigo)),Publicacion_Cod,Cli_Dni,Compra_Fecha,Calificacion_Descripcion,
-	Calificacion_Cant_Estrellas FROM gd_esquema.Maestra WHERE (Calificacion_codigo IS NOT NULL)
-
---CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
-CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
-	[Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Usuario][varchar](20) NOT NULL,
-	[Fecha_Creacion][datetime],
-	[Preg_Descripcion][varchar](255) NULL,
-	[Preg_Respuesta][varchar](255) NULL,
-	[Fecha_Respuesta][datetime]
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
-)
-
---CREO TABLA Historial_Subasta
-CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
-	[Id_Publicacion][numeric] (18,0) NOT NULL,
-	[Id_Usuario][varchar](20) NOT NULL,
-	[Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
-	[Fecha_Oferta][datetime],
-
-
-	CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
-
-	CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
-			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
-)
-
---Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
-INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
-SELECT Publicacion_Cod, Cli_Dni,Oferta_Monto,Oferta_Fecha 
-	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL )
-
---CREO TABLA Rubro
-CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
-	[Id_Rubro][Int] NOT NULL,
-	[Descripcion][varchar](60) NOT NULL,
-	[Fecha_Baja][datetime] NULL,
-
-	CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
-)
-
---CREO TABLA Rubro_Publicacion
-CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
-	[Id_Publicacion][numeric](18,0) NOT NULL,
-	[Id_Rubro][Int] NOT NULL,
-
-	CONSTRAINT [FK_Rubro_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
-		REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
-
-	CONSTRAINT [FK_Rubro_Publicacion_Id_Rubro] FOREIGN KEY(Id_Rubro)
-		REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
-)
 
 --CREO TABLA Stock
 CREATE TABLE [LOS_OPTIMISTAS].[Stock](
@@ -472,6 +389,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Stock](
 	CONSTRAINT [PK_Stock_Id_Articulo] PRIMARY KEY(Id_Articulo)
 )
 
+GO
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock ON
 GO
 
@@ -531,8 +449,157 @@ SELECT LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Calificacion_Cant_Estrellas IS NULL
 	GROUP BY Publicacion_Descripcion, Publ_Empresa_Cuit
 
+GO
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].Stock OFF
 GO
+
+--CREO TABLA HISTORIAL DE COMPRAS
+CREATE TABLE [LOS_OPTIMISTAS].[Historial_Compra](
+[Id_Historial_Compra][numeric](18,0) IDENTITY(1,1) NOT NULL,
+[Id_Vendedor][varchar](20) NOT NULL,
+[Id_Comprador][varchar](20) NOT NULL,
+[Id_Publicacion][numeric](18,0) NOT NULL,
+[Id_Articulo][numeric](18,0) NOT NULL,
+[Compra_Cantidad][numeric](18,0) NOT NULL,
+[Compra_Fecha][smalldatetime] NOT NULL,
+[Calificado][bit] NOT NULL DEFAULT 0
+
+CONSTRAINT [FK_Historial_Compra_Id_Vendedor] FOREIGN KEY(Id_Vendedor)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [FK_Historial_Compra_Id_Comprador] FOREIGN KEY(Id_Comprador)
+REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),
+CONSTRAINT [FK_Historial_Compra_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+CONSTRAINT [FK_Historial_Compra_Id_Articulo] FOREIGN KEY(Id_Articulo)
+REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo),
+CONSTRAINT [PK_Historial_Compra_Id_Historial_Compra] PRIMARY KEY(Id_Historial_Compra)
+)
+
+--HISTORIAL COMPRAS POR CLIENTES A CLIENTES
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo, Compra_Cantidad, Compra_Fecha,Calificado)
+SELECT LOS_OPTIMISTAS.obtenerDNI(m1.Publ_Cli_Dni), LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni), m1.Publicacion_Cod, 
+	LOS_OPTIMISTAS.obtenerCodigoArticulo(m1.Publicacion_Descripcion), m1.Compra_Cantidad, m1.Compra_Fecha,
+	(SELECT TOP 1 1 FROM gd_esquema.Maestra m2 WHERE m2.Calificacion_codigo IS NOT NULL 
+		AND m2.Calificacion_Cant_Estrellas IS NOT NULL
+		AND m2.Cli_Dni IS NOT NULL AND LOS_OPTIMISTAS.obtenerDNI(m2.Publ_Cli_Dni) = m1.Publ_Cli_Dni AND 
+		LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni) = LOS_OPTIMISTAS.obtenerDNI(m2.Cli_Dni) AND m1.Publicacion_Cod = m2.Publicacion_Cod)
+	FROM gd_esquema.Maestra m1
+	WHERE m1.Cli_Dni IS NOT NULL AND m1.Publ_Cli_Dni IS NOT NULL
+	AND m1.Compra_Cantidad IS NOT NULL AND m1.Compra_Fecha IS NOT NULL
+	AND m1.Calificacion_Cant_Estrellas IS NULL
+
+--HISTORIAL COMPRAS POR CLIENTES A EMPRESAS
+INSERT INTO LOS_OPTIMISTAS.Historial_Compra(Id_Vendedor, Id_Comprador, Id_Publicacion, Id_Articulo,Compra_Cantidad, Compra_Fecha,Calificado)
+SELECT LOS_OPTIMISTAS.obtenerCuit(m1.Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni), 
+	m1.Publicacion_Cod, LOS_OPTIMISTAS.obtenerCodigoArticulo(m1.Publicacion_Descripcion), m1.Compra_Cantidad, m1.Compra_Fecha,
+	(SELECT TOP 1 1 FROM gd_esquema.Maestra m2 WHERE m2.Calificacion_codigo IS NOT NULL 
+		AND m2.Calificacion_Cant_Estrellas IS NOT NULL
+		AND m2.Cli_Dni IS NOT NULL AND LOS_OPTIMISTAS.obtenerCuit(m2.Publ_Empresa_Cuit) = LOS_OPTIMISTAS.obtenerCuit(m1.Publ_Empresa_Cuit) 
+		AND LOS_OPTIMISTAS.obtenerDNI(m2.Cli_Dni) = LOS_OPTIMISTAS.obtenerDNI(m1.Cli_Dni) AND m2.Publicacion_Cod = m1.Publicacion_Cod)
+	FROM gd_esquema.Maestra m1 WHERE m1.Cli_Dni IS NOT NULL AND m1.Publ_Empresa_Cuit IS NOT NULL
+	AND m1.Compra_Cantidad IS NOT NULL AND m1.Compra_Fecha IS NOT NULL
+	AND m1.Calificacion_Cant_Estrellas IS NULL
+
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
+	[Id_Historial_Compra][numeric](18,0) NOT NULL,
+	[Id_Calificacion][numeric](18,0)NOT NULL,
+	[Fecha_Calificacion][datetime] NULL,
+	[Detalle][varchar] (255) NULL,
+	[Calificacion][Numeric](18,0)  NULL
+
+	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Calificacion] PRIMARY KEY (Id_Calificacion),	
+	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Historial_Compra)
+			REFERENCES [LOS_OPTIMISTAS].[Historial_Compra](Id_Historial_Compra)
+)
+
+--Inserto en publicacion_Calificaciones COnsideramos
+--poner la fecha de compra como la de calificacion en todos los casos de migracion
+INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Calificacion, Fecha_Calificacion, Detalle, Calificacion, Id_Historial_Compra)
+SELECT 	Calificacion_Codigo,Compra_Fecha,
+		Calificacion_Descripcion,Calificacion_Cant_Estrellas,
+		(SELECT TOP 1 Id_Historial_Compra
+			FROM LOS_OPTIMISTAS.Historial_Compra 
+			WHERE Id_Comprador = LOS_OPTIMISTAS.obtenerDNI(Cli_Dni)
+			AND Id_Publicacion = Publicacion_Cod
+			AND Compra_Fecha = Compra_Fecha) FROM gd_esquema.Maestra
+		WHERE Calificacion_codigo IS NOT NULL 
+		AND Calificacion_Cant_Estrellas IS NOT NULL
+		AND Publ_Cli_Dni IS NOT NULL
+		AND Cli_Dni IS NOT NULL
+
+INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Calificacion, Fecha_Calificacion, Detalle, Calificacion, Id_Historial_Compra)
+SELECT 	Calificacion_Codigo,Compra_Fecha,
+		Calificacion_Descripcion,Calificacion_Cant_Estrellas,
+		(SELECT TOP 1 Id_Historial_Compra
+			FROM LOS_OPTIMISTAS.Historial_Compra 
+			WHERE Id_Comprador = LOS_OPTIMISTAS.obtenerDNI(Cli_Dni)
+			AND Id_Publicacion = Publicacion_Cod
+			AND Compra_Fecha = Compra_Fecha) FROM gd_esquema.Maestra
+		WHERE Calificacion_codigo IS NOT NULL 
+		AND Calificacion_Cant_Estrellas IS NOT NULL
+		AND Publ_Empresa_Cuit IS NOT NULL
+		AND Cli_Dni IS NOT NULL
+
+--CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
+CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
+	[Id_Pregunta][int]IDENTITY(1,1) NOT NULL,
+	[Id_Publicacion][numeric] (18,0) NOT NULL,
+	[Id_Usuario][varchar](20) NOT NULL,
+	[Fecha_Creacion][datetime],
+	[Preg_Descripcion][varchar](255) NULL,
+	[Preg_Respuesta][varchar](255) NULL,
+	[Fecha_Respuesta][datetime]
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Pregunta] PRIMARY KEY (Id_Pregunta),
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+
+	CONSTRAINT [FK_Publicacion_Preguntas_Id_Usuario] FOREIGN KEY(Id_Usuario)
+			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
+)
+
+--CREO TABLA Historial_Subasta
+CREATE TABLE [LOS_OPTIMISTAS].[Historial_Subasta](
+	[Id_Publicacion][numeric] (18,0) NOT NULL,
+	[Id_Usuario][varchar](20) NOT NULL,
+	[Precio_Oferta][numeric](18,2) NULL, --En el enunciado dice que tiene que ser ENTERO!!!!!
+	[Fecha_Oferta][datetime],
+
+
+	CONSTRAINT [FK_Historial_Subasta_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+			REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion),
+
+	CONSTRAINT [FK_Historial_Subasta_Id_Usuario] FOREIGN KEY(Id_Usuario)
+			REFERENCES [LOS_OPTIMISTAS].[Usuario] (Id_Usuario)
+)
+
+--Inserto en Historial_Publicacion Y TAMBIEN PASO VALORES DONDE EXSITE UNA OFERTA(esta el dni) PERO QUE NO TIENE PRECIO ni FECHA
+INSERT INTO LOS_OPTIMISTAS.Historial_Subasta(Id_Publicacion,Id_Usuario,Precio_Oferta,Fecha_Oferta)
+SELECT Publicacion_Cod, LOS_OPTIMISTAS.obtenerDNI(Cli_Dni),Oferta_Monto,Oferta_Fecha 
+	FROM gd_esquema.Maestra WHERE (Publicacion_Tipo = 'Subasta' and Cli_Dni IS NOT NULL 
+	AND Calificacion_Codigo IS NULL AND Compra_Cantidad IS NULL)
+
+--CREO TABLA Rubro
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro](
+	[Id_Rubro][Int] NOT NULL,
+	[Descripcion][varchar](60) NOT NULL,
+	[Fecha_Baja][datetime] NULL,
+
+	CONSTRAINT [PK_Rubro_Id_Rubro] PRIMARY KEY(Id_Rubro)
+)
+
+--CREO TABLA Rubro_Publicacion
+CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
+	[Id_Publicacion][numeric](18,0) NOT NULL,
+	[Id_Rubro][Int] NOT NULL,
+
+	CONSTRAINT [FK_Rubro_Publicacion_Id_Publicacion] FOREIGN KEY(Id_Publicacion)
+		REFERENCES [LOS_OPTIMISTAS].[Publicacion](Id_Publicacion),
+
+	CONSTRAINT [FK_Rubro_Publicacion_Id_Rubro] FOREIGN KEY(Id_Rubro)
+		REFERENCES [LOS_OPTIMISTAS].[Rubro](Id_Rubro)
+)
 
 --CREO RESTRICCION EN PUBLICACION
 ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
@@ -541,7 +608,7 @@ ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Art
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Factura][numeric](18,0) NOT NULL,
-	[Id_Publicacion][numeric](18,0) NOT NULL,
+	[Id_Publicacion][numeric](18,0) NOT NULL,	
 	[Monto_Compra][numeric](18,2) NOT NULL DEFAULT 0.0,
 	[Porcentaje_Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
 	[Comision][numeric](18,2) NOT NULL DEFAULT 0.0,
@@ -550,17 +617,25 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Visibilidad][numeric](18,0) NOT NULL,
 )
 --Cargo factura detalle con subastas
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,Id_Visibilidad)
-SELECT MAX(D.Factura_Nro),C.Publicacion_Cod, MAX(C.Oferta_Monto),MAX(C.Publicacion_Visibilidad_Porcentaje),
-	CONVERT(numeric(18,2),MAX(C.Oferta_Monto)*MAX(C.Publicacion_Visibilidad_Porcentaje)),MAX(C.Publicacion_Visibilidad_Cod)
-	FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	CONVERT(numeric(18,2),C.Oferta_Monto * C.Publicacion_Visibilidad_Porcentaje) = D.Item_Factura_Monto AND 
-	C.Publicacion_Cod = D.Publicacion_Cod,
-	gd_esquema.Maestra E
-	WHERE C.Publicacion_Tipo = 'Subasta' AND C.Cli_Dni IS NOT NULL AND C.Oferta_Monto IS NOT NULL AND 
-	C.Publicacion_Cod = E.Publicacion_Cod
-	AND E.Factura_Nro IS NOT NULL
-	GROUP BY C.Publicacion_Cod
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,Comision,
+	Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, 
+	CONVERT(numeric(18,2),((1 * Item_Factura_Monto) / Publicacion_Visibilidad_Porcentaje)/Item_Factura_Cantidad) AS monto_compra,
+	Publicacion_Visibilidad_Porcentaje, 
+	CONVERT(numeric(18,2),Item_Factura_Monto/Item_Factura_Cantidad) AS comision, 
+	Item_Factura_Cantidad, Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Subasta'
+	AND Publicacion_Visibilidad_Precio != Item_Factura_Monto / Item_Factura_Cantidad
+
+--Cargo facturacion detalle cobro visibilidad subastas
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
+	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Subasta'
+	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
 --Cargo factura detalle con compra inmediata
 INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Compra,Porcentaje_Comision,
@@ -569,17 +644,18 @@ SELECT Factura_Nro, Publicacion_Cod, Publicacion_Precio,Publicacion_Visibilidad_
 	CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje), Item_Factura_Cantidad, 
 	Publicacion_Visibilidad_Cod
 	FROM gd_esquema.Maestra
-	WHERE CONVERT(numeric(18,2),Publicacion_Precio * Publicacion_Visibilidad_Porcentaje * Item_Factura_Cantidad) = Item_Factura_Monto
-	AND Calificacion_Codigo IS NULL AND Publicacion_Tipo = 'Compra Inmediata'
-	AND Factura_Nro IS NOT NULL
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Compra Inmediata'
+	AND Publicacion_Visibilidad_Precio != Item_Factura_Monto / Item_Factura_Cantidad
 
---Cargo facturacion detalle cobro visibilidad
-INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Id_Visibilidad)
-SELECT MAX(D.Factura_Nro), C.Publicacion_Cod, MAX(C.Publicacion_Visibilidad_Precio), MAX(C.Publicacion_Visibilidad_Cod)
-	FROM gd_esquema.Maestra C INNER JOIN gd_esquema.Maestra D ON 
-	C.Publicacion_Visibilidad_Precio = D.Item_Factura_Monto
-	WHERE C.Publicacion_Cod = D.Publicacion_Cod AND D.Factura_Nro IS NOT NULL
-	GROUP BY C.Publicacion_Cod
+--Cargo facturacion detalle cobro visibilidad compra inmediata
+INSERT INTO LOS_OPTIMISTAS.Facturacion_Detalle(Id_Factura, Id_Publicacion,Monto_Visibilidad,Cantidad_Venta,Id_Visibilidad)
+SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
+	Item_Factura_Cantidad,Publicacion_Visibilidad_Cod
+	FROM gd_esquema.Maestra
+	WHERE Factura_Nro IS NOT NULL
+	AND Publicacion_Tipo = 'Compra Inmediata'
+	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
 --CREO TABLA FACTURACION
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](

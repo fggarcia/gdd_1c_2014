@@ -14,6 +14,9 @@ namespace FrbaCommerce.ABM_Rol
 {
     public partial class FormABMRolAlta : Form
     {
+        public FormABMRolAlta(){
+            InitializeComponent();
+        }
         public FormABMRolAlta(String rolNombre, ComboBox comboFuncionalidades)
         {
             InitializeComponent();

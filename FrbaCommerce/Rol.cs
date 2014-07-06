@@ -12,9 +12,9 @@ namespace FrbaCommerce
 {
     public class Rol
     {
-        public int Id_Rol;
-        public String Descripcion;
-        public int Habilitado;
+        public int Id_Rol {get;set;}
+        public String Descripcion { get; set; }
+        public bool Habilitado { get; set; }
         //Ver si es necesario agregar la lista de funcionalidades del rol
 
 

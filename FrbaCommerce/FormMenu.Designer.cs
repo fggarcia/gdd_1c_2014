@@ -38,6 +38,7 @@
             this.menuStrip.Size = new System.Drawing.Size(892, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
+            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
             // 
             // FormMenu
             // 
