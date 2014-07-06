@@ -9,11 +9,16 @@ using System.Windows.Forms;
 
 namespace FrbaCommerce.Historial_Cliente
 {
-    public partial class HistorialCliente : Form
+    public partial class FormHistorialUsuario : Form
     {
-        public HistorialCliente()
+        public FormHistorialUsuario()
         {
             InitializeComponent();
+        }
+
+        private void FormHistorialUsuario_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
