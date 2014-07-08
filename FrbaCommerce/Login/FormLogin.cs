@@ -59,7 +59,7 @@ namespace FrbaCommerce.Login
 
         private void buttonIngresar_Click(object sender, EventArgs e)
         {
-            Usuarios usuario = new Usuarios(textBox1.Text, textBox2.Text);
+            Usuarios usuario = new Usuarios(textBox1.Text, getSha256(textBox2.Text));
             if (usuario.user_id == "" || usuario.password == "")
             {
                 MessageBox.Show("Los campos usuario y contraseña son obligatorios", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -79,11 +79,16 @@ namespace FrbaCommerce.Login
                 }
                 else if (cantidadLogin > 0 && cantidadLogin < 3)
                 {
-                    MessageBox.Show("Contraseña incorrecta", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Contraseña incorrecta. Intento nro°: " + cantidadLogin, "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else {
+                else
+                {
                     MessageBox.Show("Su usuario se encuentra bloqueado, por favor contacte al administrador", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            else
+            {
+                MessageBox.Show("El usuario no existe", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

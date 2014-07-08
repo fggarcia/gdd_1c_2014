@@ -37,17 +37,15 @@ namespace FrbaCommerce
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@Usuario", user.user_id);
 
-            SqlDataReader reader = command.ExecuteReader();
-            Int32 existencia = 0;
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    existencia = Convert.ToInt32(reader["Valido"].ToString());
-                }
-            }
+            var returnParameter = command.Parameters.Add("@Valido", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            command.ExecuteNonQuery();
+
+            Int32 valido = Convert.ToInt32(returnParameter.Value);
+
             Procedimientos.cerrarConexion(conn);
-            if (existencia == 1)
+            if (valido == 1)
             {
                 return true;
             }
@@ -66,15 +64,13 @@ namespace FrbaCommerce
             command.Parameters.AddWithValue("@Usuario", user.user_id);
             command.Parameters.AddWithValue("@Password", user.password);
 
-            SqlDataReader reader = command.ExecuteReader();
-            Int32 intento = 0;
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    intento = Convert.ToInt32(reader["Intento"].ToString());
-                }
-            }
+            var returnParameter = command.Parameters.Add("@Intento", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            command.ExecuteNonQuery();
+
+            Int32 intento = Convert.ToInt32(returnParameter.Value);
+
             Procedimientos.cerrarConexion(conn);
 
             return intento;

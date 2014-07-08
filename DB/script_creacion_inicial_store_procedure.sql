@@ -579,7 +579,13 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_LoginUsuarioValido](
 )
 AS 
 BEGIN
-	SELECT 1 AS Valido FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+	Declare @Valido Int  = 0
+	
+	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+
+	SET @Valido = @@ROWCOUNT
+
+	RETURN @Valido
 END
 GO
 
@@ -591,7 +597,7 @@ AS
 BEGIN
 	Declare @Intento Int
 
-	SELECT 1 FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password
+	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password AND Habilitado = 1
 
 	IF (@@ROWCOUNT = 1)
 	BEGIN
@@ -599,7 +605,7 @@ BEGIN
 		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = 0, Ultima_Fecha = GETDATE()
 			WHERE Id_Usuario = @Usuario
 
-		SELECT @Intento as Intento
+		RETURN @Intento
 	END
 	ELSE
 	BEGIN
@@ -611,7 +617,7 @@ BEGIN
 		IF(@Intento >= 3)
 			UPDATE LOS_OPTIMISTAS.Usuario SET Habilitado = 0
 
-		SELECT @Intento as Intento
+		RETURN @Intento
 	END
 END
 GO
