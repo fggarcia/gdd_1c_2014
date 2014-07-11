@@ -508,6 +508,7 @@ BEGIN
 END
 GO
 
+--ABM Publicacion
 CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
 	@Id_Usuario varchar(20),
 	@Tipo_Publicacion int,
@@ -519,15 +520,13 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
 )
 AS
 BEGIN 
-	Declare @Id_Articulo numeric(18,0)
-	Declare @Id_Publicacion numeric(18,0)
-	Declare @Precio_Publicacion_Pendiente numeric(18,2)
-	Declare @Cantidad_Visibilidad_Cobrar int
-	Declare @Visibilidad varchar(255)
+	Declare @Id_Articulo numeric(18,0),
+	Declare @Id_Publicacion numeric(18,0),
+	Declare @Precio_Publicacion_Pendiente numeric(18,2),
+	Declare @Cantidad_Visibilidad_Cobrar int,
+	Declare @Visibilidad varchar(255),
 	Declare @Comision numeric(18,2)
-	Declare @Stock numeric(18,0)
-	Declare @Precio_Visibilidad numeric(18,2)
-	
+
 	SET @Precio_Publicacion_Pendiente = 0.0
 	SET @Comision = 0.0
 	SET @Cantidad_Visibilidad_Cobrar = 1
@@ -572,72 +571,99 @@ BEGIN
 	WHERE @p_Id_Rol = funR.Id_Rol
 
 END
+
+--Procedimineto para listar preguntas que tiene pendiente por responder un Usuario, me pasan Id_Usuario y les devuelvo todo referido a las preguntas pendientes que tiene
+--en cada publicacion
 GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarPreguntas]
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_LoginUsuarioValido](
-	@Usuario varchar(20)
+(
+@Id_Usuario varchar(20)
 )
-AS 
-BEGIN
-	Declare @Valido Int  = 0
-	
-	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
 
-	SET @Valido = @@ROWCOUNT
-
-	RETURN @Valido
-END
-GO
-
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Login](
-	@Usuario varchar(20),
-	@Password varchar(64)
-)
 AS
 BEGIN
-	Declare @Intento Int
 
-	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password AND Habilitado = 1
+			SELECT 
+			
+			Publicacion_Preguntas.Fecha_Creacion,
+			Publicacion_Preguntas.Fecha_Respuesta,
+			Publicacion_Preguntas.Id_Pregunta,
+			Publicacion_Preguntas.Id_Publicacion,
+			Publicacion_Preguntas.Id_Usuario,
+			Publicacion_Preguntas.Preg_Descripcion,
+			Publicacion_Preguntas.Preg_Respuesta,
+			Publicacion.Id_Publicacion
 
-	IF (@@ROWCOUNT = 1)
-	BEGIN
-		SET @Intento = 0
-		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = 0, Ultima_Fecha = GETDATE()
-			WHERE Id_Usuario = @Usuario
+			FROM LOS_OPTIMISTAS.Publicacion_Preguntas , LOS_OPTIMISTAS.Publicacion 
+			
+			WHERE ( Publicacion.Id_Usuario = @Id_Usuario) AND 
+			(Publicacion.Id_Publicacion = Publicacion_Preguntas.Id_Publicacion) AND
+			(Publicacion_Preguntas.Preg_Respuesta IS NULL)
+			
+			
+ END
+ GO
+ 
+ 
+ --Subo respuesta pasandome el Id_Pregunta(que se los pase en el procedimiento ListarPreguntas),el Id_usuario de quien responde y la descripcion de la respuesta
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[SubirRespuesta]
 
-		RETURN @Intento
-	END
-	ELSE
-	BEGIN
-		SELECT @Intento = Cantidad_Login FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario
+(
+@Id_Pregunta [numeric](18,0),
+@Id_Usuario varchar(20),
+@Preg_Respuesta varchar(255)
 
-		SET @Intento = @Intento + 1
-		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = @Intento
-			WHERE Id_Usuario = @Usuario
-		IF(@Intento >= 3)
-			UPDATE LOS_OPTIMISTAS.Usuario SET Habilitado = 0
-
-		RETURN @Intento
-	END
-END
-GO
-
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_UsuarioRol](
-	@Id_Usuario varchar(20)
 )
+
 AS
 BEGIN
-	Declare @Habilitado Int = 1
 
-	SELECT ur.Id_Rol, r.Descripcion,ur.Habilitado FROM Usuario_Rol ur INNER JOIN Rol r
-		ON ur.Id_Rol = r.Id_Rol
-		WHERE ur.Id_Usuario = @Id_Usuario 
-		AND ur.Habilitado = @Habilitado
-		AND r.Habilitado = @Habilitado
-END
+			UPDATE LOS_OPTIMISTAS.Publicacion_Preguntas 
+			SET [Preg_Respuesta] = @Preg_Respuesta, [Fecha_Respuesta] = getdate()
+			Where (Id_Pregunta = @Id_Pregunta) AND (Id_Usuario = @Id_Usuario)
+			
+ END
+ GO
+ 
+ 
+ 
+--Proc. Para listar las preguntas que realizo un usuario y si fueron respondidas o no
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRespuestas]
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
+(
+@Id_Usuario varchar(20)
+)
+
 AS
 BEGIN
-	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
-END
+
+			SELECT 
+			Publ_Preguntas.Preg_Descripcion,
+			Publ_Preguntas.Preg_Respuesta,
+			Publ.Id_Publicacion,
+			Publ.Descripcion,
+			Publ.Fecha_Inicio,
+			Publ.Fecha_Vencimiento,
+			Publ.Cant_por_Venta,
+			Publ.Pemite_Preguntas,
+			Publ.Precio,
+			Tipo_Publicacion.Descripcion,
+			Visib.Peso,
+			Visib.Descripcion,
+			Visib.Porcentaje,
+			Visib.Precio
+
+			FROM LOS_OPTIMISTAS.Publicacion_Preguntas Publ_Preguntas , LOS_OPTIMISTAS.Publicacion  Publ, LOS_OPTIMISTAS.Tipo_Publicacion Tipo_Publicacion, LOS_OPTIMISTAS.Visibilidad Visib
+			
+			WHERE (Publ_Preguntas.Id_Usuario = @Id_Usuario) AND
+			(Publ_Preguntas.Id_Publicacion = Publ.Id_Publicacion) AND
+			(Publ.Id_Tipo_Publicacion = Tipo_Publicacion.Id_Tipo_Publicacion)AND
+			(Publ.Id_Visibilidad = Visib.Id_Visibilidad) AND
+			(Publ_Preguntas.Preg_Respuesta IS NOT NULL)	
+			
+ END
+ GO
+ 
