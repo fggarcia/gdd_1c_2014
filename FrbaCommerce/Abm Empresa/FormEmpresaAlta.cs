@@ -19,6 +19,13 @@ namespace FrbaCommerce.Abm_Empresa
             InitializeComponent();
         }
 
+        public FormEmpresaAlta(Usuarios usuario)
+        {
+            InitializeComponent();
+            this.username = usuario.user_id;
+            this.password = usuario.password;
+        }
+
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
             Empresa.validarCamposCreacion(textRazonSocial, textCuit, textNombreC, textTelefono, textCalle, textNro, textPiso, textDepto, textCodP, textLocalidad, textCiudad, textDia, textMes, textAnio, textMail, username, password);

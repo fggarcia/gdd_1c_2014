@@ -20,6 +20,13 @@ namespace FrbaCommerce.Abm_Cliente
             Procedimientos.LlenarComboBox(comboBoxTdoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
         }
 
+        public FormClienteAlta(Usuarios usuario)
+        {
+            InitializeComponent();
+            username = usuario.user_id;
+            password = usuario.password;
+        }
+
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
             bool camposOK = Cliente.validarCamposCreacion(textNombre, textApellido, textCalle, textNro, textPiso, textDepto, textDia, textMes, textAnio, textTelefono, comboBoxTdoc, textNumeroDoc, textCodP, textLocalidad, textMail, username, password);

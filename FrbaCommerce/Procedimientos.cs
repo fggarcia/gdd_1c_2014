@@ -77,6 +77,24 @@ namespace FrbaCommerce
             comboBox.Text = "(Seleccione una Opcion)";
         }
 
+        //**********************************************************
+        //*         PROCEDIMIENTO PARA LLENAR COMBOBOX FROM STORE
+        //**********************************************************
+
+        public static void LlenarComboBoxDesdeProcedure(ComboBox comboBox, String dataSource, String valueMember, String displayMember, String whereMember, String orderMember)
+        {
+            SqlConnection conn = Procedimientos.abrirConexion();
+            DataSet dataSet = new DataSet();
+            SqlDataAdapter dataAdapter = new SqlDataAdapter("EXEC "+dataSource,conn);
+            dataAdapter.Fill(dataSet, dataSource);
+            DataRow row = dataSet.Tables[0].NewRow();
+            dataSet.Tables[0].Rows.InsertAt(row, 0);
+            comboBox.DataSource = dataSet.Tables[0].DefaultView;
+            comboBox.ValueMember = valueMember;
+            comboBox.DisplayMember = displayMember;
+            comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox.Text = "(Seleccione una Opcion)";
+        }
 
         //*************************************************************************
         //*    PROCEDIMIENTO PARA VALIDAR SI UN REGISTRO YA SE ENCUENTRA EN LA BD

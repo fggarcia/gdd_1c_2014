@@ -376,6 +376,7 @@ Where Id_Rol = @id_rol
  )
  AS
  BEGIN
+ 	Declare @p_Id_Rol int
  	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
 		BEGIN
 			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
@@ -390,6 +391,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarRol](
 )
 AS
 BEGIN
+	Declare @p_Id_Rol int
 	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
 		BEGIN
 			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
@@ -504,16 +506,74 @@ END
 	END 
 	GO
 
---ABM VISIBILIDAD
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarVisibilidades]
+--ABM REGISTRAR USUARIO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_registrarUsuarioRoles]
 AS
 BEGIN
-	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
-	ORDER BY Descripcion ASC
+	SELECT Descripcion,Id_Rol FROM LOS_OPTIMISTAS.Rol
+		WHERE Descripcion IN ('empresa','cliente') AND Habilitado = 1
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarVisibilidad]
+--ABM VISIBILIDAD
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CrearVisibilidad](
+	@id_visibilidad numeric(18,0),
+	@descripcion varchar(255),
+	@precio numeric(18,2),
+	@porcentaje numeric(18,2),
+	@peso int = 0,
+	@habilitado int
+)
+AS
+BEGIN
+	INSERT INTO LOS_OPTIMISTAS.Visibilidad (id_visibilidad,descripcion,precio,porcentaje,peso,habilitado)
+	VALUES (@id_visibilidad,@descripcion,@precio, @porcentaje, @peso, @habilitado)
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarVisibilidades]
+(
+	@p_id_visibilidad numeric(18,0) = null,
+	@p_descripcion varchar(255) = null,
+	@p_peso int = null
+)
+AS
+BEGIN
+	SELECT DISTINCT
+				
+		visib.Id_Visibilidad 'Codigo',
+		visib.Descripcion 'Descripcion',
+		visib.Precio 'Precio',
+		visib.Porcentaje 'Porcentaje',
+		visib.Peso 'Peso',
+		visib.Habilitado 'Habilitado'
+		
+		FROM LOS_OPTIMISTAS.Visibilidad visib
+		
+		WHERE
+		((@p_id_visibilidad IS NULL) OR ( visib.Id_Visibilidad = @p_id_visibilidad))
+		AND  ((@p_descripcion IS NULL) OR (visib.Descripcion like @p_descripcion + '%'))
+		AND  ((@p_peso IS NULL) OR (visib.Peso = @p_peso))
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ChequearCodigoYDescripcionVisibilidad]
+(
+	@id_visibilidad numeric(18,0),
+	@descripcion varchar(255)
+)
+AS
+BEGIN
+	Declare @existe int
+	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
+		WHERE Id_Visibilidad = @id_visibilidad OR LTRIM(Descripcion) = LTRIM(@descripcion)
+	SET @existe = @@ROWCOUNT
+
+	RETURN @existe
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CrearModificarVisibilidad]
 (
 	@id_visibilidad numeric(18,0),
 	@descripcion varchar(255),
@@ -535,12 +595,12 @@ BEGIN
 		WHERE Id_Visibilidad = @id_visibilidad
 	END
 		ELSE
-		--Si no existe la funcionalidad
-		PRINT ' No existe la visibilidad'		
+		INSERT INTO LOS_OPTIMISTAS.Visibilidad (Id_Visibilidad,Descripcion,Precio,Porcentaje,Peso,Habilitado)
+		VALUES(@id_visibilidad,@descripcion,@precio,@porcentaje,@peso,@habilitado)	
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[EliminarVisibilidad]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EliminarVisibilidad]
 (
 	@id_visibilidad numeric(18,0)
 )
@@ -555,53 +615,6 @@ BEGIN
 		ELSE
 		--Si no existe la funcionalidad
 		PRINT ' No existe la visibilidad'
-END
-GO
-
---ABM Publicacion
-CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
-	@Id_Usuario varchar(20),
-	@Tipo_Publicacion int,
-	@Id_Visibilidad numeric(18,0),
-	@Descripcion_Articulo varchar(255),
-	@Precio numeric(18,0),
-	@Permite_Preguntas bit,
-	@Cant_por_Venta numeric(18,0)
-)
-AS
-BEGIN 
-	Declare @Id_Articulo numeric(18,0),
-	Declare @Id_Publicacion numeric(18,0),
-	Declare @Precio_Publicacion_Pendiente numeric(18,2),
-	Declare @Cantidad_Visibilidad_Cobrar int,
-	Declare @Visibilidad varchar(255),
-	Declare @Comision numeric(18,2)
-
-	SET @Precio_Publicacion_Pendiente = 0.0
-	SET @Comision = 0.0
-	SET @Cantidad_Visibilidad_Cobrar = 1
-	BEGIN TRANSACTION
-		BEGIN TRY
-			
-			INSERT INTO LOS_OPTIMISTAS.Stock(@Id_Usuario, @Stock)
-			SET @Id_Articulo = SELECT @@IDENTITY
-			INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,
-				Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Stock,Descripcion)
-				VALUES (@Id_Articulo,@Id_Visibilidad,@Precio,DATEADD(day,0,DATEDIFF(day,0,GETDATE())),
-					DATEADD(month,1,DATEDIFF(day,0,GETDATE())),@Permite_Preguntas,@Cant_por_Venta)
-			SET @Id_Publicacion = @@IDENTITY
-			SELECT @Visibilidad = UPPER(Descripcion) ,@Precio_Publicacion_Pendiente  = Precio FROM
-				LOS_OPTIMISTAS.Visibilidad WHERE Id_Visibilidad = @Id_Visibilidad
-			INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario, Id_Publicacion,Comision,Visibilidad,
-				Cantidad,Precio_Publicacion, Precio_Visibilidad)
-				VALUES (@Id_Usuario,@Id_Publicacion,@Comision,@Visibilidad,@Cantidad_Visibilidad_Cobrar,
-					@Precio_Publicacion_Pendiente,@Precio_Visibilidad)
-			COMMIT TRANSACTION
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION
-		END CATCH
-	END TRANSACTION
 END
 GO
 
@@ -716,4 +729,71 @@ BEGIN
 			
  END
  GO
- 
+
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_LoginUsuarioValido](
+	@Usuario varchar(20)
+)
+AS
+BEGIN
+	Declare @Valido Int  = 0
+
+	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+
+	SET @Valido = @@ROWCOUNT
+
+	RETURN @Valido
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Login](
+	@Usuario varchar(20),
+	@Password varchar(64)
+)
+AS
+BEGIN
+	Declare @Intento Int
+
+	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario AND Password = @password AND Habilitado = 1
+
+	IF (@@ROWCOUNT = 1)
+	BEGIN
+		SET @Intento = 0
+		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = 0, Ultima_Fecha = GETDATE()
+			WHERE Id_Usuario = @Usuario
+
+		RETURN @Intento
+	END
+	ELSE
+	BEGIN
+		SELECT @Intento = Cantidad_Login FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Usuario
+
+		SET @Intento = @Intento + 1
+		UPDATE LOS_OPTIMISTAS.Usuario SET Cantidad_Login = @Intento
+			WHERE Id_Usuario = @Usuario
+		IF(@Intento >= 3)
+			UPDATE LOS_OPTIMISTAS.Usuario SET Habilitado = 0
+
+		RETURN @Intento
+	END
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_UsuarioRol](
+	@Id_Usuario varchar(20)
+)
+AS
+BEGIN
+	Declare @Habilitado Int = 1
+
+	SELECT ur.Id_Rol, r.Descripcion,ur.Habilitado FROM Usuario_Rol ur INNER JOIN Rol r
+		ON ur.Id_Rol = r.Id_Rol
+		WHERE ur.Id_Usuario = @Id_Usuario
+		AND ur.Habilitado = @Habilitado
+		AND r.Habilitado = @Habilitado
+END
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
+AS
+BEGIN
+	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
+END

@@ -104,8 +104,10 @@
             // 
             this.textContrasenia.Location = new System.Drawing.Point(164, 92);
             this.textContrasenia.Name = "textContrasenia";
+            this.textContrasenia.PasswordChar = '*';
             this.textContrasenia.Size = new System.Drawing.Size(235, 20);
             this.textContrasenia.TabIndex = 10;
+            this.textContrasenia.TextChanged += new System.EventHandler(this.textContrasenia_TextChanged);
             // 
             // textNombreUsuario
             // 
