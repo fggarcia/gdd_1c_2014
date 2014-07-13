@@ -87,8 +87,23 @@ namespace FrbaCommerce.Abm_Visibilidad
 
             if (isNew)
             {
-                command.CommandText = Constantes.procedimientoModificarVisibilidad;
-                Procedimientos.ejecutarStoredProcedure(command, "nueva visibilidad", true);
+                int exist = this.isExist(textCode.Text, textDescription.Text);
+                if (exist == 0)
+                {
+                    command.CommandText = Constantes.procedimientoModificarVisibilidad;
+                    Procedimientos.ejecutarStoredProcedure(command, "nueva visibilidad", true);
+                }
+                else if(exist == 1){
+                    MessageBox.Show("Ya existe una visibilidad con ese codigo", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (exist == 2)
+                {
+                    MessageBox.Show("Ya existe una visibilidad con ese descripcion", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (exist == 3)
+                {
+                    MessageBox.Show("Ya existe al menos una visibilidad con ese codigo y/o descripcion", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else
             {
@@ -110,6 +125,26 @@ namespace FrbaCommerce.Abm_Visibilidad
         private void FormABMVisibilidadModificar_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private int isExist(string code, string description) {
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Id_Visibilidad", code);
+            command.Parameters.AddWithValue("@Descripcion", description);
+
+            var returnParameter = command.Parameters.Add("@Exist", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            command.ExecuteNonQuery();
+
+            Int32 exist = Convert.ToInt32(returnParameter.Value);
+
+            Procedimientos.cerrarConexion(conn);
+
+            return exist;
         }
     }
 }

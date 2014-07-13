@@ -566,10 +566,16 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ChequearCodigoYDescripcionVisibilidad]
 )
 AS
 BEGIN
-	Declare @existe int
+	Declare @existe int = 0
 	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
-		WHERE Id_Visibilidad = @id_visibilidad OR LTRIM(Descripcion) = LTRIM(@descripcion)
-	SET @existe = @@ROWCOUNT
+		WHERE Id_Visibilidad = @id_visibilidad
+	 IF (@@ROWCOUNT > 0)
+	 	SET @existe = @existe + 1
+
+	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
+		WHERE LTRIM(Descripcion) = LTRIM(@descripcion)
+	IF (@@ROWCOUNT > 0)
+	 	SET @existe = @existe + 2
 
 	RETURN @existe
 END
