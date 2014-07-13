@@ -186,6 +186,46 @@ namespace FrbaCommerce
             }
         }
 
+        public static void validarCampoNumericoFlotante_Validating(object sender, CancelEventArgs e)
+        {
+
+            Control control = (Control)sender;
+
+            ErrorProvider nameErrorProvider = obtenerErrorProvider(control);
+
+            Boolean isValid = true;
+
+            if (sender is TextBox)
+            {
+
+                TextBox tb = (TextBox)sender;
+
+                if (!tb.Text.Equals(String.Empty))
+                {
+
+                    Double aux;
+                    if (Double.TryParse(tb.Text, out aux) || tb.Text.Equals(string.Empty))
+                        isValid = true;
+                    else
+                        isValid = false;
+                }
+            }
+
+            String mensajeError = "Solo se admiten valores numericos, sin signos especiales como '.' ',' o '-' por favor completar correctamente";
+
+            if (isValid == false)
+            {
+                nameErrorProvider.SetError(control, mensajeError);
+                e.Cancel = true;
+            }
+
+            else
+            {
+                if (nameErrorProvider.GetError(control).Equals((mensajeError)))
+                    nameErrorProvider.SetError(control, "");
+            }
+        }
+
         //**********************************************************
         //*  VALIDACION DE FORMATO DE MAIL CORRECTO
         //**********************************************************

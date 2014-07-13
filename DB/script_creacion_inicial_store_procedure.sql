@@ -504,16 +504,74 @@ END
 	END 
 	GO
 
---ABM VISIBILIDAD
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarVisibilidades]
+--ABM REGISTRAR USUARIO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_registrarUsuarioRoles]
 AS
 BEGIN
-	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
-	ORDER BY Descripcion ASC
+	SELECT Descripcion,Id_Rol FROM LOS_OPTIMISTAS.Rol
+		WHERE Descripcion IN ('empresa','cliente') AND Habilitado = 1
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarVisibilidad]
+--ABM VISIBILIDAD
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CrearVisibilidad](
+	@id_visibilidad numeric(18,0),
+	@descripcion varchar(255),
+	@precio numeric(18,2),
+	@porcentaje numeric(18,2),
+	@peso int = 0,
+	@habilitado int
+)
+AS
+BEGIN
+	INSERT INTO LOS_OPTIMISTAS.Visibilidad (id_visibilidad,descripcion,precio,porcentaje,peso,habilitado)
+	VALUES (@id_visibilidad,@descripcion,@precio, @porcentaje, @peso, @habilitado)
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarVisibilidades]
+(
+	@p_id_visibilidad numeric(18,0) = null,
+	@p_descripcion varchar(255) = null,
+	@p_peso int = null
+)
+AS
+BEGIN
+	SELECT DISTINCT
+				
+		visib.Id_Visibilidad 'Codigo',
+		visib.Descripcion 'Descripcion',
+		visib.Precio 'Precio',
+		visib.Porcentaje 'Porcentaje',
+		visib.Peso 'Peso',
+		visib.Habilitado 'Habilitado'
+		
+		FROM LOS_OPTIMISTAS.Visibilidad visib
+		
+		WHERE
+		((@p_id_visibilidad IS NULL) OR ( visib.Id_Visibilidad = @p_id_visibilidad))
+		AND  ((@p_descripcion IS NULL) OR (visib.Descripcion like @p_descripcion + '%'))
+		AND  ((@p_peso IS NULL) OR (visib.Peso = @p_peso))
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ChequearCodigoYDescripcionVisibilidad]
+(
+	@id_visibilidad numeric(18,0),
+	@descripcion varchar(255)
+)
+AS
+BEGIN
+	Declare @existe int
+	SELECT * FROM LOS_OPTIMISTAS.Visibilidad
+		WHERE Id_Visibilidad = @id_visibilidad OR LTRIM(Descripcion) = LTRIM(@descripcion)
+	SET @existe = @@ROWCOUNT
+
+	RETURN @existe
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CrearModificarVisibilidad]
 (
 	@id_visibilidad numeric(18,0),
 	@descripcion varchar(255),
@@ -535,12 +593,12 @@ BEGIN
 		WHERE Id_Visibilidad = @id_visibilidad
 	END
 		ELSE
-		--Si no existe la funcionalidad
-		PRINT ' No existe la visibilidad'		
+		INSERT INTO LOS_OPTIMISTAS.Visibilidad (Id_Visibilidad,Descripcion,Precio,Porcentaje,Peso,Habilitado)
+		VALUES(@id_visibilidad,@descripcion,@precio,@porcentaje,@peso,@habilitado)	
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[EliminarVisibilidad]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EliminarVisibilidad]
 (
 	@id_visibilidad numeric(18,0)
 )

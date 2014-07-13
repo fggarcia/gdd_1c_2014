@@ -20,6 +20,11 @@ namespace FrbaCommerce
         public const String procedimientoMostrarEmpresas = "LOS_OPTIMISTAS.proc_ListarEmpresas";
         public const String procedimientoModificarEmpresa = "LOS_OPTIMISTAS.ModificarEmpresa";
 
+        public const String procedimientoMostrarVisibilidad = "LOS_OPTIMISTAS.proc_ListarVisibilidades";
+        public const String procedimientoModificarVisibilidad = "LOS_OPTIMISTAS.proc_CrearModificarVisibilidad";
+        public const String procedimientoEliminarVisibilidad = "LOS_OPTIMISTAS.proc_EliminarVisibilidad";
+        public const String procedimientoCrearVisibilidad = "LOS_OPTIMISTAS.proc_CrearModificarVisibilidad";
+        
         public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.BajaUsuario";
 
         public const String listarMenuFuncionalidades = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
@@ -83,7 +88,7 @@ namespace FrbaCommerce
                     break;
                 case "ABM visibilidad de publicacion":
                     func.carpeta = "Abm_Visibilidad";
-                    func.form = "Form";
+                    func.form = "FormABMVisibilidad";
                     break;
                 case "Generar publicacion":
                     func.carpeta = "Generar_Publicacion";

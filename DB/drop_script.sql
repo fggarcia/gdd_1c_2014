@@ -90,6 +90,8 @@ DROP PROCEDURE LOS_OPTIMISTAS.AgregarFuncionalidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.QuitarFuncionalidad
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_registrarUsuarioRoles
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_EliminarFuncionalidades
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarFuncionalidesRol
@@ -98,11 +100,11 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_InhabilitarRol
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_HabilitarRol
 
-DROP PROCEDURE LOS_OPTIMISTAS.ListarVisibilidades
+DROP PROCEDURE LOS_OPTIMISTAS.proc_CrearVisibilidad
 
-DROP PROCEDURE LOS_OPTIMISTAS.ModificarVisibilidad
+DROP PROCEDURE LOS_OPTIMISTAS.proc_CrearModificarVisibilidad
 
-DROP PROCEDURE LOS_OPTIMISTAS.EliminarVisibilidad
+DROP PROCEDURE LOS_OPTIMISTAS.proc_EliminarVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol
 

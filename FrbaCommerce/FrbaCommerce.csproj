@@ -150,12 +150,19 @@
     <Compile Include="Abm Rubro\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Visibilidad\Form1.cs">
+    <Compile Include="Abm Visibilidad\FormABMVisibilidad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Visibilidad\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Visibilidad\FormABMVisibilidad.Designer.cs">
+      <DependentUpon>FormABMVisibilidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Visibilidad\FormABMVisibilidadModificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Visibilidad\FormABMVisibilidadModificar.Designer.cs">
+      <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Visibilidad\Visibilidad.cs" />
     <Compile Include="Procedimientos.cs" />
     <Compile Include="Calificar Vendedor\Form1.cs">
       <SubType>Form</SubType>
@@ -264,6 +271,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\FormABMRolModificar.resx">
       <DependentUpon>FormABMRolModificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Visibilidad\FormABMVisibilidad.resx">
+      <DependentUpon>FormABMVisibilidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Visibilidad\FormABMVisibilidadModificar.resx">
+      <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMenu.resx">
       <DependentUpon>FormMenu.cs</DependentUpon>
