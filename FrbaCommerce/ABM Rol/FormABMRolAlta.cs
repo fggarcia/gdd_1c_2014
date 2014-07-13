@@ -21,6 +21,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             InitializeComponent();
             nombreRol.Text = rolNombre;
+            nombreRol.Enabled = false;
             if (!rolNombre.Equals(null))
             {
                 SqlConnection conn = Procedimientos.abrirConexion();

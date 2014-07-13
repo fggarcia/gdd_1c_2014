@@ -370,7 +370,34 @@ Where Id_Rol = @id_rol
  
  END
  GO
+
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_InhabilitarRol](
+ 	@p_Descripcion_Rol varchar(20) = null
+ )
+ AS
+ BEGIN
+ 	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+		BEGIN
+			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
+			UPDATE LOS_OPTIMISTAS.Rol SET Habilitado = 0 WHERE Id_Rol = @p_Id_Rol
+			DELETE FROM LOS_OPTIMISTAS.Usuario_Rol WHERE Id_Rol = @p_Id_Rol
+		END
+ END
+ GO
  
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarRol](
+	@p_Descripcion_Rol varchar(20) = null
+)
+AS
+BEGIN
+	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+		BEGIN
+			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
+			UPDATE LOS_OPTIMISTAS.Rol SET Habilitado = 1 WHERE Id_Rol = @p_Id_Rol
+		END
+END
+GO
+
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EliminarFuncionalidades]
 (
 	@p_Descripcion_Rol varchar(20) = null
