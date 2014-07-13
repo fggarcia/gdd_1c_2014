@@ -278,11 +278,9 @@ GO
  
  AS
  BEGIN
-		Select  Rol.Id_Rol,Rol.Descripcion,Rol.Habilitado,Rol_Func.Id_Funcionalidad,Func.Descripcion
-		from LOS_OPTIMISTAS.Rol Rol, LOS_OPTIMISTAS.Rol_Funcionalidad Rol_Func,LOS_OPTIMISTAS.Funcionalidad Func
-		Where
-		(Rol.Id_Rol = Rol_Func.Id_Rol) And (Rol_Func.Id_Funcionalidad= Func.Id_Funcionalidad) 
-		
+	
+	Select  Rol.Id_Rol,Rol.Descripcion,Rol.Habilitado
+	  from LOS_OPTIMISTAS.Rol Rol
 		
  END
  GO
@@ -298,20 +296,24 @@ GO
  AS
  BEGIN
  
- Declare @id_rol int
-	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
-	 
-	  PRINT 'El rol ya existe'
-	 ELSE
-	  BEGIN
-	 select TOP 1 @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol
-	 order by Id_Rol DESC
-	 
-	 INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado)
-	 values ((@id_rol + 1),@p_Descripcion_Rol,1)
-	  END
- END 
- GO
+Declare @id_rol int
+	
+	select @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol
+	
+	IF @id_rol is not null
+		BEGIN	 
+		 UPDATE LOS_OPTIMISTAS.Rol  SET [Habilitado] = @p_Rol_Habilitado WHERE Id_Rol = @id_rol 
+		END
+	ELSE
+		BEGIN
+		 select TOP 1 @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol 
+		 order by Id_Rol DESC
+		 
+		 INSERT INTO LOS_OPTIMISTAS.Rol(Id_Rol,Descripcion,Habilitado)
+		 values ((@id_rol + 1),@p_Descripcion_Rol,1)
+		END
+END
+GO
  
  
  /* Procedimiento Baja Rol*/
