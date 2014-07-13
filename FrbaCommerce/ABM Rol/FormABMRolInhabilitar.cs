@@ -39,5 +39,11 @@ namespace FrbaCommerce.ABM_Rol
         {
 
         }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

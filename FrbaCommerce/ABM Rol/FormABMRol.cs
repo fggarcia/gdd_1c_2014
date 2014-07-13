@@ -11,24 +11,10 @@ namespace FrbaCommerce.ABM_Rol
 {
     public partial class FormABMRol : Form
     {
+
         public FormABMRol()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonInhabilitar_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)
@@ -64,11 +50,6 @@ namespace FrbaCommerce.ABM_Rol
             MdiParent.Size = formInhabilitarRol.Size + Constantes.aumentoTamanio;
             formInhabilitarRol.Show();
             this.Close();
-        }
-
-        private void buttonEliminar_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)
