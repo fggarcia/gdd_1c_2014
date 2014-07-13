@@ -21,7 +21,9 @@ namespace FrbaCommerce.Generar_Publicacion
 
         private void FormGenerarPublicacion_Load(object sender, EventArgs e)
         {
-
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void btnBidding_Click(object sender, EventArgs e)
