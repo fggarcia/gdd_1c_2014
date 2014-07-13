@@ -20,6 +20,7 @@ namespace FrbaCommerce
         {
             InitializeComponent();
             this.usuario = usuario;
+            VarGlobables.usuario = usuario;
         }
 
         private void FormMenu_Load(object sender, EventArgs e)

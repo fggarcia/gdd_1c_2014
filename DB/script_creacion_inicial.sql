@@ -332,7 +332,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	[Precio][numeric](18,2) NULL,
 	[Fecha_Inicio][datetime] NULL,
 	[Fecha_Vencimiento][datetime] NULL,
-	[Pemite_Preguntas][Bit] NULL,
+	[Permite_Preguntas][Bit] NULL,
 	[Cant_por_Venta][numeric] (18,0) NULL,
 	[Descripcion][varchar](255) NULL
 
@@ -354,7 +354,7 @@ GO
 --INSERTO EN PUBLICACION LOS CASOS EN QUE EL USUARIO ES EL QUE PUBLICA
 --SE PONE EL VALOR 1 COMO CANTIDAD DE VENTA POR PUBLICACION DEFAULT
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
-	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
+	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Descripcion)
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDNI(Publ_Cli_Dni),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,
@@ -364,7 +364,7 @@ SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerDN
 
 --INSERTO EN PUBLICACION LOS CASOS EN QUE LA EMPRESA ES LA QUE PUBLICA
 INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Publicacion,Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
-	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Pemite_Preguntas,Cant_por_Venta,Descripcion)
+	Id_Estado,Precio,Fecha_Inicio,Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Descripcion)
 SELECT DISTINCT(CONVERT(numeric(18,0),Publicacion_Cod)),LOS_OPTIMISTAS.obtenerCuit(Publ_Empresa_Cuit),
 	LOS_OPTIMISTAS.obtenerIdTipoPublicacion(Publicacion_Tipo),LOS_OPTIMISTAS.obtenerCodigoArticulo(Publicacion_Descripcion),
 	Publicacion_Visibilidad_Cod,Publicacion_Estado,Publicacion_Precio,Publicacion_Fecha,Publicacion_Fecha_Venc,

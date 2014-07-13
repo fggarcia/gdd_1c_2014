@@ -106,5 +106,10 @@ namespace FrbaCommerce.Abm_Visibilidad
             this.Close();
             formABMVisibilidad.Show();
         }
+
+        private void FormABMVisibilidadModificar_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

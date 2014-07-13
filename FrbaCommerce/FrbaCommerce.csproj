@@ -163,6 +163,12 @@
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Visibilidad\Visibilidad.cs" />
+    <Compile Include="Generar Publicacion\FormGenerarPublicacionAM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicacion\FormGenerarPublicacionAM.Designer.cs">
+      <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedimientos.cs" />
     <Compile Include="Calificar Vendedor\Form1.cs">
       <SubType>Form</SubType>
@@ -284,6 +290,9 @@
     <EmbeddedResource Include="Generar Publicacion\FormGenerarPublicacion.resx">
       <DependentUpon>FormGenerarPublicacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicacion\FormGenerarPublicacionAM.resx">
+      <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\FormHistorialUsuario.resx">
       <DependentUpon>FormHistorialUsuario.cs</DependentUpon>
     </EmbeddedResource>
@@ -325,6 +334,7 @@
     <Compile Include="Rol.cs" />
     <Compile Include="Usuarios.cs" />
     <Compile Include="Validaciones.cs" />
+    <Compile Include="VarGlobables.cs" />
     <Compile Include="Variables.cs" />
   </ItemGroup>
   <ItemGroup>

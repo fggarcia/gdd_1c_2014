@@ -713,7 +713,7 @@ BEGIN
 			Publ.Fecha_Inicio,
 			Publ.Fecha_Vencimiento,
 			Publ.Cant_por_Venta,
-			Publ.Pemite_Preguntas,
+			Publ.Permite_Preguntas,
 			Publ.Precio,
 			Tipo_Publicacion.Descripcion,
 			Visib.Peso,
@@ -793,9 +793,84 @@ BEGIN
 		AND ur.Habilitado = @Habilitado
 		AND r.Habilitado = @Habilitado
 END
+GO
 
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
 AS
 BEGIN
 	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
+END
+GO
+--AM Publicacion
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_GenerarPublicacion](
+	@Id_Usuario varchar(20),
+	@Id_Tipo_Publicacion int,
+	@Id_Visibilidad numeric(18,0),
+	@Precio numeric(18,2),
+	@Fecha_Inicio datetime,
+	@Fecha_Vencimiento datetime,
+	@Permite_Preguntas bit,
+	@Cant_por_Venta numeric(18,0),
+	@Descripcion varchar(255),
+	@Cantidad numeric(18,0)
+)
+AS
+BEGIN
+	Declare @Id_Articulo numeric(18,0)
+	Declare @Id_Publicacion numeric(18,0)
+	Declare @Id_Estado varchar(255) = 'Publicada'
+	Declare @Precio_Visibilidad numeric(18,2)
+	Declare @Visibilidad varchar(255)
+	Declare @Comision numeric(18,2)
+
+	BEGIN TRANSACTION
+
+		/*
+		[Id_Usuario][varchar](20) NOT NULL,
+		[Id_Tipo_Publicacion][int] NOT NULL,
+		[Id_Articulo][numeric](18,0) NOT NULL,             
+		[Id_Visibilidad][numeric](18,0)NOT NULL,
+		[Id_Estado][varchar](255)NOT NULL,
+		[Precio][numeric](18,2) NULL,
+		[Fecha_Inicio][datetime] NULL,
+		[Fecha_Vencimiento][datetime] NULL,
+		[Pemite_Preguntas][Bit] NULL,
+		[Cant_por_Venta][numeric] (18,0) NULL,
+		[Descripcion][varchar](255) NULL,
+
+		[Id_Articulo][numeric](18,0)IDENTITY(1,1) NOT NULL,
+		[Id_Usuario][varchar](20) NOT NULL,
+		[Cantidad][numeric](18,0) NOT NULL,
+
+		[Id_Registro][numeric](18,0)IDENTITY(1,1),
+		[Id_Usuario][varchar](20) NOT NULL,
+		[Id_Usuario_Comprador][varchar](20) DEFAULT NULL,
+		[Id_Publicacion][numeric](18,0) NULL,
+		[Comision][numeric](18,2) NOT NULL,
+		[Visibilidad][varchar](255) NOT NULL,
+		[Cantidad][int] NULL,
+		[Precio_Publicacion][numeric](18,2) NULL,
+		[Precio_Visibilidad][numeric](18,2) NULL,
+		*/
+
+		INSERT INTO LOS_OPTIMISTAS.Stock (Id_Usuario, Cantidad)
+		VALUES (@Id_Usuario,@Cantidad)
+
+		SET @Id_Articulo = @@IDENTITY
+
+		INSERT INTO LOS_OPTIMISTAS.Publicacion (Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,
+			Precio,Fecha_Inicio,Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Descripcion)
+		VALUES (@Id_Usuario,@Id_Tipo_Publicacion,@Id_Articulo,@Id_Visibilidad,@Id_Estado,@Precio,CONVERT(Date,@Fecha_Inicio),
+			CONVERT(Date,@Fecha_Vencimiento),@Permite_Preguntas,@Cant_por_Venta,@Descripcion)
+
+		SET @Id_Publicacion = @@IDENTITY
+
+		SELECT @Precio_Visibilidad = Precio, @Visibilidad = Descripcion, @Comision = porcentaje FROM LOS_OPTIMISTAS.Visibilidad WHERE 
+			Id_Visibilidad = @Id_Visibilidad 
+
+
+		INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario,Id_Publicacion,Precio_Visibilidad,Visibilidad, Comision)
+		VALUES (@Id_Usuario, @Id_Publicacion,@Precio_Visibilidad,@Visibilidad, @Comision)
+
+		COMMIT TRANSACTION
 END

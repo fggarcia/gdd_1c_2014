@@ -173,6 +173,7 @@
             this.Controls.Add(this.textCode);
             this.Name = "FormABMVisibilidadModificar";
             this.Text = "FormABMVisibilidadModificar";
+            this.Load += new System.EventHandler(this.FormABMVisibilidadModificar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
