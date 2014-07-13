@@ -92,7 +92,7 @@ namespace FrbaCommerce
                     break;
                 case "Generar publicacion":
                     func.carpeta = "Generar_Publicacion";
-                    func.form = "Form";
+                    func.form = "FormGenerarPublicacion";
                     break;
                 case "Editar Publicacion":
                     func.carpeta = "Editar_Publicacion";

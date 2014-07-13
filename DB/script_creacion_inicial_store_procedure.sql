@@ -376,6 +376,7 @@ Where Id_Rol = @id_rol
  )
  AS
  BEGIN
+ 	Declare @p_Id_Rol int
  	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
 		BEGIN
 			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
@@ -390,6 +391,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarRol](
 )
 AS
 BEGIN
+	Declare @p_Id_Rol int
 	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
 		BEGIN
 			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
@@ -613,53 +615,6 @@ BEGIN
 		ELSE
 		--Si no existe la funcionalidad
 		PRINT ' No existe la visibilidad'
-END
-GO
-
---ABM Publicacion
-CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearPublicacion](
-	@Id_Usuario varchar(20),
-	@Tipo_Publicacion int,
-	@Id_Visibilidad numeric(18,0),
-	@Descripcion_Articulo varchar(255),
-	@Precio numeric(18,0),
-	@Permite_Preguntas bit,
-	@Cant_por_Venta numeric(18,0)
-)
-AS
-BEGIN 
-	Declare @Id_Articulo numeric(18,0),
-	Declare @Id_Publicacion numeric(18,0),
-	Declare @Precio_Publicacion_Pendiente numeric(18,2),
-	Declare @Cantidad_Visibilidad_Cobrar int,
-	Declare @Visibilidad varchar(255),
-	Declare @Comision numeric(18,2)
-
-	SET @Precio_Publicacion_Pendiente = 0.0
-	SET @Comision = 0.0
-	SET @Cantidad_Visibilidad_Cobrar = 1
-	BEGIN TRANSACTION
-		BEGIN TRY
-			
-			INSERT INTO LOS_OPTIMISTAS.Stock(@Id_Usuario, @Stock)
-			SET @Id_Articulo = SELECT @@IDENTITY
-			INSERT INTO LOS_OPTIMISTAS.Publicacion(Id_Articulo,Id_Visibilidad,Id_Estado,Precio,Fecha_Inicio,
-				Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Stock,Descripcion)
-				VALUES (@Id_Articulo,@Id_Visibilidad,@Precio,DATEADD(day,0,DATEDIFF(day,0,GETDATE())),
-					DATEADD(month,1,DATEDIFF(day,0,GETDATE())),@Permite_Preguntas,@Cant_por_Venta)
-			SET @Id_Publicacion = @@IDENTITY
-			SELECT @Visibilidad = UPPER(Descripcion) ,@Precio_Publicacion_Pendiente  = Precio FROM
-				LOS_OPTIMISTAS.Visibilidad WHERE Id_Visibilidad = @Id_Visibilidad
-			INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario, Id_Publicacion,Comision,Visibilidad,
-				Cantidad,Precio_Publicacion, Precio_Visibilidad)
-				VALUES (@Id_Usuario,@Id_Publicacion,@Comision,@Visibilidad,@Cantidad_Visibilidad_Cobrar,
-					@Precio_Publicacion_Pendiente,@Precio_Visibilidad)
-			COMMIT TRANSACTION
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION
-		END CATCH
-	END TRANSACTION
 END
 GO
 
