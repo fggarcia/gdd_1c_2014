@@ -29,7 +29,7 @@ namespace FrbaCommerce.Generar_Publicacion
             this.loadCombos();
             if (this.bidding)
             {
-
+                this.label3.Text = "Precio Subasta";
             }
         }
 
@@ -100,6 +100,11 @@ namespace FrbaCommerce.Generar_Publicacion
             command.CommandText = Constantes.procedimientoGenerarPublicacion;
             Procedimientos.ejecutarStoredProcedure(command, "generar publicacion", true);
             this.btnCancel.PerformClick();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -91,6 +91,7 @@
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Precio";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtPrice
             // 
