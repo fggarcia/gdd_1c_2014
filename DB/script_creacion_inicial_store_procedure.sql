@@ -371,10 +371,33 @@ Where Id_Rol = @id_rol
  END
  GO
  
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EliminarFuncionalidades]
+(
+	@p_Descripcion_Rol varchar(20) = null
+)
+AS
+BEGIN
+	Declare @p_Id_Rol int
+	IF EXISTS( select * from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol)
+		BEGIN
+			select @p_Id_Rol =  Id_Rol from LOS_OPTIMISTAS.Rol where Descripcion = @p_Descripcion_Rol
+			DELETE FROM LOS_OPTIMISTAS.Rol_Funcionalidad WHERE Id_Rol = @p_Id_Rol
+		END
+END
  
- 
- 
- 
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarFuncionalidesRol]
+(
+	@p_Descripcion_Rol varchar(20) = null
+)
+AS
+BEGIN
+	SELECT func.Descripcion FROM LOS_OPTIMISTAS.Rol rol INNER JOIN LOS_OPTIMISTAS.Rol_Funcionalidad rolFunc
+		ON rol.Id_Rol = rolFunc.Id_Rol 
+		INNER JOIN LOS_OPTIMISTAS.Funcionalidad func ON rolFunc.Id_Funcionalidad = func.Id_Funcionalidad
+	WHERE UPPER(rol.Descripcion) = UPPER(@p_Descripcion_Rol) 
+END
  
  GO 
  --SP para agregar funcionalidades a un ROL

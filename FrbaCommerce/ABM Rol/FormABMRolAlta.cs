@@ -23,7 +23,21 @@ namespace FrbaCommerce.ABM_Rol
             nombreRol.Text = rolNombre;
             if (!rolNombre.Equals(null))
             {
-                //Llenar listBox con funcionalidades del Rol que me pasan
+                SqlConnection conn = Procedimientos.abrirConexion();
+                String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_ListarFuncionalidesRol";
+                SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@p_Descripcion_Rol", rolNombre);
+
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        listBox1.Items.Add(reader["Descripcion"].ToString());
+                    }
+                }
+                Procedimientos.cerrarConexion(conn);
             }
         }
 
@@ -45,7 +59,7 @@ namespace FrbaCommerce.ABM_Rol
         {
             if (!comboBox1.SelectedItem.Equals(null))
             {
-                listBox1.Items.Add(comboBox1.SelectedItem);
+                listBox1.Items.Add(comboBox1.SelectedValue);
             }
             else
             {
@@ -60,7 +74,7 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!listBox1.SelectedItem.Equals(null))
+            if (listBox1.SelectedItem != null)
             {
                 listBox1.Items.Remove(listBox1.SelectedItem);
             }
@@ -72,18 +86,25 @@ namespace FrbaCommerce.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!listBox1.SelectedItem.Equals(null))
+            if (!listBox1.Size.IsEmpty)
             {
                 SqlCommand rolSP = new SqlCommand();
+                rolSP.CommandText = "LOS_OPTIMISTAS.CrearRol";
                 rolSP.Parameters.AddWithValue("@p_Descripcion_Rol", nombreRol.Text);
                 Procedimientos.ejecutarStoredProcedure(rolSP, "CrearRol", false);
 
-                for (int i = 0; i < listBox1.Items.Count - 1; i++)
+                SqlCommand eliminarFuncionalidadesRolSP = new SqlCommand();
+                eliminarFuncionalidadesRolSP.CommandText = "LOS_OPTIMISTAS.proc_eliminarFuncionalidades";
+                eliminarFuncionalidadesRolSP.Parameters.AddWithValue("@p_Descripcion_Rol", nombreRol.Text);
+                Procedimientos.ejecutarStoredProcedure(eliminarFuncionalidadesRolSP, "proc_eliminarFuncionalidades", false);
+
+                for (int i = 0; i < listBox1.Items.Count; i++)
                 {
                     string funcionalidad = listBox1.Items[i].ToString();
                     SqlCommand funcionalidadSP = new SqlCommand();
-                    funcionalidadSP.Parameters.AddWithValue("@p_Id_Rol", nombreRol.Text);
-                    funcionalidadSP.Parameters.AddWithValue("@p_Id_Funcionalidad", funcionalidad);
+                    funcionalidadSP.CommandText = "LOS_OPTIMISTAS.AgregarFuncionalidad";
+                    funcionalidadSP.Parameters.AddWithValue("@p_Descripcion_Rol", nombreRol.Text);
+                    funcionalidadSP.Parameters.AddWithValue("@p_Descripcion_Funcionalidad", funcionalidad);
                     Procedimientos.ejecutarStoredProcedure(funcionalidadSP, "AgregarFuncionalidad", false);
                 }
                 listBox1.Items.Clear();

@@ -32,12 +32,12 @@ namespace FrbaCommerce.ABM_Rol
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)
-        {/*
+        {
             FormABMRolAlta formAltaRol = new FormABMRolAlta();
             formAltaRol.MdiParent = this.MdiParent;
             MdiParent.Size = formAltaRol.Size + Constantes.aumentoTamanio;
             formAltaRol.Show();
-            this.Close();*/
+            this.Close();
         }
 
         private void FormABMRol_Load(object sender, EventArgs e)

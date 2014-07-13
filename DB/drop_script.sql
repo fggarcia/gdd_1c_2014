@@ -90,6 +90,10 @@ DROP PROCEDURE LOS_OPTIMISTAS.AgregarFuncionalidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.QuitarFuncionalidad
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_EliminarFuncionalidades
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarFuncionalidesRol
+
 DROP PROCEDURE LOS_OPTIMISTAS.ListarVisibilidades
 
 DROP PROCEDURE LOS_OPTIMISTAS.ModificarVisibilidad
