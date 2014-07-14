@@ -33,12 +33,19 @@ namespace FrbaCommerce.Historial_Cliente
             commandS.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
             Procedimientos.llenarDataGridView(commandS, dgvOfertas, "DataGridView Ofertas");
 
-            //Llenar DataGridView compras / ventas del usuario
-            SqlCommand commandCV = new SqlCommand();
-            commandCV.CommandType = CommandType.StoredProcedure;
-            commandCV.CommandText = Constantes.procedimientoListadoComprasVentas;
-            commandCV.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
-            Procedimientos.llenarDataGridView(commandCV, dgvCompras, "DataGridView Compras");
+            //Llenar DataGridView compras del usuario
+            SqlCommand commandC = new SqlCommand();
+            commandC.CommandType = CommandType.StoredProcedure;
+            commandC.CommandText = Constantes.procedimientoListadoCompras;
+            commandC.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandC, dgvCompras, "DataGridView Compras");
+
+            //Llenar DataGridView compras del usuario
+            SqlCommand commandV = new SqlCommand();
+            commandV.CommandType = CommandType.StoredProcedure;
+            commandV.CommandText = Constantes.procedimientoListadoVentas;
+            commandV.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandV, dgvVentas, "DataGridView Ventas");
 
             SqlCommand commandCal = new SqlCommand();
             commandCal.CommandType = CommandType.StoredProcedure;

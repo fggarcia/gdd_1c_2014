@@ -35,7 +35,8 @@ namespace FrbaCommerce
         public const String bajaRol = "LOS_OPTIMISTAS.BajaRol";
 
         public const String procedimientoListadoSubastas = "LOS_OPTIMISTAS.proc_ListarSubastas";
-        public const String procedimientoListadoComprasVentas = "LOS_OPTIMISTAS.proc_ListarComprasVentas";
+        public const String procedimientoListadoCompras = "LOS_OPTIMISTAS.proc_ListarCompras";
+        public const String procedimientoListadoVentas = "LOS_OPTIMISTAS.proc_ListarVentas";
         public const String procedimientoListadoCalificaciones = "LOS_OPTIMISTAS.proc_ListarCalificaciones";
 
 
