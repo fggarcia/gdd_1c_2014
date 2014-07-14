@@ -11,7 +11,7 @@ namespace FrbaCommerce.Login
 {
     public partial class FormSeleccionRol : Form
     {
-        public Usuarios usuario;
+        public static Usuarios usuario;
 
         public FormSeleccionRol(Usuarios user)
         {

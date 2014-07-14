@@ -100,7 +100,7 @@ namespace FrbaCommerce.Generar_Publicacion
             command.Parameters.AddWithValue("@Cantidad", txtStock.Text);
 
             command.CommandText = Constantes.procedimientoGenerarPublicacion;
-            Procedimientos.ejecutarStoredProcedure(command, "generar publicacion", true);
+            Procedimientos.ejecutarStoredProcedure(command, "Generación de Publicación", true);
             this.btnCancel.PerformClick();
         }
 

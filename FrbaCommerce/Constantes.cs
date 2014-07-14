@@ -34,6 +34,10 @@ namespace FrbaCommerce
         public const String listarRoles = "LOS_OPTIMISTAS.ListarRoles";
         public const String bajaRol = "LOS_OPTIMISTAS.BajaRol";
 
+        public const String procedimientoListadoSubastas = "LOS_OPTIMISTAS.proc_ListarSubastas";
+        public const String procedimientoListadoComprasVentas = "LOS_OPTIMISTAS.proc_ListarComprasVentas";
+        public const String procedimientoListadoCalificaciones = "LOS_OPTIMISTAS.proc_ListarCalificaciones";
+
 
         //************************************
         //*  CONSTANTES VALIDACIONES
@@ -47,7 +51,7 @@ namespace FrbaCommerce
         //*  CONSTANTES FORMS
         //************************************
 
-        public static Size aumentoTamanio = new Size(10, 30);
+        public static Size aumentoTamanio = new Size(0, 30);
 
         //************************************
         //*  CONSTANTES FUNCIONALIDADES ROLES
@@ -109,9 +113,9 @@ namespace FrbaCommerce
                     func.carpeta = "Comprar-Ofertar";
                     func.form = "Form";
                     break;
-                case "Historial del Cliente":
+                case "Historial del cliente":
                     func.carpeta = "Historial_Cliente";
-                    func.form = "Form";
+                    func.form = "FormHistorialUsuario";
                     break;
                 case "Calificar al vendedor":
                     func.carpeta = "Calificar_Vendedor";

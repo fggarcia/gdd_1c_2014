@@ -880,3 +880,92 @@ BEGIN
 
 		COMMIT TRANSACTION
 END
+
+
+/*Store Procedure para Listar Subastas de Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+		DECLARE 
+		@Ganado varchar(2),
+		@historialS numeric(18,0),
+		@historialC numeric(18,0)
+		
+		SELECT 
+		hC.Id_Publicacion 'Publicacion'
+		,hS.Precio_Oferta 'Oferta'
+		,hS.Fecha_Oferta 'Fecha de oferta'
+		,'Si' AS 'Subasta Ganada'
+		FROM LOS_OPTIMISTAS.Historial_Compra hC
+		JOIN LOS_OPTIMISTAS.Historial_Subasta hS
+		ON hC.Id_Publicacion = hS.Id_Publicacion
+		WHERE
+		@p_Id_Usuario = Id_Usuario
+		
+		UNION
+		
+		SELECT 
+		Id_Publicacion 'Publicacion'
+		,Precio_Oferta 'Oferta'
+		,Fecha_Oferta 'Fecha de oferta'
+		,'No' AS 'Subasta Ganada'
+		FROM LOS_OPTIMISTAS.Historial_Subasta hS
+		WHERE
+		@p_Id_Usuario = Id_Usuario
+		
+ END
+ GO
+ 
+/*Store Procedure para Listar las Compras y Ventas de Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarComprasVentas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT 
+		Id_Publicacion 'Publicacion'
+		,Id_Vendedor 'Vendedor'
+		,Id_Comprador 'Comprador'
+		FROM LOS_OPTIMISTAS.Historial_Compra
+
+		WHERE
+		@p_Id_Usuario = Id_Vendedor
+		OR
+		@p_Id_Usuario = Id_Comprador
+ END
+ GO
+ 
+ /*Store Procedure para Listar las Compras y Ventas de Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificaciones]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT 
+		pub.Id_Publicacion 'Publicacion'
+		,pub.Id_Usuario 'Vendedor'
+		,pubCal.Detalle
+		FROM LOS_OPTIMISTAS.Publicacion_Calificaciones pubCal
+		LEFT JOIN LOS_OPTIMISTAS.Publicacion pub 
+		ON pub.Id_Publicacion = pubCal.Id_Historial_Compra
+
+		WHERE
+		@p_Id_Usuario = pub.Id_Usuario
+ END
+ GO

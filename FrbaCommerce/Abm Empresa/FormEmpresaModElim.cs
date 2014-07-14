@@ -66,6 +66,11 @@ namespace FrbaCommerce.Abm_Empresa
             Procedimientos.limpiarDataGridViews(dgvEmpresa);
         }
 
+        private void dgvEmpresa_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
 
     }
 }

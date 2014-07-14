@@ -170,6 +170,7 @@
             this.dgvEmpresa.Size = new System.Drawing.Size(784, 204);
             this.dgvEmpresa.TabIndex = 18;
             this.dgvEmpresa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpresa_CellClick);
+            this.dgvEmpresa.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpresa_CellContentClick);
             // 
             // FormEmpresaModElim
             // 
