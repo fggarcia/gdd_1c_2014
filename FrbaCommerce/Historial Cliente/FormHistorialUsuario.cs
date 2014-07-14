@@ -25,14 +25,21 @@ namespace FrbaCommerce.Historial_Cliente
             this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
+            
+            //Llenar DataGridView con las ofertas de subastas ganadas
+            SqlCommand commandSG = new SqlCommand();
+            commandSG.CommandType = CommandType.StoredProcedure;
+            commandSG.CommandText = Constantes.procedimientoListadoSubastasGanadas;
+            commandSG.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandSG, dgvSubGanadas, "DataGridView Subastas Ganadas");
 
-            //Llenar DataGridView con las ofertas de subastas
-            SqlCommand commandS = new SqlCommand();
-            commandS.CommandType = CommandType.StoredProcedure;
-            commandS.CommandText = Constantes.procedimientoListadoSubastas;
-            commandS.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
-            Procedimientos.llenarDataGridView(commandS, dgvOfertas, "DataGridView Ofertas");
-
+            //Llenar DataGridView con las ofertas de subastas no ganadas
+            SqlCommand commandSNG = new SqlCommand();
+            commandSNG.CommandType = CommandType.StoredProcedure;
+            commandSNG.CommandText = Constantes.procedimientoListadoSubastasNoGanadas;
+            commandSNG.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandSNG, dgvSubNoGanadas, "DataGridView Subastas No Ganadas");
+            
             //Llenar DataGridView compras del usuario
             SqlCommand commandC = new SqlCommand();
             commandC.CommandType = CommandType.StoredProcedure;
@@ -47,11 +54,19 @@ namespace FrbaCommerce.Historial_Cliente
             commandV.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
             Procedimientos.llenarDataGridView(commandV, dgvVentas, "DataGridView Ventas");
 
-            SqlCommand commandCal = new SqlCommand();
-            commandCal.CommandType = CommandType.StoredProcedure;
-            commandCal.CommandText = Constantes.procedimientoListadoCalificaciones;
-            commandCal.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
-            Procedimientos.llenarDataGridView(commandCal, dgvCalificaciones, "DataGridView Calificaciones");
+            //Llenar DataGridView calificaciones otorgadas
+            SqlCommand commandCalO = new SqlCommand();
+            commandCalO.CommandType = CommandType.StoredProcedure;
+            commandCalO.CommandText = Constantes.procedimientoListadoCalificacionesOtorgadas;
+            commandCalO.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandCalO, dgvCalOtorgadas, "DataGridView Calificaciones");
+
+            //Llenar DataGridView calificaciones recibidas
+            SqlCommand commandCalR = new SqlCommand();
+            commandCalR.CommandType = CommandType.StoredProcedure;
+            commandCalR.CommandText = Constantes.procedimientoListadoCalificacionesRecibidas;
+            commandCalR.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
+            Procedimientos.llenarDataGridView(commandCalR, dgvCalRecibidas, "DataGridView Calificaciones");
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -882,9 +882,32 @@ BEGIN
 END
 
 
-/*Store Procedure para Listar Subastas de Usuario*/
+/*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastas]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+		SELECT hC.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS
+		INNER JOIN Historial_Compra hC  ON hS.Id_Publicacion = hC.Id_Publicacion AND hS.Id_Usuario = hC.Id_Comprador
+		WHERE hC.Id_Comprador = @p_Id_Usuario
+		ORDER BY hS.Fecha_Oferta
+				
+ END
+ GO
+
+--MAL!!!!
+/*Stored Procedure para Listar Subastas Perdidas del Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
 
 (
 @p_Id_Usuario varchar(20) = null
@@ -922,31 +945,7 @@ BEGIN
  END
  GO
  
-/*Store Procedure para Listar las Compras y Ventas de Usuario*/
-GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarComprasVentas]
-
-(
-@p_Id_Usuario varchar(20) = null
-)
-
-AS
-BEGIN
-
-		SELECT 
-		Id_Publicacion 'Publicacion'
-		,Id_Vendedor 'Vendedor'
-		,Id_Comprador 'Comprador'
-		FROM LOS_OPTIMISTAS.Historial_Compra
-
-		WHERE
-		@p_Id_Usuario = Id_Vendedor
-		OR
-		@p_Id_Usuario = Id_Comprador
- END
- GO
- 
- /*Store Procedure para Listar las Compras y Ventas de Usuario*/
+/*Stored Procedure para Listar las Calificaciones*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificaciones]
 
@@ -970,4 +969,52 @@ BEGIN
  END
  GO
  
+/*Stored Procedure para Listar las Compras del Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCompras]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT 
+		hC.Id_Publicacion 'Publicacion'
+		,Pub.Descripcion
+		,hC.Compra_Cantidad 'Cantidad'
+		,hC.Compra_Fecha 'Fecha de Compra'
+		FROM LOS_OPTIMISTAS.Historial_Compra hC
+		JOIN LOS_OPTIMISTAS.Publicacion Pub
+		ON hC.Id_Publicacion = Pub.Id_Publicacion
+
+		WHERE
+		@p_Id_Usuario = Id_Comprador
+ END
+ GO
  
+/*Stored Procedure para Listar las Ventas del Usuario*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarVentas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT 
+		hC.Id_Publicacion 'Publicacion'
+		,Pub.Descripcion
+		,hC.Compra_Cantidad 'Cantidad'
+		,hC.Compra_Fecha 'Fecha de Venta'
+		FROM LOS_OPTIMISTAS.Historial_Compra hC
+		JOIN LOS_OPTIMISTAS.Publicacion Pub
+		ON hC.Id_Publicacion = Pub.Id_Publicacion
+
+		WHERE
+		@p_Id_Usuario = Id_Vendedor
+ END
+ GO
