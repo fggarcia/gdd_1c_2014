@@ -969,3 +969,5 @@ BEGIN
 		@p_Id_Usuario = pub.Id_Usuario
  END
  GO
+ 
+ 

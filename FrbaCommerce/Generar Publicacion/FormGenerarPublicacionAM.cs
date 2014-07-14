@@ -35,9 +35,6 @@ namespace FrbaCommerce.Generar_Publicacion
 
         private void FormGenerarPublicacionAM_Load(object sender, EventArgs e)
         {
-            this.ControlBox = false;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
         }
 
         private void addValidation()

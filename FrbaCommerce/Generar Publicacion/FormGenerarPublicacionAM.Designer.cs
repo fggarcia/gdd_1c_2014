@@ -55,7 +55,7 @@
             this.label1.Location = new System.Drawing.Point(472, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 13);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 12;
             this.label1.Text = "Tipo Visibilidad";
             // 
             // cmbVisibility
@@ -72,7 +72,7 @@
             this.label2.Location = new System.Drawing.Point(472, 61);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 14;
             this.label2.Text = "Estado";
             // 
             // cmbStatus
@@ -89,7 +89,7 @@
             this.label3.Location = new System.Drawing.Point(25, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 16;
             this.label3.Text = "Precio";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
@@ -106,7 +106,7 @@
             this.label4.Location = new System.Drawing.Point(25, 182);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 13);
-            this.label4.TabIndex = 6;
+            this.label4.TabIndex = 17;
             this.label4.Text = "Fecha Inicio";
             // 
             // dtpFrom
@@ -122,7 +122,7 @@
             this.label5.Location = new System.Drawing.Point(404, 182);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(54, 13);
-            this.label5.TabIndex = 8;
+            this.label5.TabIndex = 18;
             this.label5.Text = "Fecha Fin";
             // 
             // dtpTo
@@ -130,7 +130,7 @@
             this.dtpTo.Location = new System.Drawing.Point(476, 178);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(200, 20);
-            this.dtpTo.TabIndex = 9;
+            this.dtpTo.TabIndex = 8;
             // 
             // chkEnableQuestion
             // 
@@ -138,7 +138,7 @@
             this.chkEnableQuestion.Location = new System.Drawing.Point(476, 135);
             this.chkEnableQuestion.Name = "chkEnableQuestion";
             this.chkEnableQuestion.Size = new System.Drawing.Size(109, 17);
-            this.chkEnableQuestion.TabIndex = 10;
+            this.chkEnableQuestion.TabIndex = 6;
             this.chkEnableQuestion.Text = "Admite Preguntas";
             this.chkEnableQuestion.UseVisualStyleBackColor = true;
             // 
@@ -148,7 +148,7 @@
             this.label6.Location = new System.Drawing.Point(25, 97);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(71, 13);
-            this.label6.TabIndex = 11;
+            this.label6.TabIndex = 15;
             this.label6.Text = "Cant. x Venta";
             // 
             // txtCountBuy
@@ -156,7 +156,7 @@
             this.txtCountBuy.Location = new System.Drawing.Point(105, 94);
             this.txtCountBuy.Name = "txtCountBuy";
             this.txtCountBuy.Size = new System.Drawing.Size(122, 20);
-            this.txtCountBuy.TabIndex = 12;
+            this.txtCountBuy.TabIndex = 4;
             // 
             // label7
             // 
@@ -164,7 +164,7 @@
             this.label7.Location = new System.Drawing.Point(25, 24);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(63, 13);
-            this.label7.TabIndex = 13;
+            this.label7.TabIndex = 11;
             this.label7.Text = "Descripcion";
             // 
             // txtDescription
@@ -172,14 +172,14 @@
             this.txtDescription.Location = new System.Drawing.Point(105, 21);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(278, 20);
-            this.txtDescription.TabIndex = 14;
+            this.txtDescription.TabIndex = 0;
             // 
             // btnCancel
             // 
             this.btnCancel.Location = new System.Drawing.Point(146, 221);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(130, 30);
-            this.btnCancel.TabIndex = 15;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancelar";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -189,7 +189,7 @@
             this.btnSave.Location = new System.Drawing.Point(409, 221);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(140, 30);
-            this.btnSave.TabIndex = 16;
+            this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Guardar";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -200,7 +200,7 @@
             this.label8.Location = new System.Drawing.Point(25, 61);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(35, 13);
-            this.label8.TabIndex = 17;
+            this.label8.TabIndex = 13;
             this.label8.Text = "Stock";
             // 
             // txtStock
@@ -208,7 +208,7 @@
             this.txtStock.Location = new System.Drawing.Point(105, 58);
             this.txtStock.Name = "txtStock";
             this.txtStock.Size = new System.Drawing.Size(122, 20);
-            this.txtStock.TabIndex = 18;
+            this.txtStock.TabIndex = 2;
             // 
             // FormGenerarPublicacionAM
             // 
