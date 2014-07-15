@@ -163,6 +163,12 @@
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Visibilidad\Visibilidad.cs" />
+    <Compile Include="Facturar Publicaciones\FormElegirMedioDePago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturar Publicaciones\FormElegirMedioDePago.Designer.cs">
+      <DependentUpon>FormElegirMedioDePago.cs</DependentUpon>
+    </Compile>
     <Compile Include="Generar Publicacion\FormGenerarPublicacionAM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -283,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Visibilidad\FormABMVisibilidadModificar.resx">
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturar Publicaciones\FormElegirMedioDePago.resx">
+      <DependentUpon>FormElegirMedioDePago.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturar Publicaciones\FormFacturarPublicaciones.resx">
       <DependentUpon>FormFacturarPublicaciones.cs</DependentUpon>

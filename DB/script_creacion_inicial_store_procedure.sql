@@ -945,9 +945,9 @@ BEGIN
  END
  GO
  
-/*Stored Procedure para Listar las Calificaciones*/
+  /*Stored Procedure para Listar las Calificaciones Otorgadas*/
 GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificaciones]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificacionesOtorgadas]
 
 (
 @p_Id_Usuario varchar(20) = null
@@ -957,15 +957,39 @@ AS
 BEGIN
 
 		SELECT 
-		pub.Id_Publicacion 'Publicacion'
-		,pub.Id_Usuario 'Vendedor'
+		hC.Id_Vendedor 'Usuario'
+		,hC.Id_Publicacion 'Publicacion'
+		,hC.Id_Articulo 'Articulo'
+		,pubCal.Fecha_Calificacion 'Fecha de Calificacion'
+		,pubCal.Calificacion
 		,pubCal.Detalle
-		FROM LOS_OPTIMISTAS.Publicacion_Calificaciones pubCal
-		LEFT JOIN LOS_OPTIMISTAS.Publicacion pub 
-		ON pub.Id_Publicacion = pubCal.Id_Historial_Compra
+		FROM Publicacion_Calificaciones pubCal
+		JOIN Historial_Compra hC ON pubCal.Id_Historial_Compra = hC.Id_Historial_Compra
+		WHERE hC.Id_Comprador = @p_Id_Usuario
+ END
+ GO
+ 
+/*Stored Procedure para Listar las Calificaciones Recibidas*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificacionesRecibidas]
 
-		WHERE
-		@p_Id_Usuario = pub.Id_Usuario
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT 
+		hC.Id_Comprador 'Usuario'
+		,hC.Id_Publicacion 'Publicacion'
+		,hC.Id_Articulo 'Articulo'
+		,pubCal.Fecha_Calificacion 'Fecha de Calificacion'
+		,pubCal.Calificacion
+		,pubCal.Detalle
+		FROM Publicacion_Calificaciones pubCal
+		JOIN Historial_Compra hC ON pubCal.Id_Historial_Compra = hC.Id_Historial_Compra
+		WHERE hC.Id_Vendedor = @p_Id_Usuario
  END
  GO
  
@@ -985,8 +1009,8 @@ BEGIN
 		,Pub.Descripcion
 		,hC.Compra_Cantidad 'Cantidad'
 		,hC.Compra_Fecha 'Fecha de Compra'
-		FROM LOS_OPTIMISTAS.Historial_Compra hC
-		JOIN LOS_OPTIMISTAS.Publicacion Pub
+		FROM Historial_Compra hC
+		JOIN Publicacion Pub
 		ON hC.Id_Publicacion = Pub.Id_Publicacion
 
 		WHERE
@@ -1010,11 +1034,52 @@ BEGIN
 		,Pub.Descripcion
 		,hC.Compra_Cantidad 'Cantidad'
 		,hC.Compra_Fecha 'Fecha de Venta'
-		FROM LOS_OPTIMISTAS.Historial_Compra hC
-		JOIN LOS_OPTIMISTAS.Publicacion Pub
+		FROM Historial_Compra hC
+		JOIN Publicacion Pub
 		ON hC.Id_Publicacion = Pub.Id_Publicacion
 
 		WHERE
 		@p_Id_Usuario = Id_Vendedor
  END
  GO
+
+/*Stored Procedure para Listar las Facturas pendientes de pago*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarFacturasPendientes]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+
+		SELECT Id_Publicacion 'Publicación'
+		,Id_Usuario_Comprador 'Comprador'
+		,((Comision * Cantidad) + Precio_Publicacion + Precio_Visibilidad) 'A pagar'
+		FROM Facturacion_Pendiente
+		WHERE Id_Usuario = @p_Id_Usuario
+		ORDER BY Id_Publicacion	
+ END
+ GO
+ 
+/*Stored Procedure para Facturar*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
+
+(
+@p_Id_Usuario varchar(20) = null,
+@p_Cantidad numeric(10,0) = null,
+@p_Numero_Tarjeta numeric(16,0) = null,
+@p_Cantidad_Cuotas int = null,
+@p_Tipo_Pago int = null
+)
+
+AS
+BEGIN
+
+	
+	
+	
+END
+GO

@@ -41,6 +41,9 @@ namespace FrbaCommerce
         public const String procedimientoListadoCalificacionesOtorgadas = "LOS_OPTIMISTAS.proc_ListarCalificacionesOtorgadas";
         public const String procedimientoListadoCalificacionesRecibidas = "LOS_OPTIMISTAS.proc_ListarCalificacionesRecibidas";
 
+        public const String procedimientoListadoFacturasPendientes = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
+        public const String procedimientoSeleccionarPagos = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
+
         //************************************
         //*  CONSTANTES VALIDACIONES
         //************************************
@@ -125,7 +128,7 @@ namespace FrbaCommerce
                     break;
                 case "Facturar Publicaciones":
                     func.carpeta = "Facturar_Publicaciones";
-                    func.form = "Form";
+                    func.form = "FormFacturarPublicaciones";
                     break;
                 case "Listado Estadistico":
                     func.carpeta = "Listado_Estadistico";
