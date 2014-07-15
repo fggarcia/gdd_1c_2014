@@ -881,6 +881,46 @@ BEGIN
 		COMMIT TRANSACTION
 END
 
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ObtenerIdPublicacionGratuita]
+AS
+BEGIN
+	Declare @Id_Gratis int
+	SELECT @Id_Gratis = Id_Visibilidad FROM LOS_OPTIMISTAS.Visibilidad
+		WHERE UPPER(LTRIM(Descripcion)) = UPPER('Gratis')
+	RETURN @Id_Gratis
+END
+
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ChequearPublicacionesGratuitas](
+	@Id_Usuario varchar(20) = null
+)
+AS
+BEGIN
+	Declare @CantidadPublicacionesActivasGratuitas int = 0
+	Declare @NoSuperaCondicion int = 0
+	Declare @Id_Estado_Activa int
+
+	SELECT @Id_Estado_Activa = Id_Estado FROM LOS_OPTIMISTAS.Id_Estado
+		WHERE UPPER(LTRIM(Descripcion)) = UPPER(LTRIM('Activa'))
+
+	SELECT * FROM LOS_OPTIMISTAS.Publicacion pub 
+		INNER JOIN LOS_OPTIMISTAS.Estado_Publicacion pubEst
+			ON pub.Id_Publicacion = pubEst.Id_Publicacion
+		INNER JOIN LOS_OPTIMISTAS.Visibilidad visi
+			ON pub.Id_Visibilidad = visi.Id_Visibilidad
+		WHERE pubEst.Id_Estado = @Id_Estado_Activa
+			AND UPPER(LTRIM(visi.Descripcion)) = UPPER('Gratis')
+			AND DATEDIFF(DAY, pub.Fecha_Vencimiento, GETDATE()) < 0
+
+	SET @CantidadPublicacionesActivasGratuitas = @@ROWCOUNT
+
+	IF @CantidadPublicacionesActivasGratuitas > 2
+		SET @NoSuperaCondicion = 1
+
+	RETURN @NoSuperaCondicion
+END	
 
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO

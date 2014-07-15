@@ -298,9 +298,6 @@ CREATE TABLE [LOS_OPTIMISTAS].[Estado](
 	CONSTRAINT [PK_Estado_Id_Estado] PRIMARY KEY(Id_Estado)
 )
 
-INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion)
-SELECT DISTINCT UPPER(Publicacion_Estado) FROM gd_esquema.Maestra WHERE Publicacion_Estado IS NOT NULL
-
 INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Borrador'))
 INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Activa'))
 INSERT INTO LOS_OPTIMISTAS.Estado(Descripcion) VALUES (UPPER('Pausada'))
@@ -318,8 +315,9 @@ CREATE TABLE [LOS_OPTIMISTAS].[Estado_Publicacion](
 
 --verifique en la tabla y no habia iguales
 INSERT INTO LOS_OPTIMISTAS.Estado_Publicacion(Id_Publicacion, Id_Estado)
-SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra 
-	INNER JOIN LOS_OPTIMISTAS.Estado Estado ON (UPPER(maestra.Publicacion_Estado) = UPPER(Estado.Descripcion))
+SELECT DISTINCT(Publicacion_Cod), Id_Estado FROM gd_esquema.Maestra maestra,
+	LOS_OPTIMISTAS.Estado Estado
+	WHERE UPPER(LTRIM('Activa')) = UPPER(LTRIM(Estado.Descripcion))
 
 --CREO TABLA PUBLICACION
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
