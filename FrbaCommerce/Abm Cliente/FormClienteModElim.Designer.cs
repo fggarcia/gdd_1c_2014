@@ -231,7 +231,7 @@
             this.Controls.Add(this.dgvCliente);
             this.Controls.Add(this.groupBoxTituloBusqueda);
             this.Name = "FormClienteModElim";
-            this.Text = "Selección de Cliente";
+            this.Text = " ";
             this.Load += new System.EventHandler(this.FormClienteModElim_Load);
             this.groupBoxTituloBusqueda.ResumeLayout(false);
             this.groupBoxTituloBusqueda.PerformLayout();

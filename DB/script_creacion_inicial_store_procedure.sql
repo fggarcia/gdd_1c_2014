@@ -297,6 +297,7 @@ GO
  BEGIN
  
 Declare @id_rol int
+Declare @p_Rol_Habilitado int = 1
 	
 	select @id_rol = Id_Rol from LOS_OPTIMISTAS.Rol Where Descripcion = @p_Descripcion_Rol
 	
@@ -813,6 +814,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_GenerarPublicacion](
 	@Id_Tipo_Publicacion int,
 	@Id_Visibilidad numeric(18,0),
 	@Precio numeric(18,2),
+	@Id_Estado int,
 	@Fecha_Inicio datetime,
 	@Fecha_Vencimiento datetime,
 	@Permite_Preguntas bit,
@@ -824,7 +826,7 @@ AS
 BEGIN
 	Declare @Id_Articulo numeric(18,0)
 	Declare @Id_Publicacion numeric(18,0)
-	Declare @Id_Estado varchar(255) = 'Publicada'
+	
 	Declare @Precio_Visibilidad numeric(18,2)
 	Declare @Visibilidad varchar(255)
 	Declare @Comision numeric(18,2)
@@ -864,12 +866,15 @@ BEGIN
 
 		SET @Id_Articulo = @@IDENTITY
 
-		INSERT INTO LOS_OPTIMISTAS.Publicacion (Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,Id_Estado,
+		INSERT INTO LOS_OPTIMISTAS.Publicacion (Id_Usuario,Id_Tipo_Publicacion,Id_Articulo,Id_Visibilidad,
 			Precio,Fecha_Inicio,Fecha_Vencimiento,Permite_Preguntas,Cant_por_Venta,Descripcion)
-		VALUES (@Id_Usuario,@Id_Tipo_Publicacion,@Id_Articulo,@Id_Visibilidad,@Id_Estado,@Precio,CONVERT(Date,@Fecha_Inicio),
+		VALUES (@Id_Usuario,@Id_Tipo_Publicacion,@Id_Articulo,@Id_Visibilidad,@Precio,CONVERT(Date,@Fecha_Inicio),
 			CONVERT(Date,@Fecha_Vencimiento),@Permite_Preguntas,@Cant_por_Venta,@Descripcion)
 
 		SET @Id_Publicacion = @@IDENTITY
+
+		INSERT INTO LOS_OPTIMISTAS.Estado_Publicacion (Id_Publicacion, Id_Estado)
+			VALUES (@Id_Publicacion, @Id_Estado)
 
 		SELECT @Precio_Visibilidad = Precio, @Visibilidad = Descripcion, @Comision = porcentaje FROM LOS_OPTIMISTAS.Visibilidad WHERE 
 			Id_Visibilidad = @Id_Visibilidad 
@@ -921,7 +926,83 @@ BEGIN
 
 	RETURN @NoSuperaCondicion
 END	
+GO
 
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicaciones]
+
+(
+	@p_IdUsuario varchar(20) = null,
+	@p_Description varchar(255) = null,
+	@p_Type int = null,
+	@p_Status int = null,
+	@p_Visibility int = null
+)
+AS
+BEGIN
+
+			SELECT DISTINCT
+			
+			pub.Id_Publicacion 'Codigo Publicacion',
+			pub.Descripcion 'Descripcion',
+			stock.Cantidad 'Stock Actual',
+			est.Descripcion 'Estado',
+			tiPub.Descripcion 'Tipo Publicacion',
+			visi.Descripcion 'Visibilidad',
+			pub.Fecha_Inicio 'Fecha Inicio',
+			pub.Fecha_Vencimiento 'Fecha Vencimiento'
+			
+			FROM LOS_OPTIMISTAS.Publicacion pub
+				INNER JOIN LOS_OPTIMISTAS.Estado_Publicacion estPub ON pub.Id_Publicacion = estPub.Id_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Stock stock ON pub.Id_Articulo = stock.Id_Articulo
+				INNER JOIN LOS_OPTIMISTAS.Estado est ON estPub.Id_Estado = est.Id_Estado
+				INNER JOIN LOS_OPTIMISTAS.Tipo_Publicacion tiPub ON pub.Id_Tipo_Publicacion = tiPub.Id_Tipo_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
+			WHERE
+			pub.Id_Usuario = @p_IdUsuario
+			AND ((@p_Description IS NULL) OR ( pub.Descripcion like '%' + @p_Description  + '%'))
+			AND  ((@p_Type IS NULL) OR (tiPub.Id_Tipo_Publicacion = @p_Type ))
+			AND  ((@p_Status IS NULL) OR (est.Id_Estado = @p_Status ))
+			AND  ((@p_Visibility IS NULL) OR (visi.Id_Visibilidad = @p_Visibility))
+ END
+ GO
+
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_obtenerPublicacion]
+
+(
+	@p_Id_Usuario varchar(20) = null,
+	@p_Id_Publicacion numeric(18,0) = null
+)
+AS
+BEGIN
+
+			SELECT DISTINCT
+			
+			pub.Id_Publicacion,
+			pub.Descripcion,
+			stock.Cantidad 'Stock',
+			est.Id_Estado,
+			est.Descripcion 'estadoDescripcion',
+			tiPub.Id_Tipo_Publicacion,
+			tiPub.Descripcion 'tipoDescripcion',
+			visi.Id_Visibilidad,
+			visi.Descripcion 'visibilidadDescripcion',
+			pub.precio,
+			pub.Permite_Preguntas,
+			pub.Cant_por_Venta,
+			pub.Fecha_Inicio,
+			pub.Fecha_Vencimiento
+			
+			FROM LOS_OPTIMISTAS.Publicacion pub
+				INNER JOIN LOS_OPTIMISTAS.Estado_Publicacion estPub ON pub.Id_Publicacion = estPub.Id_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Stock stock ON pub.Id_Articulo = stock.Id_Articulo
+				INNER JOIN LOS_OPTIMISTAS.Estado est ON estPub.Id_Estado = est.Id_Estado
+				INNER JOIN LOS_OPTIMISTAS.Tipo_Publicacion tiPub ON pub.Id_Tipo_Publicacion = tiPub.Id_Tipo_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
+			WHERE
+			pub.Id_Usuario = @p_Id_Usuario
+			AND @p_Id_Publicacion = pub.Id_Publicacion
+ END
+ GO
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]

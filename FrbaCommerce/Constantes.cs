@@ -27,6 +27,7 @@ namespace FrbaCommerce
 
         public const String procedimientoGenerarPublicacion = "LOS_OPTIMISTAS.proc_GenerarPublicacion";
         public const String procedimientoChequearTresPublicacionesGratuitas = "LOS_OPTIMISTAS.proc_ChequearPublicacionesGratuitas";
+        public const String procedimientoMostrarPublicaciones = "LOS_OPTIMISTAS.proc_listarPublicaciones";
         
         public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.BajaUsuario";
 
@@ -107,9 +108,9 @@ namespace FrbaCommerce
                     func.carpeta = "Generar_Publicacion";
                     func.form = "FormGenerarPublicacion";
                     break;
-                case "Editar Publicacion":
+                case "Editar publicacion":
                     func.carpeta = "Editar_Publicacion";
-                    func.form = "Form";
+                    func.form = "FormEditarPublicacion";
                     break;
                 case "Gestion de Preguntas":
                     func.carpeta = "Gestion_de_Preguntas";

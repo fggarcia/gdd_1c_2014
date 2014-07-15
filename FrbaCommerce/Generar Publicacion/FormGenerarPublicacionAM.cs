@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
@@ -13,6 +9,29 @@ namespace FrbaCommerce.Generar_Publicacion
     public partial class FormGenerarPublicacionAM : Form
     {
         private bool bidding;
+
+        public FormGenerarPublicacionAM(bool bidding, Publicacion publication)
+        {
+            InitializeComponent();
+            addValidation();
+            this.bidding = bidding;
+            this.dtpFrom.Enabled = false;
+            this.dtpTo.Enabled = false;
+
+            this.loadCombos();
+            if (this.bidding)
+            {
+                this.label3.Text = "Precio Subasta";
+            }
+
+            cmbStatus.SelectedIndex = cmbStatus.FindStringExact(publication.statusDescription);
+            cmbVisibility.SelectedIndex = cmbVisibility.FindStringExact(publication.visibilityDescription);
+            txtDescription.Text = publication.description;
+            txtPrice.Text = publication.prices.ToString();
+            txtCountBuy.Text = publication.countForSale.ToString();
+            txtStock.Text = publication.stock.ToString();
+            chkEnableQuestion.Checked = publication.acceptQuestions;
+        }
 
         public FormGenerarPublicacionAM(bool bidding)
         {
@@ -36,6 +55,9 @@ namespace FrbaCommerce.Generar_Publicacion
 
         private void FormGenerarPublicacionAM_Load(object sender, EventArgs e)
         {
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void addValidation()
@@ -124,6 +146,7 @@ namespace FrbaCommerce.Generar_Publicacion
 
             command.Parameters.AddWithValue("@Id_Usuario", usuario.user_id);
             command.Parameters.AddWithValue("@Id_Visibilidad", cmbVisibility.SelectedValue);
+            command.Parameters.AddWithValue("@Id_Estado", cmbStatus.SelectedValue);
             command.Parameters.AddWithValue("@Id_Tipo_Publicacion", id_tipo_publicacion);
             command.Parameters.AddWithValue("@precio", Convert.ToDouble(txtPrice.Text));
             command.Parameters.AddWithValue("@Fecha_Inicio", dtpFrom.Value);
