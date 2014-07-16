@@ -607,6 +607,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
 ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
 	REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
 
+
+	
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Factura][numeric](18,0) NOT NULL,
@@ -659,9 +661,10 @@ SELECT Factura_Nro, Publicacion_Cod, Publicacion_Visibilidad_Precio,
 	AND Publicacion_Tipo = 'Compra Inmediata'
 	AND Publicacion_Visibilidad_Precio = Item_Factura_Monto / Item_Factura_Cantidad
 
+
 --CREO TABLA FACTURACION
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
-	[Id_Factura][numeric](18,0) NOT NULL,
+	[Id_Factura][numeric](18,0) IDENTITY(1,1) NOT NULL,
 	[Id_Usuario][varchar](20) NOT NULL,
 	[Total_Factura][numeric](18,2) NOT NULL,
 	[Total_Comisiones][numeric](18,2) NULL,
@@ -672,6 +675,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Facturacion](
 	CONSTRAINT [FK_Facturacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
 	REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario)
 )
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Facturacion] ON
 
 --INSERTO LAS FACTURAS DE CLIENTES
 INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Factura, Id_Usuario, Total_Comisiones, Total_Visibilidad,Total_Factura, Fecha)
@@ -708,6 +713,8 @@ REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion)
 
 ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Descripcion_Visibilidad] FOREIGN KEY(Id_Visibilidad)
 REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad)
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Facturacion] OFF
 
 --CREO TABLA FACTURACION PENDIENTE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Pendiente](
