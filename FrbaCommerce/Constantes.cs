@@ -126,7 +126,7 @@ namespace FrbaCommerce
                     break;
                 case "Calificar al vendedor":
                     func.carpeta = "Calificar_Vendedor";
-                    func.form = "Form";
+                    func.form = "FormSeleccionACalificar";
                     break;
                 case "Facturar Publicaciones":
                     func.carpeta = "Facturar_Publicaciones";

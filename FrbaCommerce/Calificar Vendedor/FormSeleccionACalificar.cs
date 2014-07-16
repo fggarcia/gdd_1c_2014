@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace FrbaCommerce.Calificar_Vendedor
 {
-    public partial class Form1 : Form
+    public partial class FormSeleccionACalificar : Form
     {
-        public Form1()
+        public FormSeleccionACalificar()
         {
             InitializeComponent();
         }
