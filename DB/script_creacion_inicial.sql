@@ -607,6 +607,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Rubro_Publicacion](
 ALTER TABLE [LOS_OPTIMISTAS].[Publicacion] ADD CONSTRAINT [FK_Publicacion_Id_Articulo] FOREIGN KEY (Id_Articulo)
 	REFERENCES [LOS_OPTIMISTAS].[Stock](Id_Articulo)
 
+
+	
 --CREO TABLA FACTURACION DETALLE
 CREATE TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle](
 	[Id_Factura][numeric](18,0) NOT NULL,
@@ -711,7 +713,6 @@ REFERENCES [LOS_OPTIMISTAS].[Publicacion] (Id_Publicacion)
 
 ALTER TABLE [LOS_OPTIMISTAS].[Facturacion_Detalle] ADD  CONSTRAINT [FK_Facturacion_Detalle_Descripcion_Visibilidad] FOREIGN KEY(Id_Visibilidad)
 REFERENCES [LOS_OPTIMISTAS].[Visibilidad] (Id_Visibilidad)
-
 
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Facturacion] OFF
 

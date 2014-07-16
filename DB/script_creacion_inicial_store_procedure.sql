@@ -966,7 +966,7 @@ BEGIN
  END
  GO
 
- CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_obtenerPublicacion]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ObtenerPublicacion]
 
 (
 	@p_Id_Usuario varchar(20) = null,
@@ -1223,10 +1223,19 @@ BEGIN
 		(Id_Usuario,Total_Factura,Total_Comisiones,Total_Visibilidad,Fecha)
 	VALUES (@p_Id_Usuario,ISNULL((SELECT ((Comision * Cantidad) + Precio_Publicacion + Precio_Visibilidad) FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Comision FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Visibilidad FROM Facturacion_Pendiente_temp),0),GETDATE())
 	
-	SELECT @@IDENTITY 
+	SET @p_Numero_Factura = @@IDENTITY
 	
-	--INSERT INTO LOS_OPTIMISTAS.Forma_Pago
-	--	(Id_Factura,
+	IF (@p_Numero_Factura IS NOT NULL)
+	BEGIN
+	
+		INSERT INTO Detalle_Tarjeta 
+			(Nro_Tarjeta,Cant_Cuota)
+		VALUES (@p_Numero_Factura,@p_Cantidad_Cuotas)
+		
+		INSERT INTO LOS_OPTIMISTAS.Forma_Pago
+			(Id_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago)
+		VALUES ()
+	END
 	
 	DROP TABLE Facturacion_Pendiente_temp
  	

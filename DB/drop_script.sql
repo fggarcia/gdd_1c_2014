@@ -140,26 +140,17 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarFacturasPendientes
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_Facturar
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
-
-DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
-
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita
-
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearPublicacionesGratuitas
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarPublicaciones
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_obtenerPublicacion
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarSubastasGanadas
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerPublicacion
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarSubastasPerdidas
+--ACORDATE DE CHEQUEAR ESTO
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarCalificaciones
-
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarCompras
-
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarVentas
+DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
 
 DROP SCHEMA LOS_OPTIMISTAS
