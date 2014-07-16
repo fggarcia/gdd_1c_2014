@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
@@ -13,6 +9,29 @@ namespace FrbaCommerce.Generar_Publicacion
     public partial class FormGenerarPublicacionAM : Form
     {
         private bool bidding;
+
+        public FormGenerarPublicacionAM(bool bidding, Publicacion publication)
+        {
+            InitializeComponent();
+            addValidation();
+            this.bidding = bidding;
+            this.dtpFrom.Enabled = false;
+            this.dtpTo.Enabled = false;
+
+            this.loadCombos();
+            if (this.bidding)
+            {
+                this.label3.Text = "Precio Subasta";
+            }
+
+            cmbStatus.SelectedIndex = cmbStatus.FindStringExact(publication.statusDescription);
+            cmbVisibility.SelectedIndex = cmbVisibility.FindStringExact(publication.visibilityDescription);
+            txtDescription.Text = publication.description;
+            txtPrice.Text = publication.prices.ToString();
+            txtCountBuy.Text = publication.countForSale.ToString();
+            txtStock.Text = publication.stock.ToString();
+            chkEnableQuestion.Checked = publication.acceptQuestions;
+        }
 
         public FormGenerarPublicacionAM(bool bidding)
         {
@@ -31,10 +50,14 @@ namespace FrbaCommerce.Generar_Publicacion
             {
                 this.label3.Text = "Precio Subasta";
             }
+            MessageBox.Show("Recuerde que solo puede tener 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void FormGenerarPublicacionAM_Load(object sender, EventArgs e)
         {
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void addValidation()
@@ -72,6 +95,42 @@ namespace FrbaCommerce.Generar_Publicacion
         {
             Usuarios usuario = VarGlobables.usuario;
 
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita";
+            SqlCommand getIdFreeCommand = new SqlCommand(nombreStoredProcedure, conn);
+            getIdFreeCommand.CommandType = CommandType.StoredProcedure;
+
+            var returnParameter = getIdFreeCommand.Parameters.Add("@Id_Gratis", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            getIdFreeCommand.ExecuteNonQuery();
+
+            Int32 id_free = Convert.ToInt32(returnParameter.Value);
+
+            Procedimientos.cerrarConexion(conn);
+
+            if (Convert.ToInt32(cmbVisibility.SelectedValue) == id_free){
+                SqlCommand checkFreePublication = new SqlCommand();
+                conn = Procedimientos.abrirConexion();
+                checkFreePublication.Parameters.AddWithValue("@Id_Usuario", usuario.user_id);
+            
+                checkFreePublication.CommandText = Constantes.procedimientoChequearTresPublicacionesGratuitas;
+                checkFreePublication.CommandType = CommandType.StoredProcedure;
+
+                returnParameter = getIdFreeCommand.Parameters.Add("@NoSuperaCondicion", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                Int32 conditionFreePublication = Convert.ToInt32(returnParameter.Value);
+
+                Procedimientos.cerrarConexion(conn);
+                
+                if(conditionFreePublication == 1){
+                    MessageBox.Show("Uds ya tiene al menos 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            
+
             SqlCommand command = new SqlCommand();
 
             int id_tipo_publicacion;
@@ -87,6 +146,7 @@ namespace FrbaCommerce.Generar_Publicacion
 
             command.Parameters.AddWithValue("@Id_Usuario", usuario.user_id);
             command.Parameters.AddWithValue("@Id_Visibilidad", cmbVisibility.SelectedValue);
+            command.Parameters.AddWithValue("@Id_Estado", cmbStatus.SelectedValue);
             command.Parameters.AddWithValue("@Id_Tipo_Publicacion", id_tipo_publicacion);
             command.Parameters.AddWithValue("@precio", Convert.ToDouble(txtPrice.Text));
             command.Parameters.AddWithValue("@Fecha_Inicio", dtpFrom.Value);
