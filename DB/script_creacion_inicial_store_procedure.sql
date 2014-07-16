@@ -1069,7 +1069,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
 
 (
 @p_Id_Usuario varchar(20) = null,
-@p_Cantidad numeric(10,0) = null,
+@p_Cantidad int = null,
 @p_Numero_Tarjeta numeric(16,0) = null,
 @p_Cantidad_Cuotas int = null,
 @p_Tipo_Pago int = null
@@ -1078,8 +1078,36 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
 AS
 BEGIN
 
+	CREATE TABLE[LOS_OPTIMISTAS].[Facturacion_Pendiente_temp](
+	[Id_Registro][numeric](18,0),
+	[Id_Usuario][varchar](20) NOT NULL,
+	[Id_Usuario_Comprador][varchar](20) DEFAULT NULL,
+	[Id_Publicacion][numeric](18,0) NULL,
+	[Comision][numeric](18,2) NOT NULL,
+	[Visibilidad][varchar](255) NOT NULL,
+	[Cantidad][int] NULL,
+	[Precio_Publicacion][numeric](18,2) NULL,
+	[Precio_Visibilidad][numeric](18,2) NULL
+	)
 	
+	DECLARE @p_Numero_Factura numeric (18,0)
 	
+	INSERT INTO Facturacion_Pendiente_temp  
+		(Id_Registro,Id_Usuario,Id_Usuario_Comprador,Id_Publicacion,Comision,Visibilidad,Cantidad,Precio_Publicacion,Precio_Visibilidad)
+		(SELECT TOP (@p_Cantidad) * FROM Facturacion_Pendiente) ORDER BY Id_Registro
+		
+	DELETE FROM Facturacion_Pendiente WHERE Facturacion_Pendiente.Id_Registro IN (SELECT Id_Registro FROM Facturacion_Pendiente_temp)
 	
+	INSERT INTO LOS_OPTIMISTAS.Facturacion
+		(Id_Usuario,Total_Factura,Total_Comisiones,Total_Visibilidad,Fecha)
+	VALUES (@p_Id_Usuario,ISNULL((SELECT ((Comision * Cantidad) + Precio_Publicacion + Precio_Visibilidad) FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Comision FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Visibilidad FROM Facturacion_Pendiente_temp),0),GETDATE())
+	
+	SELECT @@IDENTITY 
+	
+	--INSERT INTO LOS_OPTIMISTAS.Forma_Pago
+	--	(Id_Factura,
+	
+	DROP TABLE Facturacion_Pendiente_temp
+ 	
 END
 GO

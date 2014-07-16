@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FrbaCommerce.Registro_de_Usuario;
-using System.Security.Cryptography; //Para usa SHA256
+using System.Security.Cryptography; //Para usar SHA256
 using System.Data.SqlClient;
 
 namespace FrbaCommerce.Login
