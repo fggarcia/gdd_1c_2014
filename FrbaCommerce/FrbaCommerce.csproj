@@ -169,6 +169,18 @@
     <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.Designer.cs">
       <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comprar Ofertar\FormComprarOfertar2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar Ofertar\FormComprarOfertar2.Designer.cs">
+      <DependentUpon>FormComprarOfertar2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar Ofertar\FormComprarOfertarPrueba.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar Ofertar\FormComprarOfertarPrueba.Designer.cs">
+      <DependentUpon>FormComprarOfertarPrueba.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +316,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertar.resx">
       <DependentUpon>FormComprarOfertar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertar2.resx">
+      <DependentUpon>FormComprarOfertar2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertarPrueba.resx">
+      <DependentUpon>FormComprarOfertarPrueba.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\FormEditarPublicacion.resx">
       <DependentUpon>FormEditarPublicacion.cs</DependentUpon>

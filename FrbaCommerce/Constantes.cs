@@ -133,7 +133,7 @@ namespace FrbaCommerce
                     break;
                 case "Comprar/Ofertar":
                     func.carpeta = "Comprar_Ofertar";
-                    func.form = "FormComprarOfertar";
+                    func.form = "FormComprarOfertar2";
                     break;
                 case "Historial del cliente":
                     func.carpeta = "Historial_Cliente";

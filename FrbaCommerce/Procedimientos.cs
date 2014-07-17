@@ -163,6 +163,38 @@ namespace FrbaCommerce
             cerrarConexion(conn);
         }
 
+        //*************************************************
+        //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW
+        //*************************************************
+
+        public static DataTable llenarDataGridViewDevuelveDT(SqlCommand command, DataGridView dataGridView, String operacion)
+        {
+            SqlConnection conn = abrirConexion();
+            command.Connection = conn;
+            command.CommandType = CommandType.StoredProcedure;
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
+            sqlDataAdapter.Fill(dataTable);
+            dataGridView.DataSource = dataTable;
+
+            // Seteo las propiedades del DGV
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.AllowUserToAddRows = false;
+
+            // Pongo todas las columnas en Read Only salvo las de checkbox porque si no, no se pueden checkear
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (!column.Name.Equals("checkbox") && !column.Name.Equals("chk"))
+                    column.ReadOnly = true;
+            }
+
+            cerrarConexion(conn);
+            return dataTable;
+        }
+
+
         //*******************************************************
         //*    PROCEDIMIENTO PARA EJECUTAR UN STORED PROCEDURE
         //******************************************************

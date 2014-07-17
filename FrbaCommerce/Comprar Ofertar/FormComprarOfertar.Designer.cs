@@ -28,115 +28,159 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtEntry = new System.Windows.Forms.TextBox();
-            this.btnClean = new System.Windows.Forms.Button();
+            this.labelPaginaActual = new System.Windows.Forms.Label();
+            this.dgvPublicaciones = new System.Windows.Forms.DataGridView();
+            this.buttonUltimaPagina = new System.Windows.Forms.Button();
+            this.buttonSiguiente = new System.Windows.Forms.Button();
+            this.buttonAnterior = new System.Windows.Forms.Button();
+            this.buttonPrimera = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.dgvBuy = new System.Windows.Forms.DataGridView();
-            this.btnBack = new System.Windows.Forms.Button();
-            this.btnBuy = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBuy)).BeginInit();
+            this.btnClean = new System.Windows.Forms.Button();
+            this.txtEntry = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPublicaciones)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelPaginaActual
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Descripcion";
+            this.labelPaginaActual.AutoSize = true;
+            this.labelPaginaActual.Location = new System.Drawing.Point(23, 195);
+            this.labelPaginaActual.Name = "labelPaginaActual";
+            this.labelPaginaActual.Size = new System.Drawing.Size(0, 13);
+            this.labelPaginaActual.TabIndex = 15;
             // 
-            // txtDescription
+            // dgvPublicaciones
             // 
-            this.txtDescription.Location = new System.Drawing.Point(87, 10);
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(221, 20);
-            this.txtDescription.TabIndex = 1;
+            this.dgvPublicaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPublicaciones.Location = new System.Drawing.Point(26, 123);
+            this.dgvPublicaciones.Name = "dgvPublicaciones";
+            this.dgvPublicaciones.Size = new System.Drawing.Size(569, 150);
+            this.dgvPublicaciones.TabIndex = 13;
+            // 
+            // buttonUltimaPagina
+            // 
+            this.buttonUltimaPagina.Location = new System.Drawing.Point(498, 289);
+            this.buttonUltimaPagina.Name = "buttonUltimaPagina";
+            this.buttonUltimaPagina.Size = new System.Drawing.Size(97, 30);
+            this.buttonUltimaPagina.TabIndex = 12;
+            this.buttonUltimaPagina.Text = "Ultima Página";
+            this.buttonUltimaPagina.UseVisualStyleBackColor = true;
+            this.buttonUltimaPagina.Click += new System.EventHandler(this.buttonUltimo_Click);
+            // 
+            // buttonSiguiente
+            // 
+            this.buttonSiguiente.Location = new System.Drawing.Point(341, 289);
+            this.buttonSiguiente.Name = "buttonSiguiente";
+            this.buttonSiguiente.Size = new System.Drawing.Size(92, 30);
+            this.buttonSiguiente.TabIndex = 11;
+            this.buttonSiguiente.Text = "Siguiente";
+            this.buttonSiguiente.UseVisualStyleBackColor = true;
+            this.buttonSiguiente.Click += new System.EventHandler(this.buttonSiguiente_Click);
+            // 
+            // buttonAnterior
+            // 
+            this.buttonAnterior.Location = new System.Drawing.Point(187, 289);
+            this.buttonAnterior.Name = "buttonAnterior";
+            this.buttonAnterior.Size = new System.Drawing.Size(92, 30);
+            this.buttonAnterior.TabIndex = 10;
+            this.buttonAnterior.Text = "Anterior";
+            this.buttonAnterior.UseVisualStyleBackColor = true;
+            this.buttonAnterior.Click += new System.EventHandler(this.buttonAnterior_Click);
+            // 
+            // buttonPrimera
+            // 
+            this.buttonPrimera.Location = new System.Drawing.Point(26, 289);
+            this.buttonPrimera.Name = "buttonPrimera";
+            this.buttonPrimera.Size = new System.Drawing.Size(92, 30);
+            this.buttonPrimera.TabIndex = 9;
+            this.buttonPrimera.Text = "Primera Página";
+            this.buttonPrimera.UseVisualStyleBackColor = true;
+            this.buttonPrimera.Click += new System.EventHandler(this.buttonPrimera_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(498, 350);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(97, 43);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Comprar/Ofertar";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(458, 82);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(137, 23);
+            this.btnSearch.TabIndex = 22;
+            this.btnSearch.Text = "Buscar";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            // 
+            // btnClean
+            // 
+            this.btnClean.Location = new System.Drawing.Point(26, 82);
+            this.btnClean.Name = "btnClean";
+            this.btnClean.Size = new System.Drawing.Size(151, 23);
+            this.btnClean.TabIndex = 21;
+            this.btnClean.Text = "Limpiar";
+            this.btnClean.UseVisualStyleBackColor = true;
+            // 
+            // txtEntry
+            // 
+            this.txtEntry.Location = new System.Drawing.Point(406, 24);
+            this.txtEntry.Name = "txtEntry";
+            this.txtEntry.Size = new System.Drawing.Size(189, 20);
+            this.txtEntry.TabIndex = 20;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(369, 13);
+            this.label2.Location = new System.Drawing.Point(338, 27);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 19;
             this.label2.Text = "Rubro";
             // 
-            // txtEntry
+            // txtDescription
             // 
-            this.txtEntry.Location = new System.Drawing.Point(436, 10);
-            this.txtEntry.Name = "txtEntry";
-            this.txtEntry.Size = new System.Drawing.Size(255, 20);
-            this.txtEntry.TabIndex = 3;
+            this.txtDescription.Location = new System.Drawing.Point(98, 24);
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(181, 20);
+            this.txtDescription.TabIndex = 18;
             // 
-            // btnClean
+            // label1
             // 
-            this.btnClean.Location = new System.Drawing.Point(87, 49);
-            this.btnClean.Name = "btnClean";
-            this.btnClean.Size = new System.Drawing.Size(151, 23);
-            this.btnClean.TabIndex = 4;
-            this.btnClean.Text = "Limpiar";
-            this.btnClean.UseVisualStyleBackColor = true;
-            this.btnClean.Click += new System.EventHandler(this.btnClean_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Descripcion";
             // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(436, 49);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(137, 23);
-            this.btnSearch.TabIndex = 5;
-            this.btnSearch.Text = "Buscar";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // dgvBuy
-            // 
-            this.dgvBuy.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBuy.Location = new System.Drawing.Point(16, 94);
-            this.dgvBuy.Name = "dgvBuy";
-            this.dgvBuy.Size = new System.Drawing.Size(675, 243);
-            this.dgvBuy.TabIndex = 6;
-            // 
-            // btnBack
-            // 
-            this.btnBack.Location = new System.Drawing.Point(87, 344);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(151, 23);
-            this.btnBack.TabIndex = 7;
-            this.btnBack.Text = "Volver";
-            this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
-            // btnBuy
-            // 
-            this.btnBuy.Location = new System.Drawing.Point(436, 344);
-            this.btnBuy.Name = "btnBuy";
-            this.btnBuy.Size = new System.Drawing.Size(137, 23);
-            this.btnBuy.TabIndex = 8;
-            this.btnBuy.Text = "Comprar/Ofertar";
-            this.btnBuy.UseVisualStyleBackColor = true;
-            // 
-            // FormComprarOfertar
+            // FormComprarOfertar2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(707, 379);
-            this.Controls.Add(this.btnBuy);
-            this.Controls.Add(this.btnBack);
-            this.Controls.Add(this.dgvBuy);
+            this.ClientSize = new System.Drawing.Size(622, 419);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnClean);
             this.Controls.Add(this.txtEntry);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label1);
-            this.Name = "FormComprarOfertar";
-            this.Text = "Comprar/Ofertar";
-            this.Load += new System.EventHandler(this.FormComprarOfertas_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBuy)).EndInit();
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.labelPaginaActual);
+            this.Controls.Add(this.dgvPublicaciones);
+            this.Controls.Add(this.buttonUltimaPagina);
+            this.Controls.Add(this.buttonSiguiente);
+            this.Controls.Add(this.buttonAnterior);
+            this.Controls.Add(this.buttonPrimera);
+            this.Name = "FormComprarOfertar2";
+            this.Text = "FormComprarOfertar2";
+            this.Load += new System.EventHandler(this.FormComprarOfertar2_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPublicaciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,14 +188,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtDescription;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtEntry;
-        private System.Windows.Forms.Button btnClean;
+        private System.Windows.Forms.Label labelPaginaActual;
+        private System.Windows.Forms.DataGridView dgvPublicaciones;
+        private System.Windows.Forms.Button buttonUltimaPagina;
+        private System.Windows.Forms.Button buttonSiguiente;
+        private System.Windows.Forms.Button buttonAnterior;
+        private System.Windows.Forms.Button buttonPrimera;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.DataGridView dgvBuy;
-        private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Button btnBuy;
+        private System.Windows.Forms.Button btnClean;
+        private System.Windows.Forms.TextBox txtEntry;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.Label label1;
     }
 }
