@@ -73,11 +73,14 @@ namespace FrbaCommerce.Registro_de_Usuario
 
             textNombreUsuario.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
             textContrasenia.Validating += new CancelEventHandler(Validaciones.validarCampoObligatorio_Validating);
+
+            textNombreUsuario.Validating += new CancelEventHandler(Validaciones.validarUnicidadUsername_Validating);
         }
 
         private void textContrasenia_TextChanged(object sender, EventArgs e)
         {
 
         }
+
     }
 }
