@@ -9,9 +9,13 @@ namespace FrbaCommerce.Generar_Publicacion
     public partial class FormGenerarPublicacionAM : Form
     {
         private bool bidding;
+        private bool edition;
+        private Publicacion publication;
         
         public FormGenerarPublicacionAM(bool bidding, Publicacion publication)
         {
+            this.publication = publication;
+            this.edition = true;
             InitializeComponent();
             addValidation();
             this.bidding = bidding;
@@ -22,6 +26,44 @@ namespace FrbaCommerce.Generar_Publicacion
             if (this.bidding)
             {
                 this.label3.Text = "Precio Subasta";
+            }
+
+            this.cmbStatus.Enabled = false;
+            this.cmbVisibility.Enabled = false;
+            this.txtCountBuy.Enabled = false;
+            this.txtDescription.Enabled = false;
+            this.txtPrice.Enabled = false;
+            this.txtStock.Enabled = false;
+            this.dtpFrom.Enabled = false;
+            this.dtpTo.Enabled = false;
+            this.chkEnableQuestion.Enabled = false;
+
+            switch (publication.statusDescription)
+            {
+                case "ACTIVA":
+                    this.label8.Text = "Aumentar Stock";
+                    this.txtStock.Enabled = true;
+                    this.txtDescription.Enabled = true;
+                    break;
+                case "BORRADOR":
+                    this.cmbStatus.Enabled = true;
+                    this.cmbVisibility.Enabled = true;
+                    this.txtCountBuy.Enabled = true;
+                    this.txtDescription.Enabled = true;
+                    this.txtPrice.Enabled = true;
+                    this.txtStock.Enabled = true;
+                    this.dtpFrom.Enabled = true;
+                    this.dtpTo.Enabled = true;
+                    this.chkEnableQuestion.Enabled = true;
+                    break;
+                case "FINALIZADA":
+                    this.btnSave.Enabled = false;
+                    break;
+                case "PAUSADA":
+                    this.btnSave.Enabled = false;
+                    break;
+                default:
+                    break;
             }
 
             cmbStatus.SelectedIndex = cmbStatus.FindStringExact(publication.statusDescription);
@@ -35,6 +77,8 @@ namespace FrbaCommerce.Generar_Publicacion
 
         public FormGenerarPublicacionAM(bool bidding)
         {
+            this.publication = null;
+            this.edition = false;
             InitializeComponent();
             addValidation();
             this.bidding = bidding;
@@ -93,6 +137,62 @@ namespace FrbaCommerce.Generar_Publicacion
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (edition)
+            {
+                this.editPublication();
+            }
+            else
+            {
+                this.newPublication();
+            }
+        }
+
+        private void editPublication()
+        {
+            Usuarios user = VarGlobables.usuario;
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nameStoredProcedure = "LOS_OPTIMISTAS.proc_EditarPublicacion";
+            
+            SqlCommand command = new SqlCommand();
+
+            int id_tipo_publicacion;
+
+            if (bidding)
+            {
+                id_tipo_publicacion = 2;
+            }
+            else
+            {
+                id_tipo_publicacion = 1;
+            }
+
+            command.Parameters.AddWithValue("@Id_Usuario", user.user_id);
+            
+            if(publication.statusDescription.Equals("ACTIVA")){
+                command.Parameters.AddWithValue("@Agregar_Stock", txtStock.Text);
+            }else{
+                command.Parameters.AddWithValue("@Agregar_Stock", 0);
+            }
+
+            command.Parameters.AddWithValue("@Id_Visibilidad", cmbVisibility.SelectedValue);
+            command.Parameters.AddWithValue("@Id_Estado", cmbStatus.SelectedValue);
+            command.Parameters.AddWithValue("@Id_Tipo_Publicacion", id_tipo_publicacion);
+            command.Parameters.AddWithValue("@precio", Convert.ToDouble(txtPrice.Text));
+            command.Parameters.AddWithValue("@Fecha_Inicio", dtpFrom.Value);
+            command.Parameters.AddWithValue("@Fecha_Vencimiento", dtpTo.Value);
+            command.Parameters.AddWithValue("@Permite_Preguntas", chkEnableQuestion.Checked);
+            command.Parameters.AddWithValue("@Cant_por_Venta", txtCountBuy.Text);
+            command.Parameters.AddWithValue("@Descripcion", txtDescription.Text);
+            command.Parameters.AddWithValue("@Cantidad", txtStock.Text);
+
+            command.CommandText = nameStoredProcedure;
+            Procedimientos.ejecutarStoredProcedure(command, "Generación de Publicación", true);
+            this.btnCancel.PerformClick();
+
+        }
+
+        private void newPublication()
+        {
             Usuarios usuario = VarGlobables.usuario;
 
             SqlConnection conn = Procedimientos.abrirConexion();
@@ -109,11 +209,12 @@ namespace FrbaCommerce.Generar_Publicacion
 
             Procedimientos.cerrarConexion(conn);
 
-            if (Convert.ToInt32(cmbVisibility.SelectedValue) == id_free){
+            if (Convert.ToInt32(cmbVisibility.SelectedValue) == id_free)
+            {
                 SqlCommand checkFreePublication = new SqlCommand();
                 conn = Procedimientos.abrirConexion();
                 checkFreePublication.Parameters.AddWithValue("@Id_Usuario", usuario.user_id);
-            
+
                 checkFreePublication.CommandText = Constantes.procedimientoChequearTresPublicacionesGratuitas;
                 checkFreePublication.CommandType = CommandType.StoredProcedure;
 
@@ -123,13 +224,14 @@ namespace FrbaCommerce.Generar_Publicacion
                 Int32 conditionFreePublication = Convert.ToInt32(returnParameter.Value);
 
                 Procedimientos.cerrarConexion(conn);
-                
-                if(conditionFreePublication == 1){
+
+                if (conditionFreePublication == 1)
+                {
                     MessageBox.Show("Uds ya tiene al menos 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
-            
+
 
             SqlCommand command = new SqlCommand();
 
@@ -162,6 +264,11 @@ namespace FrbaCommerce.Generar_Publicacion
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }

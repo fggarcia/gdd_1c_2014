@@ -1003,6 +1003,75 @@ BEGIN
 			AND @p_Id_Publicacion = pub.Id_Publicacion
  END
  GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EditarPublicacion](
+	@Id_Publicacion numeric(18,0),
+	@Id_Usuario varchar(20),
+	@Id_Tipo_Publicacion int,
+	@Id_Visibilidad numeric(18,0),
+	@Precio numeric(18,2),
+	@Id_Estado int,
+	@Fecha_Inicio datetime,
+	@Fecha_Vencimiento datetime,
+	@Permite_Preguntas bit,
+	@Cant_por_Venta numeric(18,0),
+	@Descripcion varchar(255),
+	@Cantidad numeric(18,0),
+	@Agregar_Stock int = 0 
+)
+AS
+BEGIN
+	Declare @Id_Articulo numeric(18,0)
+	Declare @Estado_Descripcion varchar(30)
+	Declare @Precio_Visibilidad numeric(18,2)
+	Declare @Visibilidad varchar(255)
+	Declare @Comision numeric(18,2)
+
+	BEGIN TRANSACTION
+		SELECT @Id_Articulo = Id_Articulo FROM LOS_OPTIMISTAS.Publicacion WHERE 
+			Id_Publicacion = @Id_Publicacion AND Id_Usuario = @Id_Usuario
+
+		SELECT @Estado_Descripcion = est.Descripcion FROM LOS_OPTIMISTAS.Estado_Publicacion estPub
+			INNER JOIN LOS_OPTIMISTAS.Estado est ON estPub.Id_Estado = est.Id_Estado
+			WHERE estPub.Id_Publicacion = @Id_Publicacion 
+
+		IF (@Estado_Descripcion = 'ACTIVA')
+		BEGIN
+			UPDATE LOS_OPTIMISTAS.Stock SET Cantidad = Cantidad + @Agregar_Stock
+				WHERE Id_Articulo = @Id_Articulo
+
+			UPDATE LOS_OPTIMISTAS.Publicacion SET Descripcion = @Descripcion
+				WHERE Id_Publicacion = @Id_Publicacion AND Id_Usuario = @Id_Usuario
+
+			COMMIT TRANSACTION
+			RETURN
+		END
+		ELSE
+		BEGIN
+			UPDATE LOS_OPTIMISTAS.Publicacion SET Id_Tipo_Publicacion = Id_Tipo_Publicacion,
+				Id_Visibilidad = @Id_Visibilidad,
+				Precio = @Precio,
+				Permite_Preguntas = @Permite_Preguntas,
+				Cant_por_Venta = @Cant_por_Venta,
+				Descripcion = @Descripcion
+				WHERE 
+					Id_Publicacion = @Id_Publicacion AND Id_Usuario = @Id_Usuario
+
+			UPDATE LOS_OPTIMISTAS.Estado_Publicacion SET Id_Estado = @Id_Estado
+				WHERE Id_Publicacion = @Id_Publicacion
+
+			SELECT @Precio_Visibilidad = Precio, @Visibilidad = Descripcion, @Comision = porcentaje FROM LOS_OPTIMISTAS.Visibilidad WHERE 
+				Id_Visibilidad = @Id_Visibilidad 
+
+			INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario,Id_Publicacion,Precio_Visibilidad,Visibilidad, Comision)
+			VALUES (@Id_Usuario, @Id_Publicacion,@Precio_Visibilidad,@Visibilidad, @Comision)
+
+			COMMIT TRANSACTION
+			RETURN
+		END
+END
+GO
+
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]

@@ -142,13 +142,14 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_Facturar
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearPublicacionesGratuitas
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_EditarPublicacion
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarPublicaciones
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerPublicacion
 
---ACORDATE DE CHEQUEAR ESTO
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion

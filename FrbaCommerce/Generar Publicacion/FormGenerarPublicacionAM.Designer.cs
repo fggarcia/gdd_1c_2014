@@ -95,7 +95,7 @@
             // 
             // txtPrice
             // 
-            this.txtPrice.Location = new System.Drawing.Point(105, 132);
+            this.txtPrice.Location = new System.Drawing.Point(121, 132);
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(122, 20);
             this.txtPrice.TabIndex = 5;
@@ -153,7 +153,7 @@
             // 
             // txtCountBuy
             // 
-            this.txtCountBuy.Location = new System.Drawing.Point(105, 94);
+            this.txtCountBuy.Location = new System.Drawing.Point(121, 94);
             this.txtCountBuy.Name = "txtCountBuy";
             this.txtCountBuy.Size = new System.Drawing.Size(122, 20);
             this.txtCountBuy.TabIndex = 4;
@@ -169,7 +169,7 @@
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(105, 21);
+            this.txtDescription.Location = new System.Drawing.Point(121, 21);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(278, 20);
             this.txtDescription.TabIndex = 0;
@@ -202,10 +202,11 @@
             this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 13;
             this.label8.Text = "Stock";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // txtStock
             // 
-            this.txtStock.Location = new System.Drawing.Point(105, 58);
+            this.txtStock.Location = new System.Drawing.Point(121, 58);
             this.txtStock.Name = "txtStock";
             this.txtStock.Size = new System.Drawing.Size(122, 20);
             this.txtStock.TabIndex = 2;
