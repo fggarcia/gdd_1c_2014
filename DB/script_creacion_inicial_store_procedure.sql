@@ -1313,7 +1313,8 @@ BEGIN
  GO
 
 /*Stored Procedure para Facturar*/
- /*
+ 
+
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
 
@@ -1340,37 +1341,53 @@ BEGIN
 	[Precio_Visibilidad][numeric](18,2) NULL
 	)
 	
-	DECLARE @p_Numero_Factura numeric (18,0)
-	DECLARE @p_Id_Detalle_Tarjeta int
+	
+	DECLARE @p_Total_Comisiones numeric(18,2)
+	DECLARE @p_Total_Visibilidad numeric(18,2)
+	Declare @Id_Factura numeric(18,0)
+	Declare @Id_Detalle_Tarjeta int 
 	
 	INSERT INTO Facturacion_Pendiente_temp  
 		(Id_Registro,Id_Usuario,Id_Usuario_Comprador,Id_Publicacion,Comision,Visibilidad,Cantidad,Precio_Publicacion,Precio_Visibilidad)
-		(SELECT TOP (@p_Cantidad) * FROM Facturacion_Pendiente) ORDER BY Id_Registro
+		(SELECT TOP (@p_Cantidad) * FROM Facturacion_Pendiente WHERE  Id_Usuario = @p_Id_Usuario )  ORDER BY Id_Registro
 		
-	DELETE FROM Facturacion_Pendiente WHERE Facturacion_Pendiente.Id_Registro IN (SELECT Id_Registro FROM Facturacion_Pendiente_temp)
+		DELETE FROM Facturacion_Pendiente WHERE Facturacion_Pendiente.Id_Registro IN (SELECT Id_Registro FROM Facturacion_Pendiente_temp)
+		
+	SET @p_Total_Comisiones = (SELECT SUM (ISNULL((Comision * Cantidad),0)) FROM Facturacion_Pendiente_temp)
+	SET @p_Total_Visibilidad = (SELECT SUM(ISNULL((Precio_Visibilidad),0)) FROM Facturacion_Pendiente_temp)
+		
+	INSERT INTO LOS_OPTIMISTAS.Facturacion(Id_Usuario,Total_Factura,Total_Comisiones,Total_Visibilidad,Fecha)
+	VALUES (@p_Id_Usuario,(@p_Total_Comisiones + @p_Total_Visibilidad),@p_Total_Comisiones,@p_Total_Visibilidad,GETDATE())
 	
-	INSERT INTO LOS_OPTIMISTAS.Facturacion
-		(Id_Usuario,Total_Factura,Total_Comisiones,Total_Visibilidad,Fecha)
-	VALUES (@p_Id_Usuario,ISNULL((SELECT ((Comision * Cantidad) + Precio_Publicacion + Precio_Visibilidad) FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Comision FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Visibilidad FROM Facturacion_Pendiente_temp),0),GETDATE())
+	select @Id_Factura = SCOPE_IDENTITY()
 		
-	IF (@p_Numero_Tarjeta IS NOT NULL)
+		
+		IF (@p_Numero_Tarjeta IS NOT NULL)
 	BEGIN
 	
-		INSERT INTO Detalle_Tarjeta 
-			(Nro_Tarjeta,Cant_Cuota)
-		VALUES (@p_Numero_Factura,@p_Cantidad_Cuotas)
+		INSERT INTO LOS_OPTIMISTAS.Detalle_Tarjeta(Nro_Tarjeta,Cant_Cuota)
+		Values(@p_Numero_Tarjeta,@p_Cantidad_Cuotas)
 		
-		IF NOT EXISTS(SELECT Id_Factura = @p_Numero_Factura FROM Facturacion)
-		INSERT INTO LOS_OPTIMISTAS.Forma_Pago
-			(@p_Numero_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago) 
-		VALUES (@p_Numero_Factura, 1,2)
+		select @Id_Detalle_Tarjeta= SCOPE_IDENTITY()
+		
+		INSERT INTO LOS_OPTIMISTAS.Forma_Pago(Id_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago)
+		Values(@Id_Factura,@Id_Detalle_Tarjeta,2)
+			
 	END
 	
-	DROP TABLE Facturacion_Pendiente_temp
- 	
-END
+	IF (@p_Numero_Tarjeta IS NULL)
+	BEGIN
+		
+		INSERT INTO LOS_OPTIMISTAS.Forma_Pago(Id_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago)
+		Values(@Id_Factura,null,1)
+			
+	END
+	
+	DROP TABLE LOS_OPTIMISTAS.Facturacion_Pendiente_temp	
+END 
 GO
-*/
+		
+
 
 /*Stored Procedure para Listar Vendedores a Calificar*/
 GO
