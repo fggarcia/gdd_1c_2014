@@ -671,6 +671,7 @@ BEGIN
 			
 			WHERE ( Publicacion.Id_Usuario = @Id_Usuario) AND 
 			(Publicacion.Id_Publicacion = Publicacion_Preguntas.Id_Publicacion) AND
+			(Publicacion_Preguntas.Preg_Descripcion IS NOT NULL) AND
 			(Publicacion_Preguntas.Preg_Respuesta IS NULL)
 			
 			
@@ -701,7 +702,7 @@ BEGIN
  
  
  
---Proc. Para listar las preguntas que realizo un usuario y si fueron respondidas o no
+--Proc. Para listar las preguntas(en el enunciado dice respuesta pero se equivocaron) que realizo un usuario y si fueron respondidas o no
  GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRespuestas]
 
