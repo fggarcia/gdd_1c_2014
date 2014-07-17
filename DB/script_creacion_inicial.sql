@@ -503,7 +503,7 @@ SELECT LOS_OPTIMISTAS.obtenerCuit(m1.Publ_Empresa_Cuit), LOS_OPTIMISTAS.obtenerD
 	AND m1.Calificacion_Cant_Estrellas IS NULL
 
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
-	[Id_Historial_Compra][numeric](18,0) NOT NULL,
+	[Id_Historial_Compra][numeric](18,0) IDENTITY (1,1) NOT NULL,
 	[Id_Calificacion][numeric](18,0)NOT NULL,
 	[Fecha_Calificacion][datetime] NULL,
 	[Detalle][varchar] (255) NULL,
@@ -513,6 +513,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 	CONSTRAINT [FK_Publicacion_Calificaciones_Id_Publicacion] FOREIGN KEY(Id_Historial_Compra)
 			REFERENCES [LOS_OPTIMISTAS].[Historial_Compra](Id_Historial_Compra)
 )
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Publicacion_Calificaciones] ON
 
 --Inserto en publicacion_Calificaciones COnsideramos
 --poner la fecha de compra como la de calificacion en todos los casos de migracion
@@ -541,6 +543,8 @@ SELECT 	Calificacion_Codigo,Compra_Fecha,
 		AND Calificacion_Cant_Estrellas IS NOT NULL
 		AND Publ_Empresa_Cuit IS NOT NULL
 		AND Cli_Dni IS NOT NULL
+
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Publicacion_Calificaciones] ON
 
 --CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
