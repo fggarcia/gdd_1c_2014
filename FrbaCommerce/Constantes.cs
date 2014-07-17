@@ -46,6 +46,14 @@ namespace FrbaCommerce
         public const String procedimientoListadoFacturasPendientes = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
         public const String procedimientoSeleccionarPagos = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
 
+        public const String procedimientoMayorFacturacionTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5";
+        public const String procedimientoMayorFacturacionMensual = "LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionMensual";
+        public const String procedimientoProductosNoVendidosTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosTOP5";
+        public const String procedimientoProductosNoVendidosMensual = "LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosMensual";
+        public const String procedimientoMayorCalificacionTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionTOP5";
+        public const String procedimientoMayorCalificacionMensual = "LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionMensual";
+        public const String procedimientoPublicacionesSinCalificarTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarTOP5";
+        public const String procedimientoPublicacionesSinCalificarMensual = "LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarMensual";
         //************************************
         //*  CONSTANTES VALIDACIONES
         //************************************
@@ -134,7 +142,7 @@ namespace FrbaCommerce
                     break;
                 case "Listado Estadistico":
                     func.carpeta = "Listado_Estadistico";
-                    func.form = "Form";
+                    func.form = "FormListadoEstadistico";
                     break;
 
             }
