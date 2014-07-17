@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using FrbaCommerce.Editar_Publicacion;
 
 namespace FrbaCommerce.Generar_Publicacion
 {
@@ -38,11 +39,20 @@ namespace FrbaCommerce.Generar_Publicacion
             this.dtpTo.Enabled = false;
             this.chkEnableQuestion.Enabled = false;
 
+            cmbStatus.SelectedIndex = cmbStatus.FindStringExact(publication.statusDescription);
+            cmbVisibility.SelectedIndex = cmbVisibility.FindStringExact(publication.visibilityDescription);
+            txtDescription.Text = publication.description;
+            txtPrice.Text = publication.prices.ToString();
+            txtCountBuy.Text = publication.countForSale.ToString();
+            txtStock.Text = publication.stock.ToString();
+            chkEnableQuestion.Checked = publication.acceptQuestions;
+
             switch (publication.statusDescription)
             {
                 case "ACTIVA":
                     this.label8.Text = "Aumentar Stock";
                     this.txtStock.Enabled = true;
+                    this.txtStock.Text = "0";
                     this.txtDescription.Enabled = true;
                     break;
                 case "BORRADOR":
@@ -65,14 +75,6 @@ namespace FrbaCommerce.Generar_Publicacion
                 default:
                     break;
             }
-
-            cmbStatus.SelectedIndex = cmbStatus.FindStringExact(publication.statusDescription);
-            cmbVisibility.SelectedIndex = cmbVisibility.FindStringExact(publication.visibilityDescription);
-            txtDescription.Text = publication.description;
-            txtPrice.Text = publication.prices.ToString();
-            txtCountBuy.Text = publication.countForSale.ToString();
-            txtStock.Text = publication.stock.ToString();
-            chkEnableQuestion.Checked = publication.acceptQuestions;
         }
 
         public FormGenerarPublicacionAM(bool bidding)
@@ -128,10 +130,20 @@ namespace FrbaCommerce.Generar_Publicacion
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            FormGenerarPublicacion formGenerarPublicacion = new FormGenerarPublicacion();
-            formGenerarPublicacion.MdiParent = this.MdiParent;
-            MdiParent.Size = formGenerarPublicacion.Size + Constantes.aumentoTamanio;
-            formGenerarPublicacion.Show();
+            if (edition)
+            {
+                FormEditarPublicacion formEditarPublicacion = new FormEditarPublicacion();
+                formEditarPublicacion.MdiParent = this.MdiParent;
+                MdiParent.Size = formEditarPublicacion.Size + Constantes.aumentoTamanio;
+                formEditarPublicacion.Show();
+            }
+            else
+            {
+                FormGenerarPublicacion formGenerarPublicacion = new FormGenerarPublicacion();
+                formGenerarPublicacion.MdiParent = this.MdiParent;
+                MdiParent.Size = formGenerarPublicacion.Size + Constantes.aumentoTamanio;
+                formGenerarPublicacion.Show();
+            }
             this.Close();
         }
 
@@ -167,7 +179,8 @@ namespace FrbaCommerce.Generar_Publicacion
             }
 
             command.Parameters.AddWithValue("@Id_Usuario", user.user_id);
-            
+            command.Parameters.AddWithValue("@Id_Publicacion", publication.id);
+
             if(publication.statusDescription.Equals("ACTIVA")){
                 command.Parameters.AddWithValue("@Agregar_Stock", txtStock.Text);
             }else{
@@ -186,7 +199,7 @@ namespace FrbaCommerce.Generar_Publicacion
             command.Parameters.AddWithValue("@Cantidad", txtStock.Text);
 
             command.CommandText = nameStoredProcedure;
-            Procedimientos.ejecutarStoredProcedure(command, "Generación de Publicación", true);
+            Procedimientos.ejecutarStoredProcedure(command, "Editacion de Publicación", true);
             this.btnCancel.PerformClick();
 
         }
