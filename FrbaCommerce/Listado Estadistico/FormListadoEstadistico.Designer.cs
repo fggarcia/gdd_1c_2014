@@ -1,6 +1,6 @@
 ﻿namespace FrbaCommerce.Listado_Estadistico
 {
-    partial class formListadoEstadistico
+    partial class FormListadoEstadistico
     {
         /// <summary>
         /// Required designer variable.
@@ -122,7 +122,7 @@
             this.dgvListadoEstadistico.Size = new System.Drawing.Size(698, 299);
             this.dgvListadoEstadistico.TabIndex = 8;
             // 
-            // formListadoEstadistico
+            // FormListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -136,9 +136,9 @@
             this.Controls.Add(this.btnProductosNoVendidos);
             this.Controls.Add(this.cmbTrimestre);
             this.Controls.Add(this.cmbAño);
-            this.Name = "formListadoEstadistico";
+            this.Name = "FormListadoEstadistico";
             this.Text = "Listado Estadistico";
-            this.Load += new System.EventHandler(this.formListadoEstadistico_Load);
+            this.Load += new System.EventHandler(this.FormListadoEstadistico_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvListadoEstadistico)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

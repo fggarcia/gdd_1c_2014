@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace FrbaCommerce.Listado_Estadistico
 {
-    public partial class formListadoEstadistico : Form
+    public partial class FormListadoEstadistico : Form
     {
 
         public const string año2014 = "2014";
@@ -21,12 +21,12 @@ namespace FrbaCommerce.Listado_Estadistico
         public const string tercerTrimestre = "3er Trimestre";
         public const string cuartoTrimestre = "4to Trimestre";
 
-        public formListadoEstadistico()
+        public FormListadoEstadistico()
         {
             InitializeComponent();
         }
 
-        private void formListadoEstadistico_Load(object sender, EventArgs e)
+        private void FormListadoEstadistico_Load(object sender, EventArgs e)
         {
 
             // Inicializo las validaciones 
@@ -43,6 +43,10 @@ namespace FrbaCommerce.Listado_Estadistico
             cmbTrimestre.Items.Add(tercerTrimestre);
             cmbTrimestre.Items.Add(cuartoTrimestre);
             cmbTrimestre.SelectedItem = primerTrimestre;
+
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private DataTable getTop5(string storedProcedure)

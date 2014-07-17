@@ -187,11 +187,11 @@
     <Compile Include="Generar Publicacion\FormGenerarPublicacionAM.Designer.cs">
       <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
     </Compile>
-    <Compile Include="Listado Estadistico\Listado Estadistico.cs">
+    <Compile Include="Listado Estadistico\FormListadoEstadistico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Listado Estadistico\Listado Estadistico.Designer.cs">
-      <DependentUpon>Listado Estadistico.cs</DependentUpon>
+    <Compile Include="Listado Estadistico\FormListadoEstadistico.Designer.cs">
+      <DependentUpon>FormListadoEstadistico.cs</DependentUpon>
     </Compile>
     <Compile Include="Procedimientos.cs" />
     <Compile Include="Calificar Vendedor\FormSeleccionACalificar.cs">
@@ -323,8 +323,8 @@
     <EmbeddedResource Include="Historial Cliente\FormHistorialUsuario.resx">
       <DependentUpon>FormHistorialUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Listado Estadistico\Listado Estadistico.resx">
-      <DependentUpon>Listado Estadistico.cs</DependentUpon>
+    <EmbeddedResource Include="Listado Estadistico\FormListadoEstadistico.resx">
+      <DependentUpon>FormListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>

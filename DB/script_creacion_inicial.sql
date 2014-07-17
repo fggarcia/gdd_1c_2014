@@ -787,6 +787,6 @@ SELECT Id_Factura, Id_Tipo_Pago FROM LOS_OPTIMISTAS.Facturacion F INNER JOIN
 
 --Agrego Funcionalidades al Administrador, Cliente y Empresa
 
-INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (1,2),(1,4),(1,5),(1,6),(1,7)
-INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15)
-INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (3,8),(3,9),(3,10),(3,11),(3,12),(3,13),(3,14),(3,15)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (1,2),(1,4),(1,5),(1,6),(1,7),(1,15)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14)
+INSERT INTO LOS_OPTIMISTAS.Rol_Funcionalidad (Id_Rol,Id_Funcionalidad) VALUES (3,8),(3,9),(3,10),(3,11),(3,12),(3,13),(3,14)
