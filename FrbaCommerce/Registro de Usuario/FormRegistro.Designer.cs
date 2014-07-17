@@ -134,9 +134,9 @@
             this.labelNombreUsuario.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelNombreUsuario.Location = new System.Drawing.Point(27, 36);
             this.labelNombreUsuario.Name = "labelNombreUsuario";
-            this.labelNombreUsuario.Size = new System.Drawing.Size(118, 15);
+            this.labelNombreUsuario.Size = new System.Drawing.Size(64, 15);
             this.labelNombreUsuario.TabIndex = 7;
-            this.labelNombreUsuario.Text = "Nombre de Usuario:";
+            this.labelNombreUsuario.Text = "DNI / CUIT";
             // 
             // label1
             // 

@@ -39,13 +39,17 @@ namespace FrbaCommerce.Calificar_Vendedor
             this.MdiParent.Size = formCalificar.Size + Constantes.aumentoTamanio;
             formCalificar.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
-            if (Convert.ToString(dgvACalificar.CurrentRow.Cells[1].Value) != "")
-            {
-                buttonContinuar.Enabled = true;
-            }
-            formCalificar.idUsuario = Convert.ToString(dgvACalificar.CurrentRow.Cells[1].Value);
+            MessageBox.Show(Convert.ToString(dgvACalificar.CurrentRow.Cells[0].Value));
+            MessageBox.Show(Convert.ToString(dgvACalificar.CurrentRow.Cells[1].Value));
+            formCalificar.idHistorialCompra = Convert.ToString(dgvACalificar.CurrentRow.Cells[0].Value);
+            formCalificar.idVendedor = Convert.ToString(dgvACalificar.CurrentRow.Cells[1].Value);
             Procedimientos.cerrarConexion(conn);
             this.Close();
+        }
+
+        private void dgvACalificar_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            buttonContinuar.Enabled = true;
         }
     }
 }

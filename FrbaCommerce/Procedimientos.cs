@@ -117,6 +117,23 @@ namespace FrbaCommerce
         }
 
         //*************************************************
+        //*    PROCEDIMIENTO PARA LLENAR UN DATATABLE
+        //*************************************************
+
+        public static void llenarDataTable(SqlCommand command, CommandType commandType, DataTable dataTable)
+        {
+            SqlConnection conn = abrirConexion();
+            command.Connection = conn;
+            command.CommandType = commandType;
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
+            sqlDataAdapter.Fill(dataTable);
+                    
+            cerrarConexion(conn);
+        }
+
+
+        //*************************************************
         //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW
         //*************************************************
 

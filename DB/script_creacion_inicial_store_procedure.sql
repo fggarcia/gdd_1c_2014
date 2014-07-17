@@ -1093,10 +1093,37 @@ BEGIN
 				
  END
  GO
+ 
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS 
+		WHERE hS.Id_Usuario=@p_Id_Usuario 
+		EXCEPT
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS
+		INNER JOIN Historial_Compra hC  ON hS.Id_Publicacion = hC.Id_Publicacion AND hS.Id_Usuario = hC.Id_Comprador
+		WHERE hC.Id_Comprador = @p_Id_Usuario
+				
+ END
+ GO
 
 --MAL!!!!
 /*Stored Procedure para Listar Subastas Perdidas del Usuario*/
-GO
+/*GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
 
 (
@@ -1134,7 +1161,7 @@ BEGIN
 		
  END
  GO
- 
+ */
   /*Stored Procedure para Listar las Calificaciones Otorgadas*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificacionesOtorgadas]
@@ -1336,7 +1363,6 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Calificar]
 @p_Id_Historial_Compra numeric (18,0),
 @p_Id_Vendedor varchar(20),
 @p_Id_Comprador varchar(20),
-@p_Fecha_Calificacion datetime,
 @p_Detalle varchar(255),
 @p_Calificacion numeric(18,0)
 )
@@ -1346,7 +1372,7 @@ BEGIN
 
 	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones 
 		(Id_Historial_Compra,Fecha_Calificacion,Detalle,Calificacion) 
-		VALUES (@p_Id_Historial_Compra,@p_Fecha_Calificacion,@p_Detalle,@p_Calificacion)
+		VALUES (SELECT Id_Historial_Compra FROM Historial_Compra WHERE Id_Historial_Compra = @p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion)
 		
 	UPDATE Historial_Compra SET Calificado = 1 WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END

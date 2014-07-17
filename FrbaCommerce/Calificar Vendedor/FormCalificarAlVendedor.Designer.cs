@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textDetalle = new System.Windows.Forms.TextBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
@@ -40,14 +40,14 @@
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // textDetalle
             // 
-            this.textBox1.Location = new System.Drawing.Point(35, 154);
-            this.textBox1.MaxLength = 255;
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(356, 85);
-            this.textBox1.TabIndex = 0;
+            this.textDetalle.Location = new System.Drawing.Point(35, 154);
+            this.textDetalle.MaxLength = 255;
+            this.textDetalle.Multiline = true;
+            this.textDetalle.Name = "textDetalle";
+            this.textDetalle.Size = new System.Drawing.Size(356, 85);
+            this.textDetalle.TabIndex = 0;
             // 
             // radioButton1
             // 
@@ -166,7 +166,7 @@
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textDetalle);
             this.Name = "FormCalificarAlVendedor";
             this.Text = "Calificar";
             this.Load += new System.EventHandler(this.FormCalificarAlVendedor_Load);
@@ -177,7 +177,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textDetalle;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;
