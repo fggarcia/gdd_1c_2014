@@ -1024,10 +1024,37 @@ BEGIN
 				
  END
  GO
+ 
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS 
+		WHERE hS.Id_Usuario=@p_Id_Usuario 
+		EXCEPT
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS
+		INNER JOIN Historial_Compra hC  ON hS.Id_Publicacion = hC.Id_Publicacion AND hS.Id_Usuario = hC.Id_Comprador
+		WHERE hC.Id_Comprador = @p_Id_Usuario
+				
+ END
+ GO
 
 --MAL!!!!
 /*Stored Procedure para Listar Subastas Perdidas del Usuario*/
-GO
+/*GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
 
 (
@@ -1065,7 +1092,7 @@ BEGIN
 		
  END
  GO
- 
+ */
   /*Stored Procedure para Listar las Calificaciones Otorgadas*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificacionesOtorgadas]
