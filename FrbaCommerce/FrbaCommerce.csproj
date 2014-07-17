@@ -163,6 +163,12 @@
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Visibilidad\Visibilidad.cs" />
+    <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.Designer.cs">
+      <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facturar Publicaciones\FormElegirMedioDePago.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,12 +195,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Constantes.cs" />
-    <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editar Publicacion\FormEditarPublicacion.Designer.cs">
-      <DependentUpon>FormEditarPublicacion.cs</DependentUpon>
-    </Compile>
     <Compile Include="Facturar Publicaciones\FormFacturarPublicaciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,11 +290,11 @@
     <EmbeddedResource Include="Abm Visibilidad\FormABMVisibilidadModificar.resx">
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Calificar Vendedor\FormCalificarAlVendedor.resx">
+      <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Calificar Vendedor\FormSeleccionACalificar.resx">
       <DependentUpon>FormSeleccionACalificar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editar Publicacion\FormEditarPublicacion.resx">
-      <DependentUpon>FormEditarPublicacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturar Publicaciones\FormElegirMedioDePago.resx">
       <DependentUpon>FormElegirMedioDePago.cs</DependentUpon>

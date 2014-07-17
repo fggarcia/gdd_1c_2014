@@ -46,6 +46,8 @@ namespace FrbaCommerce
         public const String procedimientoListadoFacturasPendientes = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
         public const String procedimientoSeleccionarPagos = "LOS_OPTIMISTAS.proc_ListarFacturasPendientes";
 
+        public const String procedimientoListarVendedoresCalificar = "LOS_OPTIMISTAS.proc_ListarVendedoresACalificar";
+
         //************************************
         //*  CONSTANTES VALIDACIONES
         //************************************

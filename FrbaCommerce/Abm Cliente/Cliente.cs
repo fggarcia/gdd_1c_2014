@@ -18,7 +18,6 @@ namespace FrbaCommerce.Abm_Cliente
         //*  GUARDAR DATOS DE CLIENTE EN BASE DE DATOS
         //**********************************************************
 
-        //TODO ver donde va a quedar el procedimiento getSha256
         public static void crear(string nombre, string apellido, string calle, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string username, string password)
         {
             SqlCommand command = new SqlCommand();
@@ -46,7 +45,6 @@ namespace FrbaCommerce.Abm_Cliente
         //*  MODIFICAR DATOS DE CLIENTE
         //**********************************************************
 
-        //TODO ver donde va a quedar el procedimiento getSha256
         public static void modificar(string nombre, string apellido, string domicilio, string nroCalle, string pisoCalle, string deptoCalle, string diaN, string mesN, string anioN, string telefono, string tipoDoc, string nDoc, string codP, string localidad, string mail, string password, string usuario)
         {
             SqlCommand command = new SqlCommand();

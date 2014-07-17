@@ -9,7 +9,7 @@ namespace FrbaCommerce.Generar_Publicacion
     public partial class FormGenerarPublicacionAM : Form
     {
         private bool bidding;
-
+        /*
         public FormGenerarPublicacionAM(bool bidding, Publicacion publication)
         {
             InitializeComponent();
@@ -31,7 +31,7 @@ namespace FrbaCommerce.Generar_Publicacion
             txtCountBuy.Text = publication.countForSale.ToString();
             txtStock.Text = publication.stock.ToString();
             chkEnableQuestion.Checked = publication.acceptQuestions;
-        }
+        }*/
 
         public FormGenerarPublicacionAM(bool bidding)
         {

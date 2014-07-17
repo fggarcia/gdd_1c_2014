@@ -31,7 +31,6 @@
             this.labelSeleccion = new System.Windows.Forms.Label();
             this.dgvACalificar = new System.Windows.Forms.DataGridView();
             this.buttonContinuar = new System.Windows.Forms.Button();
-            this.buttonVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvACalificar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,27 +59,19 @@
             this.buttonContinuar.TabIndex = 2;
             this.buttonContinuar.Text = "Continuar";
             this.buttonContinuar.UseVisualStyleBackColor = true;
-            // 
-            // buttonVolver
-            // 
-            this.buttonVolver.Location = new System.Drawing.Point(31, 384);
-            this.buttonVolver.Name = "buttonVolver";
-            this.buttonVolver.Size = new System.Drawing.Size(88, 29);
-            this.buttonVolver.TabIndex = 3;
-            this.buttonVolver.Text = "Volver";
-            this.buttonVolver.UseVisualStyleBackColor = true;
+            this.buttonContinuar.Click += new System.EventHandler(this.buttonContinuar_Click);
             // 
             // FormSeleccionACalificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 437);
-            this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.buttonContinuar);
             this.Controls.Add(this.dgvACalificar);
             this.Controls.Add(this.labelSeleccion);
             this.Name = "FormSeleccionACalificar";
             this.Text = "Calificar";
+            this.Load += new System.EventHandler(this.FormSeleccionACalificar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvACalificar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -92,6 +83,5 @@
         private System.Windows.Forms.Label labelSeleccion;
         private System.Windows.Forms.DataGridView dgvACalificar;
         private System.Windows.Forms.Button buttonContinuar;
-        private System.Windows.Forms.Button buttonVolver;
     }
 }

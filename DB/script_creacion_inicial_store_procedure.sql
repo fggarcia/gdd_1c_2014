@@ -1183,8 +1183,9 @@ BEGIN
 		ORDER BY Id_Publicacion	
  END
  GO
- 
+
 /*Stored Procedure para Facturar*/
+ /*
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
 
@@ -1239,5 +1240,45 @@ BEGIN
 	
 	DROP TABLE Facturacion_Pendiente_temp
  	
+END
+GO
+*/
+
+/*Stored Procedure para Listar Vendedores a Calificar*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarVendedoresACalificar]
+(
+@p_Id_Comprador varchar(20) = null
+)
+
+AS 
+BEGIN
+
+	SELECT Id_Historial_Compra Compra, Id_Vendedor Vendedor, Id_Publicacion Publicacion, Compra_Fecha Fecha FROM Historial_Compra 
+		WHERE Id_Comprador = @p_Id_Comprador AND Calificado = 0
+
+END
+GO
+
+/*Stored Procedure para Calificar*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Calificar]
+(
+@p_Id_Historial_Compra numeric (18,0),
+@p_Id_Vendedor varchar(20),
+@p_Id_Comprador varchar(20),
+@p_Fecha_Calificacion datetime,
+@p_Detalle varchar(255),
+@p_Calificacion numeric(18,0)
+)
+
+AS
+BEGIN
+
+	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones 
+		(Id_Historial_Compra,Fecha_Calificacion,Detalle,Calificacion) 
+		VALUES (@p_Id_Historial_Compra,@p_Fecha_Calificacion,@p_Detalle,@p_Calificacion)
+		
+	UPDATE Historial_Compra SET Calificado = 1 WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END
 GO
