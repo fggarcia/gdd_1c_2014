@@ -69,7 +69,7 @@ namespace FrbaCommerce.Listado_Estadistico
 
         private String obtenerMesDesdeTrimestre(String trimestre)
         {
-            String mesDesde;
+            String mesDesde = "00";
 
             switch (trimestre)
             {
@@ -102,7 +102,7 @@ namespace FrbaCommerce.Listado_Estadistico
 
         private String obtenerMesHastaTrimestre(String trimestre)
         {
-            String mesHasta;
+            String mesHasta = "00";
 
             switch (trimestre)
             {
