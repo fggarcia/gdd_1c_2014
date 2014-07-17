@@ -82,7 +82,7 @@
             // buttonAgregarFunc
             // 
             this.buttonAgregarFunc.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAgregarFunc.Location = new System.Drawing.Point(301, 195);
+            this.buttonAgregarFunc.Location = new System.Drawing.Point(281, 191);
             this.buttonAgregarFunc.Name = "buttonAgregarFunc";
             this.buttonAgregarFunc.Size = new System.Drawing.Size(100, 45);
             this.buttonAgregarFunc.TabIndex = 5;
@@ -93,7 +93,7 @@
             // buttonVolver
             // 
             this.buttonVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonVolver.Location = new System.Drawing.Point(39, 195);
+            this.buttonVolver.Location = new System.Drawing.Point(15, 191);
             this.buttonVolver.Name = "buttonVolver";
             this.buttonVolver.Size = new System.Drawing.Size(91, 45);
             this.buttonVolver.TabIndex = 6;
@@ -121,7 +121,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(163, 195);
+            this.button1.Location = new System.Drawing.Point(147, 191);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 45);
             this.button1.TabIndex = 9;
@@ -132,7 +132,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(433, 195);
+            this.button2.Location = new System.Drawing.Point(420, 191);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 45);
             this.button2.TabIndex = 10;

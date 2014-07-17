@@ -49,10 +49,10 @@
             // buttonModificar
             // 
             this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonModificar.Location = new System.Drawing.Point(162, 63);
+            this.buttonModificar.Location = new System.Drawing.Point(162, 64);
             this.buttonModificar.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonModificar.Name = "buttonModificar";
-            this.buttonModificar.Size = new System.Drawing.Size(119, 36);
+            this.buttonModificar.Size = new System.Drawing.Size(113, 36);
             this.buttonModificar.TabIndex = 15;
             this.buttonModificar.Text = "Modificar/Eliminar";
             this.buttonModificar.UseVisualStyleBackColor = true;
@@ -61,10 +61,10 @@
             // buttonAlta
             // 
             this.buttonAlta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAlta.Location = new System.Drawing.Point(33, 63);
+            this.buttonAlta.Location = new System.Drawing.Point(22, 64);
             this.buttonAlta.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonAlta.Name = "buttonAlta";
-            this.buttonAlta.Size = new System.Drawing.Size(101, 36);
+            this.buttonAlta.Size = new System.Drawing.Size(113, 36);
             this.buttonAlta.TabIndex = 14;
             this.buttonAlta.Text = "Dar da Alta";
             this.buttonAlta.UseVisualStyleBackColor = true;
@@ -74,7 +74,7 @@
             // 
             this.TextOpcion.AutoSize = true;
             this.TextOpcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextOpcion.Location = new System.Drawing.Point(30, 20);
+            this.TextOpcion.Location = new System.Drawing.Point(19, 21);
             this.TextOpcion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TextOpcion.Name = "TextOpcion";
             this.TextOpcion.Size = new System.Drawing.Size(119, 13);
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 187);
+            this.ClientSize = new System.Drawing.Size(297, 128);
             this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.buttonModificar);
             this.Controls.Add(this.buttonAlta);

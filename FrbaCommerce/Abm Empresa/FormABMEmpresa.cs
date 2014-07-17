@@ -33,7 +33,7 @@ namespace FrbaCommerce.Abm_Empresa
             }
             conn.Close();
             formAltaEmpresa.password = Procedimientos.generarPassword();
-            MessageBox.Show("El username es: " + formAltaEmpresa.username + "y el password: " + formAltaEmpresa.password);
+            MessageBox.Show("Username: " + formAltaEmpresa.username + "Password: " + formAltaEmpresa.password, "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
 

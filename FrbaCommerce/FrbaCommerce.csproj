@@ -163,6 +163,18 @@
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Visibilidad\Visibilidad.cs" />
+    <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.Designer.cs">
+      <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editar Publicacion\FormEditarPublicacion.Designer.cs">
+      <DependentUpon>FormEditarPublicacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facturar Publicaciones\FormElegirMedioDePago.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,11 +188,11 @@
       <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
     </Compile>
     <Compile Include="Procedimientos.cs" />
-    <Compile Include="Calificar Vendedor\Form1.cs">
+    <Compile Include="Calificar Vendedor\FormSeleccionACalificar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Calificar Vendedor\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Calificar Vendedor\FormSeleccionACalificar.Designer.cs">
+      <DependentUpon>FormSeleccionACalificar.cs</DependentUpon>
     </Compile>
     <Compile Include="Comprar-Ofertar\Form1.cs">
       <SubType>Form</SubType>
@@ -189,12 +201,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Constantes.cs" />
-    <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editar Publicacion\FormEditarPublicacion.Designer.cs">
-      <DependentUpon>FormEditarPublicacion.cs</DependentUpon>
-    </Compile>
     <Compile Include="Facturar Publicaciones\FormFacturarPublicaciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +295,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Visibilidad\FormABMVisibilidadModificar.resx">
       <DependentUpon>FormABMVisibilidadModificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Calificar Vendedor\FormCalificarAlVendedor.resx">
+      <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Calificar Vendedor\FormSeleccionACalificar.resx">
+      <DependentUpon>FormSeleccionACalificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\FormEditarPublicacion.resx">
       <DependentUpon>FormEditarPublicacion.cs</DependentUpon>

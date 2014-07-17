@@ -1024,10 +1024,37 @@ BEGIN
 				
  END
  GO
+ 
+ GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
+
+(
+@p_Id_Usuario varchar(20) = null
+)
+
+AS
+BEGIN
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS 
+		WHERE hS.Id_Usuario=@p_Id_Usuario 
+		EXCEPT
+		SELECT hS.Id_Publicacion 'Publicacion'
+		,hS.Fecha_Oferta 'Fecha de Oferta'
+		,hS.Precio_Oferta 'Precio'
+		
+		FROM Historial_Subasta hS
+		INNER JOIN Historial_Compra hC  ON hS.Id_Publicacion = hC.Id_Publicacion AND hS.Id_Usuario = hC.Id_Comprador
+		WHERE hC.Id_Comprador = @p_Id_Usuario
+				
+ END
+ GO
 
 --MAL!!!!
 /*Stored Procedure para Listar Subastas Perdidas del Usuario*/
-GO
+/*GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasPerdidas]
 
 (
@@ -1065,7 +1092,7 @@ BEGIN
 		
  END
  GO
- 
+ */
   /*Stored Procedure para Listar las Calificaciones Otorgadas*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarCalificacionesOtorgadas]
@@ -1183,8 +1210,9 @@ BEGIN
 		ORDER BY Id_Publicacion	
  END
  GO
- 
+
 /*Stored Procedure para Facturar*/
+ /*
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
 
@@ -1212,6 +1240,7 @@ BEGIN
 	)
 	
 	DECLARE @p_Numero_Factura numeric (18,0)
+	DECLARE @p_Id_Detalle_Tarjeta int
 	
 	INSERT INTO Facturacion_Pendiente_temp  
 		(Id_Registro,Id_Usuario,Id_Usuario_Comprador,Id_Publicacion,Comision,Visibilidad,Cantidad,Precio_Publicacion,Precio_Visibilidad)
@@ -1222,22 +1251,60 @@ BEGIN
 	INSERT INTO LOS_OPTIMISTAS.Facturacion
 		(Id_Usuario,Total_Factura,Total_Comisiones,Total_Visibilidad,Fecha)
 	VALUES (@p_Id_Usuario,ISNULL((SELECT ((Comision * Cantidad) + Precio_Publicacion + Precio_Visibilidad) FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Comision FROM Facturacion_Pendiente_temp),0),ISNULL((SELECT Visibilidad FROM Facturacion_Pendiente_temp),0),GETDATE())
-	
-	SET @p_Numero_Factura = @@IDENTITY
-	
-	IF (@p_Numero_Factura IS NOT NULL)
+		
+	IF (@p_Numero_Tarjeta IS NOT NULL)
 	BEGIN
 	
 		INSERT INTO Detalle_Tarjeta 
 			(Nro_Tarjeta,Cant_Cuota)
 		VALUES (@p_Numero_Factura,@p_Cantidad_Cuotas)
 		
+		IF NOT EXISTS(SELECT Id_Factura = @p_Numero_Factura FROM Facturacion)
 		INSERT INTO LOS_OPTIMISTAS.Forma_Pago
-			(Id_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago)
-		VALUES ()
+			(@p_Numero_Factura,Id_Detalle_Tarjeta,Id_Tipo_Pago) 
+		VALUES (@p_Numero_Factura, 1,2)
 	END
 	
 	DROP TABLE Facturacion_Pendiente_temp
  	
+END
+GO
+*/
+
+/*Stored Procedure para Listar Vendedores a Calificar*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarVendedoresACalificar]
+(
+@p_Id_Comprador varchar(20) = null
+)
+
+AS 
+BEGIN
+
+	SELECT Id_Historial_Compra Compra, Id_Vendedor Vendedor, Id_Publicacion Publicacion, Compra_Fecha Fecha FROM Historial_Compra 
+		WHERE Id_Comprador = @p_Id_Comprador AND Calificado = 0
+
+END
+GO
+
+/*Stored Procedure para Calificar*/
+GO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Calificar]
+(
+@p_Id_Historial_Compra numeric (18,0),
+@p_Id_Vendedor varchar(20),
+@p_Id_Comprador varchar(20),
+@p_Detalle varchar(255),
+@p_Calificacion numeric(18,0)
+)
+
+AS
+BEGIN
+
+	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones 
+		(Id_Historial_Compra,Fecha_Calificacion,Detalle,Calificacion) 
+		VALUES (SELECT Id_Historial_Compra FROM Historial_Compra WHERE Id_Historial_Compra = @p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion)
+		
+	UPDATE Historial_Compra SET Calificado = 1 WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END
 GO

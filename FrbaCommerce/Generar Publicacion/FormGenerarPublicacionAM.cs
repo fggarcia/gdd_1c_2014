@@ -9,7 +9,7 @@ namespace FrbaCommerce.Generar_Publicacion
     public partial class FormGenerarPublicacionAM : Form
     {
         private bool bidding;
-
+        
         public FormGenerarPublicacionAM(bool bidding, Publicacion publication)
         {
             InitializeComponent();
