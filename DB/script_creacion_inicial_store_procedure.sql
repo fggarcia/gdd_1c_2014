@@ -1072,6 +1072,38 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
+
+(
+	@p_IdUsuario varchar(20) = null,
+	@p_Description varchar(255) = null
+)
+AS
+BEGIN
+
+			SELECT
+			
+			pub.Id_Publicacion 'Codigo Publicacion',
+			pub.Descripcion 'Descripcion',
+			stock.Cantidad 'Stock Actual',
+			tiPub.Descripcion 'Tipo Publicacion',
+			visi.Descripcion 'Visibilidad'
+			
+			FROM LOS_OPTIMISTAS.Publicacion pub
+				INNER JOIN LOS_OPTIMISTAS.Estado_Publicacion estPub ON pub.Id_Publicacion = estPub.Id_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Stock stock ON pub.Id_Articulo = stock.Id_Articulo
+				INNER JOIN LOS_OPTIMISTAS.Estado est ON estPub.Id_Estado = est.Id_Estado
+				INNER JOIN LOS_OPTIMISTAS.Tipo_Publicacion tiPub ON pub.Id_Tipo_Publicacion = tiPub.Id_Tipo_Publicacion
+				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
+			WHERE
+			pub.Id_Usuario != @p_IdUsuario
+			AND ((@p_Description IS NULL) OR ( pub.Descripcion like '%' + @p_Description  + '%'))
+			AND est.Descripcion IN ('ACTIVA','PAUSADA')
+			AND DATEDIFF(DAY,pub.Fecha_Vencimiento, GETDATE()) <= 0
+			ORDER BY visi.Peso ASC, pub.Id_Publicacion ASC
+ END
+ GO
+
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]
@@ -1372,7 +1404,9 @@ BEGIN
 	Declare @Calificado int = 1
 
 	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Historial_Compra,Fecha_Calificacion,
-		Detalle,Calificacion,Calificado) 
-		VALUES (@p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion,@Calificado)
+		Detalle,Calificacion) 
+		VALUES (@p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion)
+		
+	UPDATE Historial_Compra SET Calificado = @Calificado WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END
 GO

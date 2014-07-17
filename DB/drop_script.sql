@@ -154,6 +154,8 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_Calificar
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarVendedoresACalificar
