@@ -169,17 +169,11 @@
     <Compile Include="Calificar Vendedor\FormCalificarAlVendedor.Designer.cs">
       <DependentUpon>FormCalificarAlVendedor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertar2.cs">
+    <Compile Include="Comprar Ofertar\FormComprarOfertar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertar2.Designer.cs">
-      <DependentUpon>FormComprarOfertar2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertarPrueba.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertarPrueba.Designer.cs">
-      <DependentUpon>FormComprarOfertarPrueba.cs</DependentUpon>
+    <Compile Include="Comprar Ofertar\FormComprarOfertar.Designer.cs">
+      <DependentUpon>FormComprarOfertar.cs</DependentUpon>
     </Compile>
     <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
       <SubType>Form</SubType>
@@ -212,12 +206,6 @@
     <Compile Include="Calificar Vendedor\FormSeleccionACalificar.Designer.cs">
       <DependentUpon>FormSeleccionACalificar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Comprar Ofertar\FormComprarOfertar.Designer.cs">
-      <DependentUpon>FormComprarOfertar.cs</DependentUpon>
-    </Compile>
     <Compile Include="Constantes.cs" />
     <Compile Include="Facturar Publicaciones\FormFacturarPublicaciones.cs">
       <SubType>Form</SubType>
@@ -237,11 +225,11 @@
     <Compile Include="Generar Publicacion\FormGenerarPublicacion.Designer.cs">
       <DependentUpon>FormGenerarPublicacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gestion de Preguntas\Form1.cs">
+    <Compile Include="Gestion de Preguntas\FormListadoPreguntas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gestion de Preguntas\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Gestion de Preguntas\FormListadoPreguntas.Designer.cs">
+      <DependentUpon>FormListadoPreguntas.cs</DependentUpon>
     </Compile>
     <Compile Include="Historial Cliente\FormHistorialUsuario.cs">
       <SubType>Form</SubType>
@@ -317,12 +305,6 @@
     <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertar.resx">
       <DependentUpon>FormComprarOfertar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertar2.resx">
-      <DependentUpon>FormComprarOfertar2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertarPrueba.resx">
-      <DependentUpon>FormComprarOfertarPrueba.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\FormEditarPublicacion.resx">
       <DependentUpon>FormEditarPublicacion.cs</DependentUpon>
     </EmbeddedResource>
@@ -340,6 +322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicacion\FormGenerarPublicacionAM.resx">
       <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gestion de Preguntas\FormListadoPreguntas.resx">
+      <DependentUpon>FormListadoPreguntas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\FormHistorialUsuario.resx">
       <DependentUpon>FormHistorialUsuario.cs</DependentUpon>

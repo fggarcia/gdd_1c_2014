@@ -658,14 +658,10 @@ BEGIN
 
 			SELECT 
 			
-			Publicacion_Preguntas.Fecha_Creacion,
-			Publicacion_Preguntas.Fecha_Respuesta,
-			Publicacion_Preguntas.Id_Pregunta,
-			Publicacion_Preguntas.Id_Publicacion,
-			Publicacion_Preguntas.Id_Usuario,
-			Publicacion_Preguntas.Preg_Descripcion,
-			Publicacion_Preguntas.Preg_Respuesta,
-			Publicacion.Id_Publicacion
+			Publicacion_Preguntas.Id_Usuario 'Usuario',
+			Publicacion_Preguntas.Fecha_Creacion 'Fecha',
+			Publicacion_Preguntas.Id_Publicacion 'Publicacion',
+			Publicacion_Preguntas.Preg_Descripcion 'Pregunta'
 
 			FROM LOS_OPTIMISTAS.Publicacion_Preguntas , LOS_OPTIMISTAS.Publicacion 
 			
@@ -714,20 +710,12 @@ AS
 BEGIN
 
 			SELECT 
-			Publ_Preguntas.Preg_Descripcion,
-			Publ_Preguntas.Preg_Respuesta,
-			Publ.Id_Publicacion,
-			Publ.Descripcion,
-			Publ.Fecha_Inicio,
-			Publ.Fecha_Vencimiento,
-			Publ.Cant_por_Venta,
-			Publ.Permite_Preguntas,
-			Publ.Precio,
-			Tipo_Publicacion.Descripcion,
-			Visib.Peso,
-			Visib.Descripcion,
-			Visib.Porcentaje,
-			Visib.Precio
+			Publ.Id_Publicacion 'Id Publicacion',
+			Publ.Descripcion 'Publicacion',
+			Visib.Descripcion 'Visibilidad',
+			Publ_Preguntas.Preg_Descripcion 'Pregunta',
+			Publ_Preguntas.Preg_Respuesta 'Respuesta'
+			
 
 			FROM LOS_OPTIMISTAS.Publicacion_Preguntas Publ_Preguntas , LOS_OPTIMISTAS.Publicacion  Publ, LOS_OPTIMISTAS.Tipo_Publicacion Tipo_Publicacion, LOS_OPTIMISTAS.Visibilidad Visib
 			
