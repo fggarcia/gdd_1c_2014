@@ -1369,11 +1369,10 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Calificar]
 
 AS
 BEGIN
+	Declare @Calificado int = 1
 
-	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones 
-		(Id_Historial_Compra,Fecha_Calificacion,Detalle,Calificacion) 
-		VALUES (SELECT Id_Historial_Compra FROM Historial_Compra WHERE Id_Historial_Compra = @p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion)
-		
-	UPDATE Historial_Compra SET Calificado = 1 WHERE Id_Historial_Compra = @p_Id_Historial_Compra
+	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Historial_Compra,Fecha_Calificacion,
+		Detalle,Calificacion,Calificado) 
+		VALUES (@p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion,@Calificado)
 END
 GO
