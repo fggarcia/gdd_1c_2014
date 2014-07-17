@@ -1267,7 +1267,6 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Calificar]
 @p_Id_Historial_Compra numeric (18,0),
 @p_Id_Vendedor varchar(20),
 @p_Id_Comprador varchar(20),
-@p_Fecha_Calificacion datetime,
 @p_Detalle varchar(255),
 @p_Calificacion numeric(18,0)
 )
@@ -1277,7 +1276,7 @@ BEGIN
 
 	INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones 
 		(Id_Historial_Compra,Fecha_Calificacion,Detalle,Calificacion) 
-		VALUES (@p_Id_Historial_Compra,@p_Fecha_Calificacion,@p_Detalle,@p_Calificacion)
+		VALUES (SELECT Id_Historial_Compra FROM Historial_Compra WHERE Id_Historial_Compra = @p_Id_Historial_Compra,GETDATE(),@p_Detalle,@p_Calificacion)
 		
 	UPDATE Historial_Compra SET Calificado = 1 WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END

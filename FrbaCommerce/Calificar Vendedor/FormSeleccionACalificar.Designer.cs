@@ -50,6 +50,7 @@
             this.dgvACalificar.Name = "dgvACalificar";
             this.dgvACalificar.Size = new System.Drawing.Size(563, 281);
             this.dgvACalificar.TabIndex = 1;
+            this.dgvACalificar.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvACalificar_CellClick);
             // 
             // buttonContinuar
             // 

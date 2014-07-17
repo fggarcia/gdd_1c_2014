@@ -48,6 +48,9 @@ namespace FrbaCommerce
 
         public const String procedimientoListarVendedoresCalificar = "LOS_OPTIMISTAS.proc_ListarVendedoresACalificar";
 
+        public const String procedimientoCalificar = "LOS_OPTIMISTAS.proc_Calificar";
+        
+
         //************************************
         //*  CONSTANTES VALIDACIONES
         //************************************

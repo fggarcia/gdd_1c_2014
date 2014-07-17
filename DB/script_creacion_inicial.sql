@@ -516,7 +516,7 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Calificaciones](
 
 SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Publicacion_Calificaciones] ON
 
---Inserto en publicacion_Calificaciones COnsideramos
+--Inserto en publicacion_Calificaciones Consideramos
 --poner la fecha de compra como la de calificacion en todos los casos de migracion
 INSERT INTO LOS_OPTIMISTAS.Publicacion_Calificaciones (Id_Calificacion, Fecha_Calificacion, Detalle, Calificacion, Id_Historial_Compra)
 SELECT 	Calificacion_Codigo,Compra_Fecha,
@@ -544,7 +544,7 @@ SELECT 	Calificacion_Codigo,Compra_Fecha,
 		AND Publ_Empresa_Cuit IS NOT NULL
 		AND Cli_Dni IS NOT NULL
 
-SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Publicacion_Calificaciones] ON
+SET IDENTITY_INSERT [LOS_OPTIMISTAS].[Publicacion_Calificaciones] OFF
 
 --CREO TABLA Publicacion_Pregunta (No la cargo porque no existen preguntas)
 CREATE TABLE [LOS_OPTIMISTAS].[Publicacion_Preguntas](
