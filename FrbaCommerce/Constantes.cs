@@ -12,13 +12,13 @@ namespace FrbaCommerce
         //*  CONSTANTES STORED PROCEDURES
         //************************************
 
-        public const String procedimientoCrearCliente = "LOS_OPTIMISTAS.AltaCliente";
+        public const String procedimientoCrearCliente = "LOS_OPTIMISTAS.proc_AltaCliente";
         public const String procedimientoMostrarClientes = "LOS_OPTIMISTAS.proc_ListarClientes";
-        public const String procedimientoModificarCliente = "LOS_OPTIMISTAS.ModificarCliente";
+        public const String procedimientoModificarCliente = "LOS_OPTIMISTAS.proc_ModificarCliente";
 
-        public const String procedimientoCrearEmpresa = "LOS_OPTIMISTAS.AltaEmpresa";
+        public const String procedimientoCrearEmpresa = "LOS_OPTIMISTAS.proc_AltaEmpresa";
         public const String procedimientoMostrarEmpresas = "LOS_OPTIMISTAS.proc_ListarEmpresas";
-        public const String procedimientoModificarEmpresa = "LOS_OPTIMISTAS.ModificarEmpresa";
+        public const String procedimientoModificarEmpresa = "LOS_OPTIMISTAS.proc_ModificarEmpresa";
 
         public const String procedimientoMostrarVisibilidad = "LOS_OPTIMISTAS.proc_ListarVisibilidades";
         public const String procedimientoModificarVisibilidad = "LOS_OPTIMISTAS.proc_CrearModificarVisibilidad";
@@ -31,13 +31,14 @@ namespace FrbaCommerce
 
         public const String procedimientoMostrarPublicacionesComprarOfertar = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
 
-        public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.BajaUsuario";
-        public const String procedimientoHabilitarUsuario = "LOS_OPTIMISTAS.HabilitarUsuario";
+        public const String procedimientoPrimerIngreso = "LOS_OPTIMISTAS.proc_VerificarPrimerInicio";
+        public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.proc_BajaUsuario";
+        public const String procedimientoHabilitarUsuario = "LOS_OPTIMISTAS.proc_HabilitarUsuario";
 
         public const String listarMenuFuncionalidades = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
 
-        public const String listarRoles = "LOS_OPTIMISTAS.ListarRoles";
-        public const String bajaRol = "LOS_OPTIMISTAS.BajaRol";
+        public const String listarRoles = "LOS_OPTIMISTAS.proc_ListarRoles";
+        public const String bajaRol = "LOS_OPTIMISTAS.proc_BajaRol";
 
         public const String procedimientoListadoSubastasGanadas = "LOS_OPTIMISTAS.proc_ListarSubastasGanadas";
         public const String procedimientoListadoSubastasNoGanadas = "LOS_OPTIMISTAS.proc_ListarSubastasPerdidas";
@@ -66,9 +67,9 @@ namespace FrbaCommerce
         public const String procedimientoPublicacionesSinCalificarTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarTOP5";
         public const String procedimientoPublicacionesSinCalificarMensual = "LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarMensual";
 
-        public const String procedimientoListarPreguntas = "LOS_OPTIMISTAS.ListarPreguntas";
-        public const String procedimientoListarRespuestas = "LOS_OPTIMISTAS.ListarRespuestas";
-        public const String procedimientoSubirRespuesta = "LOS_OPTIMISTAS.SubirRespuesta";
+        public const String procedimientoListarPreguntas = "LOS_OPTIMISTAS.proc_ListarPreguntas";
+        public const String procedimientoListarRespuestas = "LOS_OPTIMISTAS.proc_ListarRespuestas";
+        public const String procedimientoSubirRespuesta = "LOS_OPTIMISTAS.proc_SubirRespuesta";
 
         //************************************
         //*  CONSTANTES VALIDACIONES

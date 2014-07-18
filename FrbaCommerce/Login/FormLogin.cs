@@ -69,6 +69,12 @@ namespace FrbaCommerce.Login
             if (administracion.validarUsuario(usuario))
             {
                 Int32 cantidadLogin = administracion.loguear(usuario);
+                if (administracion.primerIngreso(usuario))
+                {
+                    this.Close();
+                    FormCambiarContrasenia formCambioContra = new FormCambiarContrasenia();
+                    formCambioContra.Show();
+                }
 
                 if (cantidadLogin == 0)
                 {
@@ -96,8 +102,8 @@ namespace FrbaCommerce.Login
         {
             this.AutoScaleMode = new AutoScaleMode();
         }
-        }
-              
+    }
+
 }
 
 

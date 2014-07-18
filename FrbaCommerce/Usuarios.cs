@@ -17,7 +17,7 @@ namespace FrbaCommerce
         public string password;
         public int cantidadFallasEnPass;
         public int Id_Rol { get; set; }
-        
+
 
         public Usuarios(string user, string pass)
         {
@@ -28,6 +28,31 @@ namespace FrbaCommerce
 
     public class Administracion
     {
+
+        public Boolean primerIngreso(Usuarios user)
+		{
+            SqlConnection conn = Procedimientos.abrirConexion();
+            SqlCommand command = new SqlCommand(Constantes.procedimientoPrimerIngreso, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@p_Id_Usuario", user.user_id);
+
+            var returnParameter = command.Parameters.Add("@Fecha", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            command.ExecuteNonQuery();
+
+            Int32 primerInicio = Convert.ToInt32(returnParameter.Value);
+
+            Procedimientos.cerrarConexion(conn);
+            if (primerInicio == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+		}
 
         public Boolean validarUsuario(Usuarios user)
         {
@@ -78,9 +103,9 @@ namespace FrbaCommerce
 
         public void deshabilitarUsuario(Usuarios user)
         {
-            
+
             SqlCommand command = new SqlCommand();
-            command.Parameters.AddWithValue("@p_Id_Usuario",user.user_id);
+            command.Parameters.AddWithValue("@p_Id_Usuario", user.user_id);
             Procedimientos.ejecutarStoredProcedure(command, "BajaUsuario", false);
         }
 
@@ -98,7 +123,7 @@ namespace FrbaCommerce
             }
 
             return false;
-            
+
         }
 
         public Boolean usuarioHabilitado(Usuarios user)
@@ -109,10 +134,10 @@ namespace FrbaCommerce
             Int32 statusUsuario = (Int32)command.ExecuteScalar();
             Procedimientos.cerrarConexion(conn);
 
-            if(statusUsuario != 1)
+            if (statusUsuario != 1)
             {
                 return false;
-            }  
+            }
             else
             {
                 return true;

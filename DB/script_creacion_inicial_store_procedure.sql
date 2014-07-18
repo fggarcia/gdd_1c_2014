@@ -38,7 +38,7 @@ BEGIN
  
  --TODO
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaCliente]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_AltaCliente]
 (
 @p_Nombre varchar(255) = null,
 @p_Apellido varchar(255)= null,
@@ -79,7 +79,7 @@ END
 
 GO
 /*Sirve tanto para CLIENTES como para EMPRESAS*/
-CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaUsuario]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_BajaUsuario]
 (
 @p_Id_Usuario varchar (20)= null
 )
@@ -92,7 +92,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[HabilitarUsuario]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarUsuario]
 (
 @p_Id_Usuario varchar(20)
 )
@@ -109,7 +109,7 @@ END
 GO
 
 GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarCliente]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ModificarCliente]
 (
 @p_Nombre varchar(255) = null,
 @p_Apellido varchar(255)= null,
@@ -202,7 +202,7 @@ BEGIN
  
  --En AltaEmpresa no se agrega un ROL a ese usuario, ya que no es un requerimiento, Si en ALTA USUARIO se debe agregar un ROL
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaEmpresa]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_AltaEmpresa]
  (
 
 @p_Razon_Social varchar(255) = null ,
@@ -242,7 +242,7 @@ GO
  
  
  GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarEmpresa]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ModificarEmpresa]
 (
 @p_Razon_Social varchar(255) = null ,
 @p_Cuit varchar(50) = null,
@@ -289,7 +289,7 @@ GO
  /* Store Procedure para ABM Rol*/ 
  /*VERIFICAR SI ANDA BIEN Cargando datos en las tablas*/
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRoles]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
  
  AS
  BEGIN
@@ -304,7 +304,7 @@ GO
  
  /* Procedimiento Alta Rol*/
 GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[CrearRol]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CrearRol]
  (
  @p_Descripcion_Rol varchar(20) = null
  )
@@ -334,7 +334,7 @@ GO
  
  /* Procedimiento Baja Rol*/
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[BajaRol]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_BajaRol]
  (
   @p_Descripcion_Rol varchar(20) = null
  )
@@ -359,7 +359,7 @@ Where Id_Rol = @id_rol
  
  /* Procedimiento Baja Rol*/
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[HabilitarRol]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarRol]
  (
   @p_Descripcion_Rol varchar(20) = null
  )
@@ -376,7 +376,7 @@ Where Id_Rol = @id_rol
   /* Procedimiento Modificar Rol*/
   
   GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[ModificarNombreRol]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ModificarNombreRol]
  (
   @p_Descripcion_Rol_Vieja varchar(20) = null,
   @p_Descripcion_Rol_Nueva varchar(20) = null
@@ -448,7 +448,7 @@ END
  
  GO 
  --SP para agregar funcionalidades a un ROL
- CREATE PROCEDURE [LOS_OPTIMISTAS].[AgregarFuncionalidad]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_AgregarFuncionalidad]
  
  (
  @p_Descripcion_Rol varchar(20) = null,
@@ -488,7 +488,7 @@ END
  
  --SP para agregar funcionalidades a un ROL
  GO
- CREATE PROCEDURE [LOS_OPTIMISTAS].[QuitarFuncionalidad]
+ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_QuitarFuncionalidad]
  
  (
  @p_Descripcion_Rol varchar(20) = null,
@@ -662,7 +662,7 @@ END
 --Procedimineto para listar preguntas que tiene pendiente por responder un Usuario, me pasan Id_Usuario y les devuelvo todo referido a las preguntas pendientes que tiene
 --en cada publicacion
 GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarPreguntas]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPreguntas]
 
 (
 @Id_Usuario varchar(20)
@@ -692,7 +692,7 @@ BEGIN
  
  --Subo respuesta pasandome el Id_Pregunta(que se los pase en el procedimiento ListarPreguntas),el Id_usuario de quien responde y la descripcion de la respuesta
  GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[SubirRespuesta]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_SubirRespuesta]
 
 (
 @Id_Pregunta [numeric](18,0),
@@ -715,7 +715,7 @@ BEGIN
  
 --Proc. Para listar las preguntas(en el enunciado dice respuesta pero se equivocaron) que realizo un usuario y si fueron respondidas o no
  GO
-CREATE PROCEDURE [LOS_OPTIMISTAS].[ListarRespuestas]
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRespuestas]
 
 (
 @Id_Usuario varchar(20)
@@ -766,8 +766,17 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_VerificarPrimerInicio]
 AS
 BEGIN
 
-	SELECT Ultima_Fecha FROM LOS_OPTIMISTAS.Usuario Usr WHERE @p_Id_Usuario = Usr.Id_Usuario
+	DECLARE @Fecha datetime
+
+	SELECT @Fecha = Ultima_Fecha FROM LOS_OPTIMISTAS.Usuario Usr WHERE @p_Id_Usuario = Usr.Id_Usuario
 	
+	IF (@Fecha = NULL)
+	BEGIN
+		RETURN 1
+	END
+	
+	ELSE
+		RETURN 0
 END
 GO
 

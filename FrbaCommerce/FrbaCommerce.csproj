@@ -211,6 +211,12 @@
     <Compile Include="Listado Estadistico\FormListadoEstadistico.Designer.cs">
       <DependentUpon>FormListadoEstadistico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\FormCambiarContrasenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\FormCambiarContrasenia.Designer.cs">
+      <DependentUpon>FormCambiarContrasenia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedimientos.cs" />
     <Compile Include="Calificar Vendedor\FormSeleccionACalificar.cs">
       <SubType>Form</SubType>
@@ -349,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\FormListadoEstadistico.resx">
       <DependentUpon>FormListadoEstadistico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\FormCambiarContrasenia.resx">
+      <DependentUpon>FormCambiarContrasenia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
