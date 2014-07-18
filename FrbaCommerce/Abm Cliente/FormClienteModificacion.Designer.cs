@@ -64,7 +64,6 @@
             this.labelCodPostal = new System.Windows.Forms.Label();
             this.labelTipoDocumento = new System.Windows.Forms.Label();
             this.labelNumDocumento = new System.Windows.Forms.Label();
-            this.buttonHabilitar = new System.Windows.Forms.Button();
             this.groupBoxDatos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -413,22 +412,11 @@
             this.labelNumDocumento.TabIndex = 3;
             this.labelNumDocumento.Text = "Número de Documento:";
             // 
-            // buttonHabilitar
-            // 
-            this.buttonHabilitar.Location = new System.Drawing.Point(318, 340);
-            this.buttonHabilitar.Name = "buttonHabilitar";
-            this.buttonHabilitar.Size = new System.Drawing.Size(93, 37);
-            this.buttonHabilitar.TabIndex = 63;
-            this.buttonHabilitar.Text = "Habilitar";
-            this.buttonHabilitar.UseVisualStyleBackColor = true;
-            this.buttonHabilitar.Click += new System.EventHandler(this.buttonHabilitar_Click);
-            // 
             // FormClienteModificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(702, 391);
-            this.Controls.Add(this.buttonHabilitar);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonGuardar);
             this.Controls.Add(this.groupBoxDatos);
@@ -479,7 +467,6 @@
         private System.Windows.Forms.Label labelNumDocumento;
         private System.Windows.Forms.TextBox textPassword;
         private System.Windows.Forms.Label labelPassword;
-        private System.Windows.Forms.Button buttonHabilitar;
 
 
 

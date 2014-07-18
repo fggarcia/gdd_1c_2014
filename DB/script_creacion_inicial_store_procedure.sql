@@ -33,11 +33,10 @@ BEGIN
 			AND  ((@p_Mail IS NULL) OR (Dom_Mail.Mail = @p_Mail))
 			AND (clie.Id_Usuario = Dom_Mail.Id_Usuario)
 			AND (Usuar.Id_Usuario = clie.Id_Usuario)
-			AND (Usuar.Habilitado = 1)
  END
  GO
  
- 
+ --TODO
  GO
  CREATE PROCEDURE [LOS_OPTIMISTAS].[AltaCliente]
 (
@@ -181,8 +180,8 @@ BEGIN
 			Empr.Cuit 'CUIT',
 			Empr.Fecha_Creacion'Fecha Creacion',
 			Dom_Mail.Mail 'Mail',
-			Dom_Mail.Domicilio 'Domicilio'
-			
+			Dom_Mail.Domicilio 'Domicilio',
+			Habilitado
 			
 			
 			FROM LOS_OPTIMISTAS.Empresa Empr, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usar
@@ -193,7 +192,6 @@ BEGIN
 			AND  ((@p_Email IS NULL) OR ( Dom_Mail.Mail like @p_Email  + '%'))
 			AND  (Empr.ID_Usuario = Dom_Mail.Id_Usuario)
 			AND (Usar.Id_Usuario = Empr.ID_Usuario)
-			AND (Usar.Habilitado = 1)
 			
  END
  GO
@@ -757,6 +755,19 @@ BEGIN
 	SET @Valido = @@ROWCOUNT
 
 	RETURN @Valido
+END
+GO
+
+--TODO
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_VerificarPrimerInicio]
+(
+@p_Id_Usuario varchar(20)
+)
+AS
+BEGIN
+
+	SELECT Ultima_Fecha FROM LOS_OPTIMISTAS.Usuario Usr WHERE @p_Id_Usuario = Usr.Id_Usuario
+	
 END
 GO
 

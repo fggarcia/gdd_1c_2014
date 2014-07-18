@@ -41,6 +41,7 @@
             this.buttonVolver = new System.Windows.Forms.Button();
             this.buttonModificar = new System.Windows.Forms.Button();
             this.dgvEmpresa = new System.Windows.Forms.DataGridView();
+            this.buttonHabilitar = new System.Windows.Forms.Button();
             this.groupBoxTituloBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpresa)).BeginInit();
             this.SuspendLayout();
@@ -134,7 +135,7 @@
             // 
             // buttonEliminar
             // 
-            this.buttonEliminar.Location = new System.Drawing.Point(365, 482);
+            this.buttonEliminar.Location = new System.Drawing.Point(252, 482);
             this.buttonEliminar.Name = "buttonEliminar";
             this.buttonEliminar.Size = new System.Drawing.Size(106, 37);
             this.buttonEliminar.TabIndex = 19;
@@ -172,11 +173,22 @@
             this.dgvEmpresa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpresa_CellClick);
             this.dgvEmpresa.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmpresa_CellContentClick);
             // 
+            // buttonHabilitar
+            // 
+            this.buttonHabilitar.Location = new System.Drawing.Point(476, 482);
+            this.buttonHabilitar.Name = "buttonHabilitar";
+            this.buttonHabilitar.Size = new System.Drawing.Size(106, 37);
+            this.buttonHabilitar.TabIndex = 24;
+            this.buttonHabilitar.Text = "Habilitar";
+            this.buttonHabilitar.UseVisualStyleBackColor = true;
+            this.buttonHabilitar.Click += new System.EventHandler(this.buttonHabilitar_Click);
+            // 
             // FormEmpresaModElim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(846, 538);
+            this.Controls.Add(this.buttonHabilitar);
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.groupBoxTituloBusqueda);
             this.Controls.Add(this.buttonLimpiar);
@@ -186,6 +198,7 @@
             this.Controls.Add(this.dgvEmpresa);
             this.Name = "FormEmpresaModElim";
             this.Text = "Búsqueda de Empresa";
+            this.Load += new System.EventHandler(this.FormEmpresaModElim_Load);
             this.groupBoxTituloBusqueda.ResumeLayout(false);
             this.groupBoxTituloBusqueda.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpresa)).EndInit();
@@ -208,5 +221,6 @@
         private System.Windows.Forms.Button buttonVolver;
         private System.Windows.Forms.Button buttonModificar;
         private System.Windows.Forms.DataGridView dgvEmpresa;
+        private System.Windows.Forms.Button buttonHabilitar;
     }
 }

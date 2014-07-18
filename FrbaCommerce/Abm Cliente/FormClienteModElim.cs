@@ -19,6 +19,7 @@ namespace FrbaCommerce.Abm_Cliente
             InitializeComponent();
             buttonModificar.Enabled = false;
             buttonEliminar.Enabled = false;
+            buttonHabilitar.Enabled = false;
             Procedimientos.LlenarComboBox(comboBoxTipoDoc, "LOS_OPTIMISTAS.Tipo_Documento", "Id_Tipo_Documento", "Id_Tipo_Documento", null, null);
         }
 
@@ -31,6 +32,10 @@ namespace FrbaCommerce.Abm_Cliente
         {
             buttonModificar.Enabled = true;
             buttonEliminar.Enabled = true;
+            if (Convert.ToBoolean(dgvCliente.CurrentRow.Cells[7].Value))
+                buttonHabilitar.Enabled = false;
+            if (!Convert.ToBoolean(dgvCliente.CurrentRow.Cells[7].Value))
+                buttonHabilitar.Enabled = true;
         }
 
         private void buttonEliminar_Click(object sender, EventArgs e)
@@ -48,7 +53,7 @@ namespace FrbaCommerce.Abm_Cliente
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
-        { 
+        {
             Procedimientos.limpiarTextBoxes(this);
             Procedimientos.limpiarComboBoxes(this);
             Procedimientos.limpiarDataGridViews(dgvCliente);
@@ -85,6 +90,14 @@ namespace FrbaCommerce.Abm_Cliente
             MdiParent.Size = formABMCliente.Size + Constantes.aumentoTamanio;
             this.Close();
             formABMCliente.Show();
+        }
+
+        private void buttonHabilitar_Click(object sender, EventArgs e)
+        {
+            SqlCommand command = new SqlCommand();
+            command.CommandText = Constantes.procedimientoHabilitarUsuario;
+            command.Parameters.AddWithValue("@p_Id_Usuario", Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value));
+            Procedimientos.ejecutarStoredProcedure(command, "Habilitacion de usuario", true);
         }
 
     }

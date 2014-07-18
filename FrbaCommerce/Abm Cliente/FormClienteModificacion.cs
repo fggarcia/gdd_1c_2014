@@ -73,7 +73,7 @@ namespace FrbaCommerce.Abm_Cliente
             SqlCommand command = new SqlCommand();
             command.CommandText = Constantes.procedimientoHabilitarUsuario;
             command.Parameters.AddWithValue("@p_Id_Usuario", idUsuario);
-            Procedimientos.ejecutarStoredProcedure(command, "Habilitar Usuarioa", false);
+            Procedimientos.ejecutarStoredProcedure(command, "Habilitacion de usuario", false);
         }
     }
 }

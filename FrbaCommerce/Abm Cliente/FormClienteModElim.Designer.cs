@@ -45,6 +45,7 @@
             this.buttonVolver = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonBuscar = new System.Windows.Forms.Button();
+            this.buttonHabilitar = new System.Windows.Forms.Button();
             this.groupBoxTituloBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCliente)).BeginInit();
             this.SuspendLayout();
@@ -170,7 +171,7 @@
             // 
             // buttonEliminar
             // 
-            this.buttonEliminar.Location = new System.Drawing.Point(386, 485);
+            this.buttonEliminar.Location = new System.Drawing.Point(276, 485);
             this.buttonEliminar.Name = "buttonEliminar";
             this.buttonEliminar.Size = new System.Drawing.Size(106, 37);
             this.buttonEliminar.TabIndex = 12;
@@ -218,11 +219,22 @@
             this.buttonBuscar.UseVisualStyleBackColor = true;
             this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click_1);
             // 
+            // buttonHabilitar
+            // 
+            this.buttonHabilitar.Location = new System.Drawing.Point(514, 485);
+            this.buttonHabilitar.Name = "buttonHabilitar";
+            this.buttonHabilitar.Size = new System.Drawing.Size(106, 37);
+            this.buttonHabilitar.TabIndex = 17;
+            this.buttonHabilitar.Text = "Habilitar";
+            this.buttonHabilitar.UseVisualStyleBackColor = true;
+            this.buttonHabilitar.Click += new System.EventHandler(this.buttonHabilitar_Click);
+            // 
             // FormClienteModElim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(875, 538);
+            this.Controls.Add(this.buttonHabilitar);
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonVolver);
@@ -259,5 +271,6 @@
         private System.Windows.Forms.Button buttonVolver;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonBuscar;
+        private System.Windows.Forms.Button buttonHabilitar;
     }
 }

@@ -17,6 +17,7 @@ namespace FrbaCommerce.Abm_Empresa
             InitializeComponent();
             buttonModificar.Enabled = false;
             buttonEliminar.Enabled = false;
+            buttonHabilitar.Enabled = false;
         }
 
         private void buttonEliminar_Click(object sender, EventArgs e)
@@ -37,6 +38,10 @@ namespace FrbaCommerce.Abm_Empresa
         {
             buttonModificar.Enabled = true;
             buttonEliminar.Enabled = true;
+            if (Convert.ToBoolean(dgvEmpresa.CurrentRow.Cells[6].Value))
+                buttonHabilitar.Enabled = false;
+            if (!Convert.ToBoolean(dgvEmpresa.CurrentRow.Cells[6].Value))
+                buttonHabilitar.Enabled = true;
         }
 
         private void buttonModificar_Click(object sender, EventArgs e)
@@ -69,6 +74,19 @@ namespace FrbaCommerce.Abm_Empresa
         private void dgvEmpresa_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void FormEmpresaModElim_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonHabilitar_Click(object sender, EventArgs e)
+        {
+            SqlCommand command = new SqlCommand();
+            command.CommandText = Constantes.procedimientoHabilitarUsuario;
+            command.Parameters.AddWithValue("@p_Id_Usuario", Convert.ToString(dgvEmpresa.CurrentRow.Cells[0].Value));
+            Procedimientos.ejecutarStoredProcedure(command, "Habilitacion de usuario", true);
         }
 
 
