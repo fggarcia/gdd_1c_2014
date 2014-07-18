@@ -160,4 +160,8 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_Calificar
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarVendedoresACalificar
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionMensual
+
 DROP SCHEMA LOS_OPTIMISTAS
