@@ -176,10 +176,10 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionTOP5
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionMensual
 
-DROP PROCEDURE [proc_ListadoEstadisticoProductosNoVendidosTOP5]
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosTOP5
 
-DROP PROCEDURE proc_ListadoEstadisticoProductosNoVendidosMensual
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosMensual
 
-DROP PROCEDURE HabilitarUsuario
+DROP PROCEDURE LOS_OPTIMISTAS.HabilitarUsuario
 
 DROP SCHEMA LOS_OPTIMISTAS

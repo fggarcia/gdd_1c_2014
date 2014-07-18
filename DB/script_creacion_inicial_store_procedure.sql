@@ -1017,7 +1017,7 @@ BEGIN
 				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
 			WHERE
 			pub.Id_Usuario = @p_Id_Usuario
-			((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
+			AND ((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
 			AND @p_Id_Publicacion = pub.Id_Publicacion
  END
  GO
@@ -1579,7 +1579,7 @@ BEGIN
 	SELECT TOP 5 [Id_Usuario]
 			,SUM([Total_Comisiones]) AS "Total Comisiones"
             ,SUM([Total_Visibilidad]) AS "Total Visbilidad"
-			,SUM(Total_Factura)) AS Cantidad
+			,SUM(Total_Factura) AS Cantidad
 			
 	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
      WHERE [Fecha] >= @fecha_desde
