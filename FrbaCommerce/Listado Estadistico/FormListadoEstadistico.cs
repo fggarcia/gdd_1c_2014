@@ -274,7 +274,7 @@ namespace FrbaCommerce.Listado_Estadistico
 
             generarListadoEstadistico(Constantes.procedimientoMayorCalificacionTOP5, Constantes.procedimientoMayorCalificacionMensual, "@id_vendedor");
 
-            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Calificaciones".ToUpper();
+            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Promedio Total de Calificaciones".ToUpper();
 
         }
 
@@ -290,5 +290,11 @@ namespace FrbaCommerce.Listado_Estadistico
             dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Publicaciones Sin Clacificar".ToUpper();
 
         }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

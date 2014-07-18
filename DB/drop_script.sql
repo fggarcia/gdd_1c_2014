@@ -164,4 +164,8 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionMensual
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionTOP5
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionMensual
+
 DROP SCHEMA LOS_OPTIMISTAS

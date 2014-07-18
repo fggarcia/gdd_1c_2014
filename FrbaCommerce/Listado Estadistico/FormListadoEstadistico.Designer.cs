@@ -37,6 +37,9 @@
             this.btnMayorCalificacion = new System.Windows.Forms.Button();
             this.btnPublicacionesSinCalificar = new System.Windows.Forms.Button();
             this.dgvListadoEstadistico = new System.Windows.Forms.DataGridView();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListadoEstadistico)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,16 +120,46 @@
             // dgvListadoEstadistico
             // 
             this.dgvListadoEstadistico.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListadoEstadistico.Location = new System.Drawing.Point(11, 97);
+            this.dgvListadoEstadistico.Location = new System.Drawing.Point(11, 128);
             this.dgvListadoEstadistico.Name = "dgvListadoEstadistico";
-            this.dgvListadoEstadistico.Size = new System.Drawing.Size(698, 299);
+            this.dgvListadoEstadistico.Size = new System.Drawing.Size(698, 308);
             this.dgvListadoEstadistico.TabIndex = 8;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(204, 88);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(145, 91);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Visibilidad";
+            // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(331, 454);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(75, 23);
+            this.btnVolver.TabIndex = 11;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // FormListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 408);
+            this.ClientSize = new System.Drawing.Size(735, 480);
+            this.Controls.Add(this.btnVolver);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dgvListadoEstadistico);
             this.Controls.Add(this.btnPublicacionesSinCalificar);
             this.Controls.Add(this.btnMayorCalificacion);
@@ -156,5 +189,8 @@
         private System.Windows.Forms.Button btnMayorCalificacion;
         private System.Windows.Forms.Button btnPublicacionesSinCalificar;
         private System.Windows.Forms.DataGridView dgvListadoEstadistico;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnVolver;
     }
 }
