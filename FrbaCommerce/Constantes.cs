@@ -53,6 +53,7 @@ namespace FrbaCommerce
         public const String procedimientoCalificar = "LOS_OPTIMISTAS.proc_Calificar";
 
         public const String procedimientoPerformSubasta = "LOS_OPTIMISTAS.proc_aceptarSubasta";
+        public const String procedimientoObtenerPrecioSubasta = "LOS_OPTIMISTAS.proc_obtenerPrecioSubasta";
         public const String procedimientoPerformCompra = "LOS_OPTIMISTAS.proc_aceptarCompra";
         
         public const String procedimientoMayorFacturacionTOP5 = "LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5";

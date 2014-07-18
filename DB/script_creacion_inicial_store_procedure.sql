@@ -1093,6 +1093,78 @@ BEGIN
  END
  GO
 
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_aceptarSubasta]
+(
+	@Id_Usuario varchar(20),
+	@Id_Publicacion numeric(18,0),
+	@Bidding_Price numeric(18,2)
+)
+AS
+BEGIN
+	BEGIN TRANSACTION
+
+		INSERT INTO LOS_OPTIMISTAS.Historial_Subasta (Id_Publicacion,Id_Usuario,Precio_Oferta,
+			Fecha_Oferta)
+		VALUES (@Id_Publicacion,@Id_Usuario,@Bidding_Price,GETDATE())
+
+	COMMIT TRANSACTION
+END
+
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_aceptarCompra]
+(
+	@Id_Usuario varchar(20),
+	@Id_Publicacion numeric(18,0),
+	@CountToBuy int,
+	@Visibility_Description varchar(255)
+)
+AS
+BEGIN
+	Declare @Id_Usuario_Vendedor numeric(18,0)
+	Declare @Id_Articulo numeric(18,0)
+	Declare @Porcentaje numeric(18,2)
+	Declare @Precio_Publicacion numeric(18,2)
+	Declare @Cantidad_Despues_Venta numeric(18,0)
+	Declare @Estado_Finalizado int
+
+	SELECT @Id_Usuario_Vendedor = Id_Usuario, @Id_Articulo = Id_Articulo, @Porcentaje = porcentaje,
+		@Precio_Publicacion = pub.Precio FROM LOS_OPTIMISTAS.Publicacion pub
+		INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON pub.Id_Visibilidad = visi.Id_Visibilidad
+		WHERE Id_Publicacion = @Id_Publicacion
+
+	BEGIN TRANSACTION
+
+		INSERT INTO LOS_OPTIMISTAS.Historial_Compra (Id_Vendedor, Id_Comprador,Id_Publicacion,
+			Id_Articulo,Compra_Cantidad,Compra_Fecha,Calificado)
+		VALUES (@Id_Usuario_Vendedor, @Id_Usuario, @Id_Publicacion,@Id_Articulo, @CountToBuy,
+			GETDATE(),0)
+
+		INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario,Id_Usuario_Comprador,Id_Publicacion,
+			Comision,Cantidad,Precio_Publicacion,Visibilidad)
+		VALUES (@Id_Usuario_Vendedor,@Id_Usuario,@Id_Publicacion,@Porcentaje,@CountToBuy,@Precio_Publicacion,
+			@Visibility_Description)
+
+		UPDATE LOS_OPTIMISTAS.Stock SET Cantidad = Cantidad - @CountToBuy WHERE
+			Id_Articulo = @Id_Articulo AND Id_Usuario = @Id_Usuario_Vendedor
+
+		SELECT @Cantidad_Despues_Venta = Cantidad FROM LOS_OPTIMISTAS.Stock
+			WHERE Id_Articulo = @Id_Articulo AND Id_Usuario = @Id_Usuario_Vendedor
+
+		IF (@Cantidad_Despues_Venta <= 0)
+		BEGIN
+			SELECT @Estado_Finalizado = Id_Estado FROM LOS_OPTIMISTAS.Estado
+				WHERE Descripcion = 'FINALIZADA'
+
+			UPDATE LOS_OPTIMISTAS.Estado_Publicacion SET Id_Estado = @Estado_Finalizado
+				WHERE Id_Publicacion = @Id_Publicacion
+		END
+
+	COMMIT TRANSACTION
+END
+
+GO
+
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]

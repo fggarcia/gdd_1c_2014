@@ -150,6 +150,10 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerPublicacion
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarSubasta
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarCompra
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
