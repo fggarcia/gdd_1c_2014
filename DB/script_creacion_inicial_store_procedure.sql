@@ -1166,6 +1166,25 @@ END
 
 GO
 
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_obtenerPrecioSubasta](
+	@Id_Publicacion numeric(18,0)
+)
+AS
+BEGIN
+	Declare @Precio_Subasta_Actual numeric(18,2)
+	
+	SELECT TOP 1 @Precio_Subasta_Actual = Precio_Oferta FROM LOS_OPTIMISTAS.Historial_Subasta 
+		WHERE Id_Publicacion = @Id_Publicacion
+		ORDER BY Precio_Oferta DESC
+
+	IF (@Precio_Subasta_Actual IS NULL)
+		SELECT @Precio_Subasta_Actual = Precio FROM LOS_OPTIMISTAS.Publicacion
+			WHERE Id_Publicacion = @Id_Publicacion
+
+	RETURN @Precio_Subasta_Actual
+END	
+GO
+
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]

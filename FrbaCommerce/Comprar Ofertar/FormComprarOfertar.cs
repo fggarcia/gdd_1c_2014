@@ -98,7 +98,6 @@ namespace FrbaCommerce.Comprar_Ofertar
             }
         }
 
-        private void FormComprarOfertar2_Load(object sender, EventArgs e)
         private void FormComprarOfertar_Load(object sender, EventArgs e)
         {
             this.AutoValidate = AutoValidate.EnableAllowFocusChange;

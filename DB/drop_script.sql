@@ -154,6 +154,8 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarSubasta
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarCompra
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_obtenerPrecioSubasta
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
