@@ -20,7 +20,8 @@ BEGIN
 			Clie.Id_Tipo_Documento 'Tipo Documento',
 			Clie.Dni 'Numero Documento',
 			Clie.Fecha_Nacimiento 'Fecha Nac',
-			Dom_Mail.Mail 'Email'
+			Dom_Mail.Mail 'Email',
+			Habilitado
  
 			FROM LOS_OPTIMISTAS.Cliente Clie, LOS_OPTIMISTAS.Dom_Mail Dom_Mail, LOS_OPTIMISTAS.Usuario Usuar
 			
@@ -89,6 +90,22 @@ BEGIN
 		UPDATE LOS_OPTIMISTAS.Usuario set Habilitado = 0 Where ( Id_Usuario = @p_Id_Usuario)
 		ELSE
 		PRINT ' No se encontro el Usuario'
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[HabilitarUsuario]
+(
+@p_Id_Usuario varchar(20)
+)
+
+AS
+BEGIN
+
+		IF EXISTS( select * from LOS_OPTIMISTAS.Usuario Where( Id_Usuario = @p_Id_Usuario)) 
+		UPDATE LOS_OPTIMISTAS.Usuario set Habilitado = 1 Where ( Id_Usuario = @p_Id_Usuario)
+		ELSE
+		PRINT ' No se encontro el Usuario'
+
 END
 GO
 

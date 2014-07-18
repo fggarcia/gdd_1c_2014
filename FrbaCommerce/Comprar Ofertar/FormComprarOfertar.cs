@@ -88,11 +88,10 @@ namespace FrbaCommerce.Comprar_Ofertar
             SqlConnection conn = Procedimientos.abrirConexion();
             SqlCommand command = new SqlCommand(Constantes.procedimientoMostrarPublicacionesComprarOfertar, conn);
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@p_IdUsuario", FormSeleccionRol.usuario.user_id);
-            command.Parameters.AddWithValue("@p_Description", descripcion);
+            command.Parameters.AddWithValue("@p_Id_Usuario", FormSeleccionRol.usuario.user_id);
+            //command.Parameters.AddWithValue("@p_Description", descripcion);
 
             SqlDataAdapter da = new SqlDataAdapter(command);
-
             ds = new DataSet();
             da.Fill(ds, "Publicaciones");
             dtSource = ds.Tables["Publicaciones"];
@@ -170,12 +169,6 @@ namespace FrbaCommerce.Comprar_Ofertar
                 CargarPagina();
             }
         }
-
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            CargarDataGridView(txtDescription.Text);
-        }
-
         private void btnSearch_Click_1(object sender, EventArgs e)
         {
             var comandos = new List<SqlDataAdapter>();

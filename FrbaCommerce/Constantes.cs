@@ -32,6 +32,7 @@ namespace FrbaCommerce
         public const String procedimientoMostrarPublicacionesComprarOfertar = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
 
         public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.BajaUsuario";
+        public const String procedimientoHabilitarUsuario = "LOS_OPTIMISTAS.HabilitarUsuario";
 
         public const String listarMenuFuncionalidades = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
 

@@ -62,6 +62,7 @@ namespace FrbaCommerce.Abm_Cliente
             formClienteMod.Show();
             SqlConnection conn = Procedimientos.abrirConexion();
             formClienteMod.idUsuario = Convert.ToString(dgvCliente.CurrentRow.Cells[0].Value);
+
             Procedimientos.cerrarConexion(conn);
             this.Close();
         }

@@ -67,5 +67,13 @@ namespace FrbaCommerce.Abm_Cliente
         private void FormClienteModificacion_Load(object sender, EventArgs e)
         {
         }
+
+        private void buttonHabilitar_Click(object sender, EventArgs e)
+        {
+            SqlCommand command = new SqlCommand();
+            command.CommandText = Constantes.procedimientoHabilitarUsuario;
+            command.Parameters.AddWithValue("@p_Id_Usuario", idUsuario);
+            Procedimientos.ejecutarStoredProcedure(command, "Habilitar Usuarioa", false);
+        }
     }
 }

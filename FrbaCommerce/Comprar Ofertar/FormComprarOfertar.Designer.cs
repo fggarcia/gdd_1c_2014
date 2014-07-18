@@ -34,7 +34,7 @@
             this.buttonSiguiente = new System.Windows.Forms.Button();
             this.buttonAnterior = new System.Windows.Forms.Button();
             this.buttonPrimera = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonComprarOfertar = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnClean = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -101,15 +101,15 @@
             this.buttonPrimera.UseVisualStyleBackColor = true;
             this.buttonPrimera.Click += new System.EventHandler(this.buttonPrimera_Click);
             // 
-            // button1
+            // buttonComprarOfertar
             // 
-            this.button1.Location = new System.Drawing.Point(705, 424);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 38);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Comprar/Ofertar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonComprarOfertar.Location = new System.Drawing.Point(705, 424);
+            this.buttonComprarOfertar.Name = "buttonComprarOfertar";
+            this.buttonComprarOfertar.Size = new System.Drawing.Size(97, 38);
+            this.buttonComprarOfertar.TabIndex = 16;
+            this.buttonComprarOfertar.Text = "Comprar/Ofertar";
+            this.buttonComprarOfertar.UseVisualStyleBackColor = true;
+            this.buttonComprarOfertar.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnSearch
             // 
@@ -175,7 +175,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonComprarOfertar);
             this.Controls.Add(this.labelPaginaActual);
             this.Controls.Add(this.dgvPublicaciones);
             this.Controls.Add(this.buttonUltimaPagina);
@@ -200,7 +200,7 @@
         private System.Windows.Forms.Button buttonSiguiente;
         private System.Windows.Forms.Button buttonAnterior;
         private System.Windows.Forms.Button buttonPrimera;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonComprarOfertar;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnClean;
         private System.Windows.Forms.Label label2;
