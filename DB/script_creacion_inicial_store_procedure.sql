@@ -1416,3 +1416,65 @@ BEGIN
 	UPDATE Historial_Compra SET Calificado = @Calificado WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END
 GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorFacturacionTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 [Id_Usuario]
+			,SUM([Total_Comisiones])
+            ,SUM([Total_Visibilidad])
+			,SUM(Total_Factura) AS Cantidad
+			
+	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
+     WHERE [Fecha] >= @fecha_desde
+	   AND [Fecha] <  @fecha_hasta
+    GROUP BY [Id_Usuario]
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorFacturacionMensual]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_usuario varchar(20)
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 [Id_Usuario]
+			,SUM([Total_Comisiones]) AS "Total Comisiones"
+            ,SUM([Total_Visibilidad]) AS "Total Visbilidad"
+			,SUM(Total_Factura)) AS Cantidad
+			
+	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
+     WHERE [Fecha] >= @fecha_desde
+	   AND [Fecha] <  @fecha_hasta
+	   AND Id_Usuario = @id_usuario
+    GROUP BY [Id_Usuario]
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/

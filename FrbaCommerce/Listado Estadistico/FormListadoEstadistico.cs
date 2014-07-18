@@ -54,7 +54,7 @@ namespace FrbaCommerce.Listado_Estadistico
             DataTable tableTop5 = new DataTable();
 
             SqlCommand command = new SqlCommand();
-            command.CommandText = Constantes.procedimientoModificarCliente;
+            command.CommandText = storedProcedure;
 
             command.Parameters.AddWithValue("@fecha_desde", obtenerFechaDesdeTrimestre(cmbAño.Text, cmbTrimestre.Text));
             command.Parameters.AddWithValue("@fecha_hasta", obtenerFechaHastaTrimestre(cmbAño.Text, cmbTrimestre.Text));
@@ -101,7 +101,7 @@ namespace FrbaCommerce.Listado_Estadistico
             Int32 añoNumerico = mesHasta.Equals("12") ? Convert.ToInt32(año) + 1 : Convert.ToInt32(año);
             Int32 mesNumerico = mesHasta.Equals("12") ? 1 : Convert.ToInt32(mesHasta);
 
-            return new DateTime(añoNumerico, Convert.ToInt32(mesHasta), 1, 0, 0, 0); // Se pone 00:00:00 porque quiero el instante inicial del dia
+            return new DateTime(añoNumerico, mesNumerico, 1, 0, 0, 0); // Se pone 00:00:00 porque quiero el instante inicial del dia
         }
 
         private String obtenerMesHastaTrimestre(String trimestre)
@@ -161,13 +161,14 @@ namespace FrbaCommerce.Listado_Estadistico
 
         private void getMonthColumns(string storedProcedureName, string parameter1, DataTable tablaTop5, DataGridView dataGridView)
         {
-            obtenerMesHastaTrimestre(cmbTrimestre.Text);
             int mesInicialTrimestre = Convert.ToInt32(obtenerMesDesdeTrimestre(cmbTrimestre.Text));
             int mesFinalTrimestre = Convert.ToInt32(obtenerMesHastaTrimestre(cmbTrimestre.Text));
 
+            mesFinalTrimestre = mesFinalTrimestre == 12 ? 13 : mesFinalTrimestre;
+
             DateTimeFormatInfo dtInfo = new CultureInfo("es-ES", false).DateTimeFormat;
 
-            for (int i = mesInicialTrimestre; i <= mesFinalTrimestre; i++)
+            for (int i = mesInicialTrimestre; i < mesFinalTrimestre; i++)
             {
                 dataGridView.Columns.Add(dtInfo.GetMonthName(i), dtInfo.GetMonthName(i).ToUpper());
 
@@ -179,16 +180,17 @@ namespace FrbaCommerce.Listado_Estadistico
 
                     command.CommandText = storedProcedureName;
 
-                    command.Parameters.AddWithValue(parameter1, Convert.ToInt32(tablaTop5.Rows[j][0].ToString()));
+                    command.Parameters.AddWithValue(parameter1, tablaTop5.Rows[j][0]);
 
-                    command.Parameters.AddWithValue("@fecha_desde", obtenerFechaDesdeTrimestre(cmbAño.Text, cmbTrimestre.Text));
-                    command.Parameters.AddWithValue("@fecha_hasta", obtenerFechaHastaTrimestre(cmbAño.Text, cmbTrimestre.Text));
+                    command.Parameters.AddWithValue("@fecha_desde", new DateTime(Convert.ToInt32(cmbAño.Text), i, 1));
+                    command.Parameters.AddWithValue("@fecha_hasta", new DateTime(i == 12 ? Convert.ToInt32(cmbAño.Text) + 1 : Convert.ToInt32(cmbAño.Text), i == 12 ? 1 : i + 1, 1));
 
                     Procedimientos.llenarDataTable(command, CommandType.StoredProcedure, tableResultadoMensual);
 
                     if (tableResultadoMensual.Rows.Count > 0)
                         dataGridView.Rows[j].Cells[dtInfo.GetMonthName(i)].Value = tableResultadoMensual.Rows[0]["Cantidad"].ToString();
-
+                    else
+                        dataGridView.Rows[j].Cells[dtInfo.GetMonthName(i)].Value = 0;
                 }
             }
         }
@@ -210,7 +212,7 @@ namespace FrbaCommerce.Listado_Estadistico
             }
         }
 
-        private bool validateForm()
+        private bool isFormValidated()
         {
 
             bool passed = this.ValidateChildren();
@@ -235,50 +237,57 @@ namespace FrbaCommerce.Listado_Estadistico
 
             getTotalColumn(tableTop5, dgvListadoEstadistico);
 
-            setDataGridViewSettings(dgvListadoEstadistico); 
+            setDataGridViewSettings(dgvListadoEstadistico);
         }
 
         private void btnMayorFacturacion_Click(object sender, EventArgs e)
         {
-            if (validateForm())
+            if (!isFormValidated())
             {
                 return;
             }
 
-            generarListadoEstadistico(Constantes.procedimientoMayorFacturacionTOP5, Constantes.procedimientoMayorFacturacionMensual, "@id_vendedor");
+            generarListadoEstadistico(Constantes.procedimientoMayorFacturacionTOP5, Constantes.procedimientoMayorFacturacionMensual, "@id_usuario");
+
+            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Facturación".ToUpper();
 
         }
 
         private void btnProductosNoVendidos_Click(object sender, EventArgs e)
         {
-            if (validateForm())
+            if (!isFormValidated())
             {
                 return;
             }
 
             generarListadoEstadistico(Constantes.procedimientoProductosNoVendidosTOP5, Constantes.procedimientoProductosNoVendidosMensual, "@id_vendedor");
 
+            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Productos no Vendidos".ToUpper();
         }
 
         private void btnMayorCalificacion_Click(object sender, EventArgs e)
         {
-            if (validateForm())
+            if (!isFormValidated())
             {
                 return;
             }
 
             generarListadoEstadistico(Constantes.procedimientoMayorCalificacionTOP5, Constantes.procedimientoMayorCalificacionMensual, "@id_vendedor");
 
+            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Calificaciones".ToUpper();
+
         }
 
         private void btnPublicacionesSinCalificar_Click(object sender, EventArgs e)
         {
-            if (validateForm())
+            if (!isFormValidated())
             {
                 return;
             }
 
             generarListadoEstadistico(Constantes.procedimientoPublicacionesSinCalificarTOP5, Constantes.procedimientoPublicacionesSinCalificarMensual, "@id_cliente");
+
+            dgvListadoEstadistico.Columns["TOTAL"].HeaderText = "Total Publicaciones Sin Clacificar".ToUpper();
 
         }
     }
