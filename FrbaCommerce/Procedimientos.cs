@@ -341,6 +341,23 @@ namespace FrbaCommerce
             }
         }
 
+        public static void limpiarCheckBoxes(Control parent)
+        {
+            TextBox t;
+            foreach (Control c in parent.Controls)
+            {
+                t = c as TextBox;
+                if (t != null)
+                {
+                    t.Clear();
+                }
+                if (c.Controls.Count > 0)
+                {
+                    limpiarTextBoxes(c);
+                }
+            }
+        }
+
         public static void limpiarComboBoxes(Control parent)
         {
             ComboBox t;

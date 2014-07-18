@@ -37,7 +37,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnClean = new System.Windows.Forms.Button();
-            this.txtEntry = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -120,6 +119,7 @@
             this.btnSearch.TabIndex = 22;
             this.btnSearch.Text = "Buscar";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click_1);
             // 
             // btnClean
             // 
@@ -129,13 +129,7 @@
             this.btnClean.TabIndex = 21;
             this.btnClean.Text = "Limpiar";
             this.btnClean.UseVisualStyleBackColor = true;
-            // 
-            // txtEntry
-            // 
-            this.txtEntry.Location = new System.Drawing.Point(406, 24);
-            this.txtEntry.Name = "txtEntry";
-            this.txtEntry.Size = new System.Drawing.Size(189, 20);
-            this.txtEntry.TabIndex = 20;
+            this.btnClean.Click += new System.EventHandler(this.btnClean_Click);
             // 
             // label2
             // 
@@ -178,7 +172,6 @@
             this.Controls.Add(this.dgvRubros);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnClean);
-            this.Controls.Add(this.txtEntry);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label1);
@@ -210,7 +203,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnClean;
-        private System.Windows.Forms.TextBox txtEntry;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label1;
