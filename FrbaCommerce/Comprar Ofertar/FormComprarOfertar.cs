@@ -195,7 +195,7 @@ namespace FrbaCommerce.Comprar_Ofertar
                     comando.CommandType = CommandType.StoredProcedure;
                     comando.Parameters.AddWithValue("p_Id_Usuario", FormSeleccionRol.usuario.user_id);
                     comando.Parameters.AddWithValue("p_Id_Rubro", id_Rubro);
-                    comando.CommandText = "LOS_OPTIMISTAS.proc_ListarPublicacionesPorRubro";
+                    comando.CommandText = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
                     comando.Connection = conn;
                     comando.CommandType = CommandType.StoredProcedure;
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(comando);

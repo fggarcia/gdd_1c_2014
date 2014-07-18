@@ -180,4 +180,6 @@ DROP PROCEDURE [proc_ListadoEstadisticoProductosNoVendidosTOP5]
 
 DROP PROCEDURE proc_ListadoEstadisticoProductosNoVendidosMensual
 
+DROP PROCEDURE HabilitarUsuario
+
 DROP SCHEMA LOS_OPTIMISTAS
