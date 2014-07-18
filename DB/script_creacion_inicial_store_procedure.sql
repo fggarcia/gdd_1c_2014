@@ -1066,7 +1066,8 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
 
 (
 	@p_IdUsuario varchar(20) = null,
-	@p_Description varchar(255) = null
+	@p_Description varchar(255) = null,
+	@p_Id_Rubro int = null
 )
 AS
 BEGIN
@@ -1085,9 +1086,11 @@ BEGIN
 				INNER JOIN LOS_OPTIMISTAS.Estado est ON estPub.Id_Estado = est.Id_Estado
 				INNER JOIN LOS_OPTIMISTAS.Tipo_Publicacion tiPub ON pub.Id_Tipo_Publicacion = tiPub.Id_Tipo_Publicacion
 				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
+				INNER JOIN LOS_OPTIMISTAS.Rubro_Publicacion rubPub ON rubPub.Id_Publicacion = pub.Id_Publicacion
 			WHERE
 			pub.Id_Usuario != @p_IdUsuario
 			AND ((@p_Description IS NULL) OR ( pub.Descripcion like '%' + @p_Description  + '%'))
+			AND ((@p_Id_Rubro IS NULL) OR ( rubPub.Id_Rubro = @p_Id_Rubro))
 			AND est.Descripcion IN ('ACTIVA','PAUSADA')
 			AND DATEDIFF(DAY,pub.Fecha_Vencimiento, GETDATE()) <= 0
 			ORDER BY visi.Peso ASC, pub.Id_Publicacion ASC
@@ -1685,52 +1688,12 @@ GO
 /*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
 
 /*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
-
-
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
-
-(
-	@p_IdUsuario varchar(20) = null,
-	@p_Description varchar(255) = null
-)
-AS
-BEGIN
-
-SELECT Id_Publicacion, Precio, Descripcion FROM Publicacion
-WHERE Id_Usuario != @p_IdUsuario
-
-END
-GO
-
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRubros]
 
 AS
 BEGIN
 
 SELECT Id_Rubro 'Rubro',Descripcion FROM Rubro
-
-END
-GO
-
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesPorRubro]
-
-(
-	@p_Id_Usuario varchar(20) = null,
-	@p_Id_Rubro int = null
-)
-
-AS
-BEGIN
-
-	SELECT
-			
-			pub.Id_Publicacion 'Codigo Publicacion',
-			pub.Descripcion 'Descripcion'
-			
-			FROM LOS_OPTIMISTAS.Publicacion pub
-			WHERE
-			pub.Id_Usuario != @p_Id_Usuario
-			AND pub.Id_Rubro = @p_Id_Rubro
 
 END
 GO

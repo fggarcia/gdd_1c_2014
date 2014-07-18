@@ -166,8 +166,6 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_Calificar
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarVendedoresACalificar
 
-DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarPublicacionesPorRubro
-
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarRubros
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5
