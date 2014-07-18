@@ -403,7 +403,7 @@ Where Id_Rol = @id_rol
 		END
  END
  GO
- 
+ /*
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_HabilitarRol](
 	@p_Descripcion_Rol varchar(20) = null
 )
@@ -416,7 +416,7 @@ BEGIN
 			UPDATE LOS_OPTIMISTAS.Rol SET Habilitado = 1 WHERE Id_Rol = @p_Id_Rol
 		END
 END
-GO
+GO*/
 
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_EliminarFuncionalidades]
 (
@@ -1026,7 +1026,7 @@ BEGIN
 				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
 			WHERE
 			pub.Id_Usuario = @p_Id_Usuario
-			((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
+			AND ((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
 			AND @p_Id_Publicacion = pub.Id_Publicacion
  END
  GO
@@ -1588,7 +1588,7 @@ BEGIN
 	SELECT TOP 5 [Id_Usuario]
 			,SUM([Total_Comisiones]) AS "Total Comisiones"
             ,SUM([Total_Visibilidad]) AS "Total Visbilidad"
-			,SUM(Total_Factura)) AS Cantidad
+			,SUM(Total_Factura) AS Cantidad
 			
 	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
      WHERE [Fecha] >= @fecha_desde
