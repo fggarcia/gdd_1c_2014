@@ -95,6 +95,7 @@ namespace FrbaCommerce.Generar_Publicacion
             if (this.bidding)
             {
                 this.label3.Text = "Precio Subasta";
+                this.txtCountBuy.Enabled = false;
             }
             MessageBox.Show("Recuerde que solo puede tener 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -231,7 +232,7 @@ namespace FrbaCommerce.Generar_Publicacion
                 checkFreePublication.CommandText = Constantes.procedimientoChequearTresPublicacionesGratuitas;
                 checkFreePublication.CommandType = CommandType.StoredProcedure;
 
-                returnParameter = getIdFreeCommand.Parameters.Add("@NoSuperaCondicion", SqlDbType.Int);
+                returnParameter = checkFreePublication.Parameters.Add("@NoSuperaCondicion", SqlDbType.Int);
                 returnParameter.Direction = ParameterDirection.ReturnValue;
 
                 Int32 conditionFreePublication = Convert.ToInt32(returnParameter.Value);
@@ -267,7 +268,16 @@ namespace FrbaCommerce.Generar_Publicacion
             command.Parameters.AddWithValue("@Fecha_Inicio", dtpFrom.Value);
             command.Parameters.AddWithValue("@Fecha_Vencimiento", dtpTo.Value);
             command.Parameters.AddWithValue("@Permite_Preguntas", chkEnableQuestion.Checked);
-            command.Parameters.AddWithValue("@Cant_por_Venta", txtCountBuy.Text);
+
+            if (bidding)
+            {
+                command.Parameters.AddWithValue("@Cant_por_Venta", txtStock.Text);
+            }
+            else
+            {
+                command.Parameters.AddWithValue("@Cant_por_Venta", txtCountBuy.Text);
+            }
+
             command.Parameters.AddWithValue("@Descripcion", txtDescription.Text);
             command.Parameters.AddWithValue("@Cantidad", txtStock.Text);
 

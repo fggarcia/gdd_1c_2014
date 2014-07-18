@@ -150,6 +150,10 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerIdPublicacionGratuita
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ObtenerPublicacion
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarSubasta
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_aceptarCompra
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ChequearCodigoYDescripcionVisibilidad
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_GenerarPublicacion
@@ -163,5 +167,17 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarVendedoresACalificar
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarPublicacionesPorRubro
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListarRubros
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionTOP5
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorFacturacionMensual
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionTOP5
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoMayorCalificacionMensual
+
+DROP PROCEDURE [proc_ListadoEstadisticoProductosNoVendidosTOP5]
+
+DROP PROCEDURE proc_ListadoEstadisticoProductosNoVendidosMensual
 
 DROP SCHEMA LOS_OPTIMISTAS

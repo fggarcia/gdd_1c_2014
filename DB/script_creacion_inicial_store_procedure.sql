@@ -658,13 +658,10 @@ BEGIN
 
 			SELECT 
 			
-			
 			Publicacion_Preguntas.Id_Usuario 'Usuario',
 			Publicacion_Preguntas.Fecha_Creacion 'Fecha',
 			Publicacion_Preguntas.Id_Publicacion 'Publicacion',
-			Publicacion_Preguntas.Id_Pregunta 'Id Pregunta',
 			Publicacion_Preguntas.Preg_Descripcion 'Pregunta'
-			
 
 			FROM LOS_OPTIMISTAS.Publicacion_Preguntas , LOS_OPTIMISTAS.Publicacion 
 			
@@ -992,6 +989,7 @@ BEGIN
 				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
 			WHERE
 			pub.Id_Usuario = @p_Id_Usuario
+			((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
 			AND @p_Id_Publicacion = pub.Id_Publicacion
  END
  GO
@@ -1063,7 +1061,7 @@ BEGIN
 		END
 END
 GO
-/*
+
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
 
 (
@@ -1095,7 +1093,79 @@ BEGIN
 			ORDER BY visi.Peso ASC, pub.Id_Publicacion ASC
  END
  GO
-*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_aceptarSubasta]
+(
+	@Id_Usuario varchar(20),
+	@Id_Publicacion numeric(18,0),
+	@Bidding_Price numeric(18,2)
+)
+AS
+BEGIN
+	BEGIN TRANSACTION
+
+		INSERT INTO LOS_OPTIMISTAS.Historial_Subasta (Id_Publicacion,Id_Usuario,Precio_Oferta,
+			Fecha_Oferta)
+		VALUES (@Id_Publicacion,@Id_Usuario,@Bidding_Price,GETDATE())
+
+	COMMIT TRANSACTION
+END
+
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_aceptarCompra]
+(
+	@Id_Usuario varchar(20),
+	@Id_Publicacion numeric(18,0),
+	@CountToBuy int,
+	@Visibility_Description varchar(255)
+)
+AS
+BEGIN
+	Declare @Id_Usuario_Vendedor numeric(18,0)
+	Declare @Id_Articulo numeric(18,0)
+	Declare @Porcentaje numeric(18,2)
+	Declare @Precio_Publicacion numeric(18,2)
+	Declare @Cantidad_Despues_Venta numeric(18,0)
+	Declare @Estado_Finalizado int
+
+	SELECT @Id_Usuario_Vendedor = Id_Usuario, @Id_Articulo = Id_Articulo, @Porcentaje = porcentaje,
+		@Precio_Publicacion = pub.Precio FROM LOS_OPTIMISTAS.Publicacion pub
+		INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON pub.Id_Visibilidad = visi.Id_Visibilidad
+		WHERE Id_Publicacion = @Id_Publicacion
+
+	BEGIN TRANSACTION
+
+		INSERT INTO LOS_OPTIMISTAS.Historial_Compra (Id_Vendedor, Id_Comprador,Id_Publicacion,
+			Id_Articulo,Compra_Cantidad,Compra_Fecha,Calificado)
+		VALUES (@Id_Usuario_Vendedor, @Id_Usuario, @Id_Publicacion,@Id_Articulo, @CountToBuy,
+			GETDATE(),0)
+
+		INSERT INTO LOS_OPTIMISTAS.Facturacion_Pendiente (Id_Usuario,Id_Usuario_Comprador,Id_Publicacion,
+			Comision,Cantidad,Precio_Publicacion,Visibilidad)
+		VALUES (@Id_Usuario_Vendedor,@Id_Usuario,@Id_Publicacion,@Porcentaje,@CountToBuy,@Precio_Publicacion,
+			@Visibility_Description)
+
+		UPDATE LOS_OPTIMISTAS.Stock SET Cantidad = Cantidad - @CountToBuy WHERE
+			Id_Articulo = @Id_Articulo AND Id_Usuario = @Id_Usuario_Vendedor
+
+		SELECT @Cantidad_Despues_Venta = Cantidad FROM LOS_OPTIMISTAS.Stock
+			WHERE Id_Articulo = @Id_Articulo AND Id_Usuario = @Id_Usuario_Vendedor
+
+		IF (@Cantidad_Despues_Venta <= 0)
+		BEGIN
+			SELECT @Estado_Finalizado = Id_Estado FROM LOS_OPTIMISTAS.Estado
+				WHERE Descripcion = 'FINALIZADA'
+
+			UPDATE LOS_OPTIMISTAS.Estado_Publicacion SET Id_Estado = @Estado_Finalizado
+				WHERE Id_Publicacion = @Id_Publicacion
+		END
+
+	COMMIT TRANSACTION
+END
+
+GO
+
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]
@@ -1305,6 +1375,7 @@ BEGIN
  GO
 
 /*Stored Procedure para Facturar*/
+ 
 
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
@@ -1419,6 +1490,184 @@ BEGIN
 END
 GO
 
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorFacturacionTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 [Id_Usuario]
+			,SUM([Total_Comisiones])
+            ,SUM([Total_Visibilidad])
+			,SUM(Total_Factura) AS Cantidad
+			
+	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
+     WHERE [Fecha] >= @fecha_desde
+	   AND [Fecha] <  @fecha_hasta
+    GROUP BY [Id_Usuario]
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorFacturacionMensual]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_usuario varchar(20)
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 [Id_Usuario]
+			,SUM([Total_Comisiones]) AS "Total Comisiones"
+            ,SUM([Total_Visibilidad]) AS "Total Visbilidad"
+			,SUM(Total_Factura)) AS Cantidad
+			
+	  FROM [GD1C2014].[LOS_OPTIMISTAS].[Facturacion] fact
+     WHERE [Fecha] >= @fecha_desde
+	   AND [Fecha] <  @fecha_hasta
+	   AND Id_Usuario = @id_usuario
+    GROUP BY [Id_Usuario]
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Calificacion TOP5*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorCalificacionTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Vendedor
+			,AVG(pub_cal.Calificacion) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  INNER JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+    GROUP BY hist_com.Id_Vendedor
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Calificacion MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorCalificacionMensual]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_vendedor varchar(20)
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Vendedor
+			,AVG(pub_cal.Calificacion) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  INNER JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+	   AND hist_com.Id_Vendedor = @id_vendedor
+    GROUP BY hist_com.Id_Vendedor
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Productos NO vendidos TOP5*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoProductosNoVendidosTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_visibilidad numeric(18,0) = null
+)
+AS
+BEGIN	
+
+	declare @ltp_temporal table (Id_Usuario varchar(20)) 
+ 
+	INSERT TOP (5) INTO @ltp_temporal	
+		select pub.Id_Usuario
+		FROM LOS_OPTIMISTAS.Publicacion pub
+	  
+	  INNER JOIN LOS_OPTIMISTAS.Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+						  AND pub.Id_Usuario = Stock.Id_Usuario
+	   WHERE pub.Fecha_Inicio >= @fecha_desde
+		 AND pub.Fecha_Inicio <  @fecha_hasta
+	GROUP BY pub.Id_Usuario
+	ORDER BY SUM(ISNULL(Stock.Cantidad,0)) desc
+
+	SELECT pub.Id_Usuario
+		  ,pub.Id_Visibilidad
+		  ,vis.Descripcion
+		  ,SUM(ISNULL(Stock.Cantidad,0)) AS Cantidad
+	  FROM Publicacion pub 
+	  INNER JOIN Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+					  AND pub.Id_Usuario = Stock.Id_Usuario
+	  INNER JOIN LOS_OPTIMISTAS.Visibilidad vis ON pub.Id_Visibilidad = vis.Id_Visibilidad
+     WHERE pub.Fecha_Inicio >= @fecha_desde
+	   AND pub.Fecha_Inicio <  @fecha_hasta
+	   AND ( ( @id_visibilidad is null ) OR ( pub.Id_Visibilidad = @id_visibilidad ) )
+	   AND pub.Id_Usuario IN (Select id_usuario FROM @ltp_temporal)
+    GROUP BY pub.Id_Usuario, pub.Id_Visibilidad, vis.Descripcion
+    ORDER BY pub.Id_Visibilidad, Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Productos NO vendidos MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].proc_ListadoEstadisticoProductosNoVendidosMensual
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_usuario varchar(20) = NULL,
+	@id_visibilidad numeric(18,0) = NULL
+)
+AS
+BEGIN	
+
+	SELECT pub.Id_Usuario
+		  ,pub.Id_Visibilidad
+		  ,vis.Descripcion
+		  ,SUM(ISNULL(Stock.Cantidad,0)) AS Cantidad
+	  FROM Publicacion pub 
+	  INNER JOIN Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+					  AND pub.Id_Usuario = Stock.Id_Usuario
+	  INNER JOIN LOS_OPTIMISTAS.Visibilidad vis ON pub.Id_Visibilidad = vis.Id_Visibilidad
+     WHERE pub.Fecha_Inicio >= @fecha_desde
+	   AND pub.Fecha_Inicio <  @fecha_hasta
+	   AND ( ( @id_visibilidad is null ) OR ( pub.Id_Visibilidad = @id_visibilidad ) )
+	   AND pub.Id_Usuario = @id_usuario
+    GROUP BY pub.Id_Usuario, pub.Id_Visibilidad, vis.Descripcion
+    ORDER BY pub.Id_Visibilidad, Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+
+
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
 
 (
@@ -1466,4 +1715,3 @@ BEGIN
 
 END
 GO
-
