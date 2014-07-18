@@ -1517,9 +1517,77 @@ BEGIN
 END
 GO
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+/*Stored Procedure para Listado Estadistico Vendedores Productos NO vendidos TOP5*/
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoProductosNoVendidosTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_visibilidad numeric(18,0) = null
+)
+AS
+BEGIN	
+
+	declare @ltp_temporal table (Id_Usuario varchar(20)) 
+ 
+	INSERT TOP (5) INTO @ltp_temporal	
+		select pub.Id_Usuario
+		FROM LOS_OPTIMISTAS.Publicacion pub
+	  
+	  INNER JOIN LOS_OPTIMISTAS.Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+						  AND pub.Id_Usuario = Stock.Id_Usuario
+	   WHERE pub.Fecha_Inicio >= @fecha_desde
+		 AND pub.Fecha_Inicio <  @fecha_hasta
+	GROUP BY pub.Id_Usuario
+	ORDER BY SUM(ISNULL(Stock.Cantidad,0)) desc
+
+	SELECT pub.Id_Usuario
+		  ,pub.Id_Visibilidad
+		  ,vis.Descripcion
+		  ,SUM(ISNULL(Stock.Cantidad,0)) AS Cantidad
+	  FROM Publicacion pub 
+	  INNER JOIN Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+					  AND pub.Id_Usuario = Stock.Id_Usuario
+	  INNER JOIN LOS_OPTIMISTAS.Visibilidad vis ON pub.Id_Visibilidad = vis.Id_Visibilidad
+     WHERE pub.Fecha_Inicio >= @fecha_desde
+	   AND pub.Fecha_Inicio <  @fecha_hasta
+	   AND ( ( @id_visibilidad is null ) OR ( pub.Id_Visibilidad = @id_visibilidad ) )
+	   AND pub.Id_Usuario IN (Select id_usuario FROM @ltp_temporal)
+    GROUP BY pub.Id_Usuario, pub.Id_Visibilidad, vis.Descripcion
+    ORDER BY pub.Id_Visibilidad, Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Productos NO vendidos MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].proc_ListadoEstadisticoProductosNoVendidosMensual
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_usuario varchar(20) = NULL,
+	@id_visibilidad numeric(18,0) = NULL
+)
+AS
+BEGIN	
+
+	SELECT pub.Id_Usuario
+		  ,pub.Id_Visibilidad
+		  ,vis.Descripcion
+		  ,SUM(ISNULL(Stock.Cantidad,0)) AS Cantidad
+	  FROM Publicacion pub 
+	  INNER JOIN Stock ON pub.Id_Articulo = Stock.Id_Articulo 
+					  AND pub.Id_Usuario = Stock.Id_Usuario
+	  INNER JOIN LOS_OPTIMISTAS.Visibilidad vis ON pub.Id_Visibilidad = vis.Id_Visibilidad
+     WHERE pub.Fecha_Inicio >= @fecha_desde
+	   AND pub.Fecha_Inicio <  @fecha_hasta
+	   AND ( ( @id_visibilidad is null ) OR ( pub.Id_Visibilidad = @id_visibilidad ) )
+	   AND pub.Id_Usuario = @id_usuario
+    GROUP BY pub.Id_Usuario, pub.Id_Visibilidad, vis.Descripcion
+    ORDER BY pub.Id_Visibilidad, Cantidad desc
+
+END
+GO
 
 /*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
 
