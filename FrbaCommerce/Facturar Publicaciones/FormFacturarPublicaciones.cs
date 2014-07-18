@@ -31,16 +31,24 @@ namespace FrbaCommerce.Facturar_Publicaciones
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = Constantes.procedimientoListadoFacturasPendientes;
             command.Parameters.AddWithValue("@p_Id_Usuario", usuario.user_id);
-            Procedimientos.llenarDataGridView(command, dgvPublicaciones, "DataGridView Facturas Pendientes");
+            Procedimientos.llenarDataGridView(command, dgvPublicaciones, "DataGridView Facturas Pendientes"); 
         }
 
         private void buttonContinuar_Click(object sender, EventArgs e)
         {
-            FormElegirMedioDePago formMedioPago = new FormElegirMedioDePago();
-            formMedioPago.MdiParent = this.MdiParent;
-            this.MdiParent.Size = formMedioPago.Size + Constantes.aumentoTamanio;
-            this.Close();
-            formMedioPago.Show();
+            textCantidad.Validating += new CancelEventHandler(Validaciones.validarCampoNumerico_Validating);
+            int cantidad = dgvPublicaciones.RowCount;
+            if (cantidad == 0) MessageBox.Show("No posee facturas a pagar", "FrbaCommerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else if (Convert.ToInt32(textCantidad.Text) > 0)
+            {
+                FormElegirMedioDePago formMedioPago = new FormElegirMedioDePago();
+                formMedioPago.cantidad = textCantidad.Text;
+                formMedioPago.MdiParent = this.MdiParent;
+                this.MdiParent.Size = formMedioPago.Size + Constantes.aumentoTamanio;
+                this.Close();
+                formMedioPago.Show();
+            }
+            else MessageBox.Show("La cantidad a pagar debe ser mayor a cero", "FrbaCommerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }

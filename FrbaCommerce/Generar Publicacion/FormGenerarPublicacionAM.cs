@@ -240,7 +240,7 @@ namespace FrbaCommerce.Generar_Publicacion
 
                 if (conditionFreePublication == 1)
                 {
-                    MessageBox.Show("Uds ya tiene al menos 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ud. ya tiene al menos 3 publicaciones gratuitas activas", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }

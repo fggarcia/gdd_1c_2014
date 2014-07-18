@@ -33,9 +33,9 @@
             this.labelNroTarjeta = new System.Windows.Forms.Label();
             this.labelCantCuotas = new System.Windows.Forms.Label();
             this.textNroTarjeta = new System.Windows.Forms.TextBox();
-            this.textCantCuotas = new System.Windows.Forms.TextBox();
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.buttonPagar = new System.Windows.Forms.Button();
+            this.comboCuotas = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // comboBoxMedioPago
@@ -80,13 +80,6 @@
             this.textNroTarjeta.Size = new System.Drawing.Size(172, 20);
             this.textNroTarjeta.TabIndex = 4;
             // 
-            // textCantCuotas
-            // 
-            this.textCantCuotas.Location = new System.Drawing.Point(183, 189);
-            this.textCantCuotas.Name = "textCantCuotas";
-            this.textCantCuotas.Size = new System.Drawing.Size(35, 20);
-            this.textCantCuotas.TabIndex = 5;
-            // 
             // buttonCancelar
             // 
             this.buttonCancelar.Location = new System.Drawing.Point(44, 293);
@@ -95,6 +88,7 @@
             this.buttonCancelar.TabIndex = 6;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
             // buttonPagar
             // 
@@ -104,15 +98,24 @@
             this.buttonPagar.TabIndex = 7;
             this.buttonPagar.Text = "Pagar";
             this.buttonPagar.UseVisualStyleBackColor = true;
+            this.buttonPagar.Click += new System.EventHandler(this.buttonPagar_Click);
+            // 
+            // comboCuotas
+            // 
+            this.comboCuotas.FormattingEnabled = true;
+            this.comboCuotas.Location = new System.Drawing.Point(183, 189);
+            this.comboCuotas.Name = "comboCuotas";
+            this.comboCuotas.Size = new System.Drawing.Size(90, 21);
+            this.comboCuotas.TabIndex = 8;
             // 
             // FormElegirMedioDePago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(406, 358);
+            this.Controls.Add(this.comboCuotas);
             this.Controls.Add(this.buttonPagar);
             this.Controls.Add(this.buttonCancelar);
-            this.Controls.Add(this.textCantCuotas);
             this.Controls.Add(this.textNroTarjeta);
             this.Controls.Add(this.labelCantCuotas);
             this.Controls.Add(this.labelNroTarjeta);
@@ -133,8 +136,8 @@
         private System.Windows.Forms.Label labelNroTarjeta;
         private System.Windows.Forms.Label labelCantCuotas;
         private System.Windows.Forms.TextBox textNroTarjeta;
-        private System.Windows.Forms.TextBox textCantCuotas;
         private System.Windows.Forms.Button buttonCancelar;
         private System.Windows.Forms.Button buttonPagar;
+        private System.Windows.Forms.ComboBox comboCuotas;
     }
 }

@@ -33,7 +33,6 @@
             this.textCantidad = new System.Windows.Forms.TextBox();
             this.labelSeleccionCant = new System.Windows.Forms.Label();
             this.buttonContinuar = new System.Windows.Forms.Button();
-            this.buttonCancelar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPublicaciones)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,7 +55,7 @@
             // 
             // textCantidad
             // 
-            this.textCantidad.Location = new System.Drawing.Point(189, 312);
+            this.textCantidad.Location = new System.Drawing.Point(367, 313);
             this.textCantidad.Name = "textCantidad";
             this.textCantidad.Size = new System.Drawing.Size(69, 20);
             this.textCantidad.TabIndex = 2;
@@ -65,7 +64,7 @@
             // labelSeleccionCant
             // 
             this.labelSeleccionCant.AutoSize = true;
-            this.labelSeleccionCant.Location = new System.Drawing.Point(26, 315);
+            this.labelSeleccionCant.Location = new System.Drawing.Point(204, 316);
             this.labelSeleccionCant.Name = "labelSeleccionCant";
             this.labelSeleccionCant.Size = new System.Drawing.Size(157, 13);
             this.labelSeleccionCant.TabIndex = 3;
@@ -73,7 +72,7 @@
             // 
             // buttonContinuar
             // 
-            this.buttonContinuar.Location = new System.Drawing.Point(282, 310);
+            this.buttonContinuar.Location = new System.Drawing.Point(459, 311);
             this.buttonContinuar.Name = "buttonContinuar";
             this.buttonContinuar.Size = new System.Drawing.Size(75, 23);
             this.buttonContinuar.TabIndex = 4;
@@ -81,21 +80,11 @@
             this.buttonContinuar.UseVisualStyleBackColor = true;
             this.buttonContinuar.Click += new System.EventHandler(this.buttonContinuar_Click);
             // 
-            // buttonCancelar
-            // 
-            this.buttonCancelar.Location = new System.Drawing.Point(459, 310);
-            this.buttonCancelar.Name = "buttonCancelar";
-            this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancelar.TabIndex = 5;
-            this.buttonCancelar.Text = "Cancelar";
-            this.buttonCancelar.UseVisualStyleBackColor = true;
-            // 
             // FormFacturarPublicaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 360);
-            this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonContinuar);
             this.Controls.Add(this.labelSeleccionCant);
             this.Controls.Add(this.textCantidad);
@@ -117,6 +106,5 @@
         private System.Windows.Forms.TextBox textCantidad;
         private System.Windows.Forms.Label labelSeleccionCant;
         private System.Windows.Forms.Button buttonContinuar;
-        private System.Windows.Forms.Button buttonCancelar;
     }
 }

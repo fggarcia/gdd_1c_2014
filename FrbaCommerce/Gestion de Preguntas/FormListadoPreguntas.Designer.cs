@@ -50,7 +50,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(782, 500);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -99,6 +98,7 @@
             this.buttonResponder.TabIndex = 1;
             this.buttonResponder.Text = "Responder";
             this.buttonResponder.UseVisualStyleBackColor = true;
+            this.buttonResponder.Click += new System.EventHandler(this.buttonResponder_Click);
             // 
             // FormListadoPreguntas
             // 

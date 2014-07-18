@@ -68,7 +68,7 @@ namespace FrbaCommerce.ABM_Rol
                 }
                 else
                 {
-                    MessageBox.Show("Ya ah sido ingresada esta funcionalidad", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ya ha sido ingresada esta funcionalidad", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }
@@ -127,7 +127,7 @@ namespace FrbaCommerce.ABM_Rol
                     lstFuncionalidades.Items.Clear();
                 }
 
-                MessageBox.Show("El rol fue procesado correctamente", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("El rol fue procesado correctamente", "FrbaCommerce", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
             }
             else

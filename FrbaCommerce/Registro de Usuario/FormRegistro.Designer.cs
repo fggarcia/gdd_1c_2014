@@ -48,7 +48,7 @@
             this.comboBoxRol.Location = new System.Drawing.Point(164, 147);
             this.comboBoxRol.Name = "comboBoxRol";
             this.comboBoxRol.Size = new System.Drawing.Size(235, 21);
-            this.comboBoxRol.TabIndex = 0;
+            this.comboBoxRol.TabIndex = 2;
             // 
             // labelRol
             // 
@@ -65,7 +65,7 @@
             this.button1.Location = new System.Drawing.Point(350, 243);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(93, 33);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 3;
             this.button1.Text = "Continuar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -77,7 +77,7 @@
             this.labelCamposObligatorios.Location = new System.Drawing.Point(289, 190);
             this.labelCamposObligatorios.Name = "labelCamposObligatorios";
             this.labelCamposObligatorios.Size = new System.Drawing.Size(110, 13);
-            this.labelCamposObligatorios.TabIndex = 13;
+            this.labelCamposObligatorios.TabIndex = 2;
             this.labelCamposObligatorios.Text = "* Campos Obligatorios";
             // 
             // label2
@@ -87,7 +87,7 @@
             this.label2.Location = new System.Drawing.Point(18, 92);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(12, 15);
-            this.label2.TabIndex = 12;
+            this.label2.TabIndex = 7;
             this.label2.Text = "*";
             // 
             // labelAst
@@ -97,7 +97,7 @@
             this.labelAst.Location = new System.Drawing.Point(18, 36);
             this.labelAst.Name = "labelAst";
             this.labelAst.Size = new System.Drawing.Size(12, 15);
-            this.labelAst.TabIndex = 11;
+            this.labelAst.TabIndex = 6;
             this.labelAst.Text = "*";
             // 
             // textContrasenia
@@ -106,7 +106,7 @@
             this.textContrasenia.Name = "textContrasenia";
             this.textContrasenia.PasswordChar = '*';
             this.textContrasenia.Size = new System.Drawing.Size(235, 20);
-            this.textContrasenia.TabIndex = 10;
+            this.textContrasenia.TabIndex = 1;
             this.textContrasenia.TextChanged += new System.EventHandler(this.textContrasenia_TextChanged);
             // 
             // textNombreUsuario
@@ -114,7 +114,7 @@
             this.textNombreUsuario.Location = new System.Drawing.Point(164, 36);
             this.textNombreUsuario.Name = "textNombreUsuario";
             this.textNombreUsuario.Size = new System.Drawing.Size(235, 20);
-            this.textNombreUsuario.TabIndex = 9;
+            this.textNombreUsuario.TabIndex = 0;
             // 
             // labelContrasenia
             // 
@@ -135,7 +135,7 @@
             this.labelNombreUsuario.Location = new System.Drawing.Point(27, 36);
             this.labelNombreUsuario.Name = "labelNombreUsuario";
             this.labelNombreUsuario.Size = new System.Drawing.Size(64, 15);
-            this.labelNombreUsuario.TabIndex = 7;
+            this.labelNombreUsuario.TabIndex = 9;
             this.labelNombreUsuario.Text = "DNI / CUIT";
             // 
             // label1
@@ -145,7 +145,7 @@
             this.label1.Location = new System.Drawing.Point(18, 147);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(12, 15);
-            this.label1.TabIndex = 14;
+            this.label1.TabIndex = 0;
             this.label1.Text = "*";
             // 
             // groupBox1
@@ -155,13 +155,14 @@
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(431, 211);
-            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "REGISTRO";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // FormRegistro
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(455, 290);

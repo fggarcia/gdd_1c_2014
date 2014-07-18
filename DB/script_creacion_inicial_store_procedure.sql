@@ -658,10 +658,13 @@ BEGIN
 
 			SELECT 
 			
+			
 			Publicacion_Preguntas.Id_Usuario 'Usuario',
 			Publicacion_Preguntas.Fecha_Creacion 'Fecha',
 			Publicacion_Preguntas.Id_Publicacion 'Publicacion',
+			Publicacion_Preguntas.Id_Pregunta 'Id Pregunta',
 			Publicacion_Preguntas.Preg_Descripcion 'Pregunta'
+			
 
 			FROM LOS_OPTIMISTAS.Publicacion_Preguntas , LOS_OPTIMISTAS.Publicacion 
 			
@@ -1060,7 +1063,7 @@ BEGIN
 		END
 END
 GO
-
+/*
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
 
 (
@@ -1092,7 +1095,7 @@ BEGIN
 			ORDER BY visi.Peso ASC, pub.Id_Publicacion ASC
  END
  GO
-
+*/
 /*Stored Procedure para Listar Subastas Ganadas del Usuario*/
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarSubastasGanadas]
@@ -1302,7 +1305,6 @@ BEGIN
  GO
 
 /*Stored Procedure para Facturar*/
- 
 
 GO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_Facturar]
@@ -1416,3 +1418,52 @@ BEGIN
 	UPDATE Historial_Compra SET Calificado = @Calificado WHERE Id_Historial_Compra = @p_Id_Historial_Compra
 END
 GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesComprarOfertar]
+
+(
+	@p_IdUsuario varchar(20) = null,
+	@p_Description varchar(255) = null
+)
+AS
+BEGIN
+
+SELECT Id_Publicacion, Precio, Descripcion FROM Publicacion
+WHERE Id_Usuario != @p_IdUsuario
+
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRubros]
+
+AS
+BEGIN
+
+SELECT Id_Rubro 'Rubro',Descripcion FROM Rubro
+
+END
+GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarPublicacionesPorRubro]
+
+(
+	@p_Id_Usuario varchar(20) = null,
+	@p_Id_Rubro int = null
+)
+
+AS
+BEGIN
+
+	SELECT
+			
+			pub.Id_Publicacion 'Codigo Publicacion',
+			pub.Descripcion 'Descripcion'
+			
+			FROM LOS_OPTIMISTAS.Publicacion pub
+			WHERE
+			pub.Id_Usuario != @p_Id_Usuario
+			AND pub.Id_Rubro = @p_Id_Rubro
+
+END
+GO
+

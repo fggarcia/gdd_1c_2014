@@ -16,11 +16,12 @@ namespace FrbaCommerce.Gestion_de_Preguntas
         public FormListadoPreguntas()
         {
             InitializeComponent();
+            buttonResponder.Enabled = false;
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void dgvResponder_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            buttonResponder.Enabled = true;
         }
 
         private void FormListadoPreguntas_Load(object sender, EventArgs e)
@@ -42,8 +43,20 @@ namespace FrbaCommerce.Gestion_de_Preguntas
             commandResp.CommandText = Constantes.procedimientoListarPreguntas;
             commandResp.Parameters.AddWithValue("@Id_Usuario", FormSeleccionRol.usuario.user_id);
             Procedimientos.llenarDataGridView(commandResp, dgvResponder, "DataGridView Preguntas por Responder");
+        }
 
-
+        private void buttonResponder_Click(object sender, EventArgs e)
+        {
+            FormResponderPregunta formResponder = new FormResponderPregunta();
+            formResponder.MdiParent = this.MdiParent;
+            MdiParent.Size = formResponder.Size + Constantes.aumentoTamanio;
+            formResponder.Show();
+            SqlConnection conn = Procedimientos.abrirConexion();
+            formResponder.idUsuario = Convert.ToString(dgvResponder.CurrentRow.Cells[0].Value);
+            formResponder.idPregunta = Convert.ToString(dgvResponder.CurrentRow.Cells[3].Value);
+            formResponder.pregunta = Convert.ToString(dgvResponder.CurrentRow.Cells[4].Value);
+            Procedimientos.cerrarConexion(conn);
+            this.Close();
         }
     }
 }

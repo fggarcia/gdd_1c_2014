@@ -331,7 +331,8 @@ CREATE TABLE [LOS_OPTIMISTAS].[Publicacion](
 	[Fecha_Vencimiento][datetime] NULL,
 	[Permite_Preguntas][Bit] NULL,
 	[Cant_por_Venta][numeric] (18,0) NULL,
-	[Descripcion][varchar](255) NULL
+	[Descripcion][varchar](255) NULL,
+	[Id_Rubro][int] NULL
 
 	CONSTRAINT [FK_Publicacion_Id_Usuario] FOREIGN KEY(Id_Usuario)
 			REFERENCES [LOS_OPTIMISTAS].[Usuario](Id_Usuario),

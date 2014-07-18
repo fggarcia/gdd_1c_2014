@@ -59,6 +59,24 @@ namespace FrbaCommerce
         }
 
         //**********************************************************
+        //*    PROCEDIMIENTO PARA LLENAR COMBOBOX CUOTAS
+        //**********************************************************
+
+        public static void LlenarComboBoxCuotas(ComboBox comboBox)
+        {
+            Dictionary<int, string> diccionario = new Dictionary<int, string>();
+            diccionario.Add(1, "1");
+            diccionario.Add(2, "3");
+            diccionario.Add(3, "6");
+            diccionario.Add(4, "12");
+            diccionario.Add(5, "18");
+            diccionario.Add(6, "24");
+            comboBox.DataSource = new BindingSource(diccionario, null);
+            comboBox.DisplayMember = "Value";
+            comboBox.ValueMember = "Key";
+        }
+
+        //**********************************************************
         //*         PROCEDIMIENTO PARA LLENAR COMBOBOX
         //**********************************************************
 
@@ -133,6 +151,46 @@ namespace FrbaCommerce
         }
 
 
+        //**************************************************************
+        //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW CON CHECKBOX
+        //**************************************************************
+
+        public static void EjecutarProcedimientoDataGridView(SqlCommand command, DataGridView dataGridView, String operacion)
+        {
+            SqlConnection conn = new SqlConnection ();
+            conn = abrirConexion();
+            command.Connection = conn;
+            command.CommandType = CommandType.StoredProcedure;
+            using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command))
+            {
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                dataGridView.DataSource = dataTable;
+                string nombreCampo = string.Empty;
+                Boolean tieneCheckButton = false;
+                DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
+                dataGridView.Columns.Add(chk);
+                chk.HeaderText = "Seleccion";
+                chk.Name = "chk";
+                if (tieneCheckButton.Equals(true))
+                {
+                    DataGridViewCheckBoxColumn checBox = new DataGridViewCheckBoxColumn();
+                    checBox.HeaderText = "Elegir";
+                    checBox.Name = "chk";
+                    dataGridView.Columns.Add(checBox);
+                }
+            }
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.AllowUserToAddRows = false;
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (!column.Name.Equals("checkbox") && !column.Name.Equals("chk"))
+                    column.ReadOnly = true;
+            }
+            cerrarConexion(conn);
+        }
         //*************************************************
         //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW
         //*************************************************
@@ -162,6 +220,35 @@ namespace FrbaCommerce
 
             cerrarConexion(conn);
         }
+
+        //**************************************************
+        //*    PROCEDIMIENTO PARA EJECUTAR FUNCION ESCALAR
+        //**************************************************
+
+        public static object ejecutarFuncionScalar(SqlCommand command)
+        {
+
+            object resultado = null;
+            try
+                {
+                    SqlConnection conn = abrirConexion();
+                    command.Connection = conn;
+                    resultado = command.ExecuteScalar();
+                }
+                catch (SqlException sqlEx)
+                {
+                    String mensajeError = sqlEx.Message;
+                    MessageBox.Show(mensajeError, "Ejecucion de Funcion sin Return", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    String mensajeError = ex.Message;
+                    MessageBox.Show(mensajeError, "Ejecucion de Funcion sin Return", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return resultado;
+            }
+        
 
         //*************************************************
         //*    PROCEDIMIENTO PARA LLENAR UN DATAGRIDVIEW

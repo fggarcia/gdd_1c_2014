@@ -144,11 +144,11 @@
     <Compile Include="ABM Rol\FormABMRolModificar.Designer.cs">
       <DependentUpon>FormABMRolModificar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Rubro\Form1.cs">
+    <Compile Include="Abm Rubro\FormABMRubro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Rubro\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Rubro\FormABMRubro.Designer.cs">
+      <DependentUpon>FormABMRubro.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Visibilidad\FormABMVisibilidad.cs">
       <SubType>Form</SubType>
@@ -192,6 +192,12 @@
     </Compile>
     <Compile Include="Generar Publicacion\FormGenerarPublicacionAM.Designer.cs">
       <DependentUpon>FormGenerarPublicacionAM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gestion de Preguntas\FormResponderPregunta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gestion de Preguntas\FormResponderPregunta.Designer.cs">
+      <DependentUpon>FormResponderPregunta.cs</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\FormListadoEstadistico.cs">
       <SubType>Form</SubType>
@@ -325,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gestion de Preguntas\FormListadoPreguntas.resx">
       <DependentUpon>FormListadoPreguntas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gestion de Preguntas\FormResponderPregunta.resx">
+      <DependentUpon>FormResponderPregunta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\FormHistorialUsuario.resx">
       <DependentUpon>FormHistorialUsuario.cs</DependentUpon>

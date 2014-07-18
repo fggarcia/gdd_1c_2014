@@ -42,7 +42,7 @@ namespace FrbaCommerce.Abm_Cliente
             }
             conn.Close();
             formAltaCliente.password = Procedimientos.generarPassword();
-            MessageBox.Show("Username: " + formAltaCliente.username + "Password: " + formAltaCliente.password, "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Username: " + formAltaCliente.username + " Password: " + formAltaCliente.password, "Usuario creado Correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
         }
 
