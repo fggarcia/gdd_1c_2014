@@ -1467,9 +1467,55 @@ BEGIN
 END
 GO
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Calificacion TOP5*/
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorCalificacionTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Vendedor
+			,AVG(pub_cal.Calificacion) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  INNER JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+    GROUP BY hist_com.Id_Vendedor
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Vendedores Mayor Calificacion MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoMayorCalificacionMensual]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_vendedor varchar(20)
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Vendedor
+			,AVG(pub_cal.Calificacion) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  INNER JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+	   AND hist_com.Id_Vendedor = @id_vendedor
+    GROUP BY hist_com.Id_Vendedor
+    ORDER BY Cantidad desc
+
+END
+GO
 
 /*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
 
