@@ -25,6 +25,13 @@ namespace FrbaCommerce.Comprar_Ofertar
         public FormComprarOfertar()
         {
             InitializeComponent();
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+
+            CargarDataGridView(null);
         }
 
         private void CargarPagina()
@@ -91,15 +98,9 @@ namespace FrbaCommerce.Comprar_Ofertar
             }
         }
 
-        private void FormComprarOfertar2_Load(object sender, EventArgs e)
+        private void FormComprarOfertar_Load(object sender, EventArgs e)
         {
-            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
-
-            this.ControlBox = false;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-
-            CargarDataGridView(null);
+            
         }
 
         private void buttonPrimera_Click(object sender, EventArgs e)
@@ -157,6 +158,56 @@ namespace FrbaCommerce.Comprar_Ofertar
         private void btnSearch_Click(object sender, EventArgs e)
         {
             CargarDataGridView(txtDescription.Text);
+        }
+
+        private void btnBuyBidding_Click(object sender, EventArgs e)
+        {
+            if (dgvPublicaciones.CurrentRow == null)
+            {
+                MessageBox.Show("Debe seleccionar una publicacion a comprar/ofertar", "Frba Commerce", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            string type = Convert.ToString(dgvPublicaciones.CurrentRow.Cells[3].Value);
+            Int32 id_publicacion = Convert.ToInt32(dgvPublicaciones.CurrentRow.Cells[0].Value);
+            bool bidding = type.Equals("SUBASTA");
+            SqlConnection conn = Procedimientos.abrirConexion();
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_obtenerPublicacion";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@p_Id_Publicacion", id_publicacion);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            Publicacion publication = new Publicacion();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    publication.id = Convert.ToInt32(reader["Id_Publicacion"]);
+                    publication.description = reader["Descripcion"].ToString();
+                    publication.stock = Convert.ToInt32(reader["Stock"]);
+                    publication.status = Convert.ToInt32(reader["Id_Estado"]);
+                    publication.statusDescription = reader["estadoDescripcion"].ToString();
+                    publication.type = Convert.ToInt32(reader["Id_Tipo_Publicacion"]);
+                    publication.typeDescription = reader["tipoDescripcion"].ToString();
+                    publication.visibility = Convert.ToInt32(reader["Id_Visibilidad"]);
+                    publication.visibilityDescription = reader["visibilidadDescripcion"].ToString();
+                    publication.dateFrom = Convert.ToDateTime(reader["Fecha_Inicio"]);
+                    publication.dateTo = Convert.ToDateTime(reader["Fecha_Vencimiento"]);
+                    publication.prices = Convert.ToDouble(reader["Precio"]);
+                    publication.countForSale = Convert.ToInt32(reader["Cant_por_venta"]);
+                    publication.acceptQuestions = Convert.ToBoolean(reader["Permite_Preguntas"]);
+                }
+            }
+
+            Procedimientos.cerrarConexion(conn);
+
+            FormConfirmarComprarOfertar formConfirmarComprarOfertar = new FormConfirmarComprarOfertar(publication);
+            formConfirmarComprarOfertar.MdiParent = this.MdiParent;
+            MdiParent.Size = formConfirmarComprarOfertar.Size + Constantes.aumentoTamanio;
+            formConfirmarComprarOfertar.Show();
+            this.Close();
         }
     }
 }

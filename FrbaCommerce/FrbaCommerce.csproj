@@ -175,6 +175,12 @@
     <Compile Include="Comprar Ofertar\FormComprarOfertar.Designer.cs">
       <DependentUpon>FormComprarOfertar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comprar Ofertar\FormConfirmarComprarOfertar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar Ofertar\FormConfirmarComprarOfertar.Designer.cs">
+      <DependentUpon>FormConfirmarComprarOfertar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editar Publicacion\FormEditarPublicacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Comprar Ofertar\FormComprarOfertar.resx">
       <DependentUpon>FormComprarOfertar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar Ofertar\FormConfirmarComprarOfertar.resx">
+      <DependentUpon>FormConfirmarComprarOfertar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\FormEditarPublicacion.resx">
       <DependentUpon>FormEditarPublicacion.cs</DependentUpon>

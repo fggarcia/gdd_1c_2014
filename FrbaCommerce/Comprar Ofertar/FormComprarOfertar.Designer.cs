@@ -34,7 +34,7 @@
             this.buttonSiguiente = new System.Windows.Forms.Button();
             this.buttonAnterior = new System.Windows.Forms.Button();
             this.buttonPrimera = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBuyBidding = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnClean = new System.Windows.Forms.Button();
             this.txtEntry = new System.Windows.Forms.TextBox();
@@ -100,14 +100,15 @@
             this.buttonPrimera.UseVisualStyleBackColor = true;
             this.buttonPrimera.Click += new System.EventHandler(this.buttonPrimera_Click);
             // 
-            // button1
+            // btnBuyBidding
             // 
-            this.button1.Location = new System.Drawing.Point(498, 350);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 43);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Comprar/Ofertar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnBuyBidding.Location = new System.Drawing.Point(498, 350);
+            this.btnBuyBidding.Name = "btnBuyBidding";
+            this.btnBuyBidding.Size = new System.Drawing.Size(97, 43);
+            this.btnBuyBidding.TabIndex = 16;
+            this.btnBuyBidding.Text = "Comprar/Ofertar";
+            this.btnBuyBidding.UseVisualStyleBackColor = true;
+            this.btnBuyBidding.Click += new System.EventHandler(this.btnBuyBidding_Click);
             // 
             // btnSearch
             // 
@@ -159,7 +160,7 @@
             this.label1.TabIndex = 17;
             this.label1.Text = "Descripcion";
             // 
-            // FormComprarOfertar2
+            // FormComprarOfertar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -170,16 +171,15 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnBuyBidding);
             this.Controls.Add(this.labelPaginaActual);
             this.Controls.Add(this.dgvPublicaciones);
             this.Controls.Add(this.buttonUltimaPagina);
             this.Controls.Add(this.buttonSiguiente);
             this.Controls.Add(this.buttonAnterior);
             this.Controls.Add(this.buttonPrimera);
-            this.Name = "FormComprarOfertar2";
-            this.Text = "FormComprarOfertar2";
-            this.Load += new System.EventHandler(this.FormComprarOfertar2_Load);
+            this.Name = "FormComprarOfertar";
+            this.Text = "Comprar/Ofertar";
             ((System.ComponentModel.ISupportInitialize)(this.dgvPublicaciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -194,7 +194,7 @@
         private System.Windows.Forms.Button buttonSiguiente;
         private System.Windows.Forms.Button buttonAnterior;
         private System.Windows.Forms.Button buttonPrimera;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBuyBidding;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnClean;
         private System.Windows.Forms.TextBox txtEntry;

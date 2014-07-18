@@ -988,7 +988,7 @@ BEGIN
 				INNER JOIN LOS_OPTIMISTAS.Tipo_Publicacion tiPub ON pub.Id_Tipo_Publicacion = tiPub.Id_Tipo_Publicacion
 				INNER JOIN LOS_OPTIMISTAS.Visibilidad visi ON visi.Id_Visibilidad = pub.Id_Visibilidad
 			WHERE
-			pub.Id_Usuario = @p_Id_Usuario
+			((@p_Id_Usuario IS NULL) OR pub.Id_Usuario = @p_Id_Usuario)
 			AND @p_Id_Publicacion = pub.Id_Publicacion
  END
  GO
