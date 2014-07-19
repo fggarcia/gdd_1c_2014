@@ -35,7 +35,7 @@ namespace FrbaCommerce
             String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_VerificarPrimerInicio";
             SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@p_Id_Usuario", user.user_id);
+            command.Parameters.AddWithValue("@Usuario", user.user_id);
 
             var returnParameter = command.Parameters.Add("@Valido", SqlDbType.Int);
             returnParameter.Direction = ParameterDirection.ReturnValue;

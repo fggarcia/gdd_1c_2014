@@ -761,19 +761,17 @@ GO
 --TODO
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_VerificarPrimerInicio]
 (
-	@p_Id_Usuario varchar(20)
+	@Usuario varchar(20)
 )
 AS
 BEGIN
 
 	Declare @Valido Int  = 0
 
-	SELECT * FROM LOS_OPTIMISTAS.Usuario Usr WHERE 
-		LTRIM(Usr.Id_Usuario) = LTRIM(@p_Id_Usuario)
-		AND Ultima_Fecha IS NULL
-	
+	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE LTRIM(RTRIM(Id_Usuario)) = LTRIM(RTRIM(@Usuario))
+
 	SET @Valido = @@ROWCOUNT
-	
+
 	RETURN @Valido
 END
 GO
