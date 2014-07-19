@@ -12,9 +12,11 @@ namespace FrbaCommerce.Login
 {
     public partial class FormCambiarContrasenia : Form
     {
-        public FormCambiarContrasenia()
+        String usuario;
+        public FormCambiarContrasenia(string usuario)
         {
             InitializeComponent();
+            this.usuario = usuario;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -22,9 +24,10 @@ namespace FrbaCommerce.Login
             textPassword.Validating += new CancelEventHandler(Validaciones.validarPassword_Validating);
             SqlCommand command = new SqlCommand();
             command.CommandText = Constantes.procedimientoCambiarPassword;
-            command.Parameters.AddWithValue("@p_Id_Usuario", VarGlobables.usuario.user_id);
-            command.Parameters.AddWithValue("@p_Pass", textPassword.Text);
+            command.Parameters.AddWithValue("@p_Id_Usuario", usuario);
+            command.Parameters.AddWithValue("@p_Pass", FormLogin.getSha256(textPassword.Text));
             Procedimientos.ejecutarStoredProcedure(command, "Cambio de Password", true);
+            this.Close();
         }
     }
 }

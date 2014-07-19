@@ -71,12 +71,12 @@ namespace FrbaCommerce.Login
                 Int32 cantidadLogin = administracion.loguear(usuario);
                 if (administracion.primerIngreso(usuario))
                 {
+                    FormCambiarContrasenia formCambioContra = new FormCambiarContrasenia(usuario.user_id);
+                    this.Hide();
+                    formCambioContra.ShowDialog();
                     this.Close();
-                    FormCambiarContrasenia formCambioContra = new FormCambiarContrasenia();
-                    formCambioContra.Show();
                 }
-
-                if (cantidadLogin == 0)
+                else if (cantidadLogin == 0)
                 {
                     FormSeleccionRol formSeleccionRol = new FormSeleccionRol(usuario);
                     this.Hide();
