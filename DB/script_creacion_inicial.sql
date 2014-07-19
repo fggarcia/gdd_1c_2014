@@ -87,7 +87,7 @@ SELECT Usuario_temp.Id_Usuario,'5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393d
 
 --Contraseña del usuario admin igual a la del resto
 INSERT INTO LOS_OPTIMISTAS.Usuario(Id_Usuario, Password, Cantidad_Login, Ultima_Fecha,Habilitado)
-VALUES ('admin','5e4ac4f46b377c21b587cdaf94cc4e0d9bff2434dc00393dc4eef7b90f39ee01',0,getDate(),1)
+VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7',0,getDate(),1)
 
 --TABLA ROL
 CREATE TABLE [LOS_OPTIMISTAS].[Rol](
