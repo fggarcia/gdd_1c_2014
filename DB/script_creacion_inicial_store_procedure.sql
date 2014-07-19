@@ -766,10 +766,9 @@ AS
 BEGIN
 	Declare @Valido Int
 
-	SELECT * FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Id_Usuario
-
-	SET @Valido = @@ROWCOUNT
-
+	SELECT @Valido = 1 FROM LOS_OPTIMISTAS.Usuario WHERE Id_Usuario = @Id_Usuario
+		AND Ultima_Fecha IS NULL
+		
 	RETURN @Valido
 END
 GO
@@ -1726,7 +1725,7 @@ CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CambiarPassword]
 AS
 BEGIN
 
-UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Pass WHERE Id_Usuario = @p_Id_Usuario
+UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Pass, [Ultima_Fecha] = GETDATE() WHERE Id_Usuario = @p_Id_Usuario
 
 END
 GO
