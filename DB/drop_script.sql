@@ -180,6 +180,10 @@ DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosTOP5
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoProductosNoVendidosMensual
 
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarTOP5
+
+DROP PROCEDURE LOS_OPTIMISTAS.proc_ListadoEstadisticoPublicacionesSinCalificarMensual
+
 DROP PROCEDURE LOS_OPTIMISTAS.proc_HabilitarUsuario
 
 DROP PROCEDURE LOS_OPTIMISTAS.proc_VerificarPrimerInicio

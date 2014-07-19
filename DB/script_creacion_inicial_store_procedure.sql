@@ -1705,9 +1705,60 @@ BEGIN
 END
 GO
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion TOP5*/
+/*Stored Procedure para Listado Estadistico Publicaciones Sin Calificar TOP5*/
 
-/*Stored Procedure para Listado Estadistico Vendedores Mayor Facturacion MENSUAL*/
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListadoEstadisticoPublicacionesSinCalificarTOP5]
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Comprador
+			,COUNT(*) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  LEFT JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+	   AND Id_Calificacion IS NULL
+    GROUP BY hist_com.Id_Comprador
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listado Estadistico Publicaciones Sin Calificar MENSUAL*/
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].proc_ListadoEstadisticoPublicacionesSinCalificarMensual
+(
+	@fecha_desde datetime,
+	@fecha_hasta datetime,
+	@id_cliente varchar(20)
+)
+AS
+BEGIN	
+
+	SELECT TOP 5 hist_com.Id_Comprador
+			,COUNT(*) AS Cantidad
+			
+	  FROM Historial_Compra hist_com
+	  LEFT JOIN Publicacion_Calificaciones pub_cal 
+	     ON hist_com.Id_Historial_Compra = pub_cal.Id_Historial_Compra
+     WHERE pub_cal.Fecha_Calificacion >= @fecha_desde
+	   AND pub_cal.Fecha_Calificacion <  @fecha_hasta
+	   AND Id_Calificacion IS NULL
+	   AND Id_Comprador = @id_cliente 
+    GROUP BY hist_com.Id_Comprador
+    ORDER BY Cantidad desc
+
+END
+GO
+
+/*Stored Procedure para Listar rubros */
+
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRubros]
 
 AS
