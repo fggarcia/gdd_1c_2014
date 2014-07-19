@@ -86,10 +86,10 @@ namespace FrbaCommerce.Comprar_Ofertar
         private void CargarDataGridView(string descripcion)
         {
             SqlConnection conn = Procedimientos.abrirConexion();
-            SqlCommand command = new SqlCommand(Constantes.procedimientoMostrarPublicacionesComprarOfertar, conn);
+            SqlCommand command = new SqlCommand("LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar", conn);
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@p_Id_Usuario", FormSeleccionRol.usuario.user_id);
-            //command.Parameters.AddWithValue("@p_Description", descripcion);
+            command.Parameters.AddWithValue("@p_IdUsuario", VarGlobables.usuario.user_id);
+            command.Parameters.AddWithValue("@p_Description", txtDescription.Text);
 
             SqlDataAdapter da = new SqlDataAdapter(command);
             ds = new DataSet();
@@ -175,33 +175,55 @@ namespace FrbaCommerce.Comprar_Ofertar
             DataTable dataTable = new DataTable();
             dgvPublicaciones.DataSource = null;
 
-            foreach (DataGridViewRow row in dgvRubros.Rows)
+            if (dgvRubros.RowCount > 0)
             {
-                if (Convert.ToBoolean(row.Cells["chk"].Value))
+                foreach (DataGridViewRow row in dgvRubros.Rows)
                 {
-                    string id_Rubro = Convert.ToString(row.Cells[1].Value);
-                    dgvPublicaciones.RowHeadersVisible = false;
-                    dgvPublicaciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgvPublicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    dgvPublicaciones.AllowUserToAddRows = false;
-                    foreach (DataGridViewColumn column in dgvPublicaciones.Columns)
+                    if (Convert.ToBoolean(row.Cells["chk"].Value))
                     {
-                        if (!column.Name.Equals("checkbox") && !column.Name.Equals("chk"))
-                            column.ReadOnly = true;
-                    }
+                        string id_Rubro = Convert.ToString(row.Cells[1].Value);
+                        dgvPublicaciones.RowHeadersVisible = false;
+                        dgvPublicaciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvPublicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvPublicaciones.AllowUserToAddRows = false;
+                        foreach (DataGridViewColumn column in dgvPublicaciones.Columns)
+                        {
+                            if (!column.Name.Equals("checkbox") && !column.Name.Equals("chk"))
+                                column.ReadOnly = true;
+                        }
 
-                    SqlConnection conn = Procedimientos.abrirConexion();
-                    SqlCommand comando = new SqlCommand();
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.Parameters.AddWithValue("p_Id_Usuario", FormSeleccionRol.usuario.user_id);
-                    comando.Parameters.AddWithValue("p_Id_Rubro", id_Rubro);
-                    comando.CommandText = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
-                    comando.Connection = conn;
-                    comando.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(comando);
-                    comandos.Add(sqlDataAdapter);
+                        SqlConnection conn = Procedimientos.abrirConexion();
+                        SqlCommand comando = new SqlCommand();
+                        comando.CommandType = CommandType.StoredProcedure;
+                        comando.Parameters.AddWithValue("@p_IdUsuario", FormSeleccionRol.usuario.user_id);
+                        comando.Parameters.AddWithValue("@p_Description", txtDescription.Text);
+                        comando.CommandText = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
+                        comando.Connection = conn;
+                        comando.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(comando);
+                        comandos.Add(sqlDataAdapter);
+                    }
                 }
             }
+            else
+            {
+                SqlConnection conn = Procedimientos.abrirConexion();
+                SqlCommand comando = new SqlCommand();
+                comando.CommandType = CommandType.StoredProcedure;
+                Usuarios usuario = VarGlobables.usuario;
+                comando.Parameters.AddWithValue("@p_IdUsuario",usuario.user_id);
+                if (!txtDescription.Text.Equals(""))
+                {
+                    comando.Parameters.AddWithValue("@p_Description", txtDescription.Text);
+                }
+                comando.CommandText = "LOS_OPTIMISTAS.proc_ListarPublicacionesComprarOfertar";
+                comando.Connection = conn;
+                comando.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(comando);
+                comandos.Add(sqlDataAdapter);
+            }
+
+            
 
             foreach (SqlDataAdapter comando in comandos)
             {
@@ -213,17 +235,26 @@ namespace FrbaCommerce.Comprar_Ofertar
 
             bool sinRubro = false;
 
-            foreach (DataGridViewRow row in dgvRubros.Rows)
+            if (dgvRubros.RowCount <= 0)
             {
-                if (!Convert.ToBoolean(row.Cells["chk"].Value))
-                {
-                    sinRubro = true;
-                }
+                sinRubro = true;
             }
+            else
+            {
+                foreach (DataGridViewRow row in dgvRubros.Rows)
+                {
+                    if (!Convert.ToBoolean(row.Cells["chk"].Value))
+                    {
+                        sinRubro = true;
+                    }
+                }
+                
+            }
+
             if (sinRubro)
             {
                 CargarDataGridView(txtDescription.Text);
-            }
+            }   
 
         }
 
