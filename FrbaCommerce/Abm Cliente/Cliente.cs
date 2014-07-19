@@ -89,7 +89,6 @@ namespace FrbaCommerce.Abm_Cliente
         //*  VALIDACION DE DATOS PARA EL REGISTRO DE NUEVO CLIENTE
         //**********************************************************
 
-        //TODO ver tema de username y password
         public static bool validarCamposCreacion(TextBox nombre, TextBox apellido, TextBox calle, TextBox nroCalle, TextBox pisoCalle, TextBox deptoCalle, TextBox diaN, TextBox mesN, TextBox anioN, TextBox telefono, ComboBox tipoDoc, TextBox nDoc, TextBox codP, TextBox localidad, TextBox mail, string username, string password)
         {
             //Validación todos los campos obligatorios están completos

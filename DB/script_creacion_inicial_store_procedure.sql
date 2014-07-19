@@ -1725,3 +1725,16 @@ SELECT Id_Rubro 'Rubro',Descripcion FROM Rubro
 
 END
 GO
+
+CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_CambiarPassword]
+(
+@p_Id_Usuario varchar (20),
+@p_Pass varchar (64)
+)
+AS
+BEGIN
+
+UPDATE LOS_OPTIMISTAS.Usuario SET [Password] = @p_Pass WHERE Id_Usuario = @p_Id_Usuario
+
+END
+GO

@@ -34,6 +34,7 @@ namespace FrbaCommerce
         public const String procedimientoPrimerIngreso = "LOS_OPTIMISTAS.proc_VerificarPrimerInicio";
         public const String procedimientoBajaUsuario = "LOS_OPTIMISTAS.proc_BajaUsuario";
         public const String procedimientoHabilitarUsuario = "LOS_OPTIMISTAS.proc_HabilitarUsuario";
+        public const String procedimientoCambiarPassword = "LOS_OPTIMISTAS.proc_CambiarPassword";
 
         public const String listarMenuFuncionalidades = "LOS_OPTIMISTAS.proc_ListarMenuFuncionalidadesRol";
 
