@@ -822,12 +822,6 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_ListarRoles]
-AS
-BEGIN
-	SELECT r.Descripcion, r.Habilitado FROM LOS_OPTIMISTAS.Rol r
-END
-GO
 --AM Publicacion
 CREATE PROCEDURE [LOS_OPTIMISTAS].[proc_GenerarPublicacion](
 	@Id_Usuario varchar(20),
