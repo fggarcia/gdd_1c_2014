@@ -32,24 +32,27 @@ namespace FrbaCommerce
         public Boolean primerIngreso(Usuarios user)
 		{
             SqlConnection conn = Procedimientos.abrirConexion();
-            SqlCommand command = new SqlCommand(Constantes.procedimientoPrimerIngreso, conn);
+            String nombreStoredProcedure = "LOS_OPTIMISTAS.proc_VerificarPrimerInicio";
+            SqlCommand command = new SqlCommand(nombreStoredProcedure, conn);
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@p_Id_Usuario", user.user_id);
 
-            var returnParameter = command.Parameters.Add("@Fecha", SqlDbType.Int);
+            var returnParameter = command.Parameters.Add("@Valido", SqlDbType.Int);
             returnParameter.Direction = ParameterDirection.ReturnValue;
 
             command.ExecuteNonQuery();
 
             Int32 primerInicio = Convert.ToInt32(returnParameter.Value);
-
             Procedimientos.cerrarConexion(conn);
+
             if (primerInicio == 1)
             {
+                MessageBox.Show("hola");
                 return true;
             }
             else
             {
+                MessageBox.Show("chau");
                 return false;
             }
 		}

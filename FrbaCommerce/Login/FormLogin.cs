@@ -69,6 +69,7 @@ namespace FrbaCommerce.Login
             if (administracion.validarUsuario(usuario))
             {
                 Int32 cantidadLogin = administracion.loguear(usuario);
+                MessageBox.Show(""+administracion.primerIngreso(usuario));
                 if (administracion.primerIngreso(usuario))
                 {
                     this.Close();
